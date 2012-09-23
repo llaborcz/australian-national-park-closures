@@ -1,4 +1,4 @@
-package com.bluebottlesoftware.nationalparkclosures;
+package com.bluebottlesoftware.nationalparkclosures.activities;
 
 import com.bluebottlesoftware.nswnpclosures.R;
 import com.bluebottlesoftware.nswnpclosures.R.layout;
