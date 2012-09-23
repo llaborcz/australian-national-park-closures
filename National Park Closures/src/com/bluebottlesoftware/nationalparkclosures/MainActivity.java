@@ -1,4 +1,8 @@
-package com.bluebottlesoftware.nswnpclosures;
+package com.bluebottlesoftware.nationalparkclosures;
+
+import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.nswnpclosures.R.layout;
+import com.bluebottlesoftware.nswnpclosures.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
