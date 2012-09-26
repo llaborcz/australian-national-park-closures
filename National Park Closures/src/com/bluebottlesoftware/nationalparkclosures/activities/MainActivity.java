@@ -1,8 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
 import com.bluebottlesoftware.nswnpclosures.R;
-import com.bluebottlesoftware.nswnpclosures.R.layout;
-import com.bluebottlesoftware.nswnpclosures.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
