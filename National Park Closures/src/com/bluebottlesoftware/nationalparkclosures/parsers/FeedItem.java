@@ -15,12 +15,12 @@ public class FeedItem
     
     public FeedItem(String date, String title, String link, String guid,String description,String category)
     {
-        m_date  = date;
-        m_title = title;
-        m_link  = link;
-        m_guid  = guid;
-        m_description = description;
-        m_category = category;
+        m_date  = date == null ? "" : date;
+        m_title = title == null ? "": title;
+        m_link  = link == null ? "" : link;
+        m_guid  = guid == null ? "" : guid;
+        m_description = description == null ? "" : description;
+        m_category = category == null ? "" : category;
     }
 
     public String getTitle()
