@@ -82,4 +82,12 @@ public class FeedItem
     {
         this.m_category = category;
     }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(m_date.length() + m_guid.length() + m_category.length() + m_link.length() + 8);
+        sb.append(m_title).append(' ').append(m_date).append(' ').append(m_link).append(' ').append(m_guid).append(' ').append(m_category);
+        return sb.toString();
+    }
 }
