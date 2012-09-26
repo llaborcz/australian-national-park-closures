@@ -76,7 +76,7 @@ public class NswFeedParser
         NodeList items = (NodeList) xpath.evaluate(ItemQuery, xmlDocument,XPathConstants.NODESET);
         for(int item = 0;item < items.getLength();item++)
         {
-            m_items.add(parseItem(items.item(item),xpath));
+            m_items.add(createItemFromXPath(items.item(item),xpath));
         }
     }
 
@@ -86,7 +86,7 @@ public class NswFeedParser
      * @return
      * @throws XPathExpressionException 
      */
-    private FeedItem parseItem(Node node,XPath xpath) throws XPathExpressionException
+    private FeedItem createItemFromXPath(Node node,XPath xpath) throws XPathExpressionException
     {
         String date  = (String) xpath.evaluate(Date, node,XPathConstants.STRING);
         String title = (String) xpath.evaluate(Title, node,XPathConstants.STRING);
