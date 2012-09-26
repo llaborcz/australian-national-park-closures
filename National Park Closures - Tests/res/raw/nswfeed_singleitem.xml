@@ -1,0 +1,22 @@
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xCal="urn:ietf:params:xml:ns:xcal" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <generator>NSW National Parks and Wildlife Service</generator>
+    <ttl>60</ttl>
+    <language>en-au</language>
+    <title>NSW National Parks - Fires, floods and park closures</title>
+    <link>http://www.environment.nsw.gov.au/NationalParks/fireClosure.aspx</link>
+    <description>This RSS feed provides information on current fires, floods, park closures, fire bans and hazard reduction burns for parks and reserves throughout NSW.</description>
+    <pubDate>Wed, 26 Sep 2012 12:01:00</pubDate>
+    <lastBuildDate>Wed, 26 Sep 2012 12:01:00</lastBuildDate><atom:updated>2012-09-26T12:01:00Z</atom:updated><item xmlns:xCal="urn:ietf:params:xml:ns:xcal">
+  <IDs>20080416100010761</IDs>
+  <pubDate>Mon, 10 Sep 2012 11:50:00</pubDate>
+  <title>Abercrombie River National Park</title>
+  <link>http://www.environment.nsw.gov.au/NationalParks/parkFireClosure.aspx?id=N0093</link>
+  <guid isPermaLink="false">N0093Mon, 10 Sep 2012 11:50:00 GMT</guid>
+  <category>hazard reduction burns</category>
+  <description><![CDATA[<strong>HAZARD REDUCTION BURNS</strong><br /><strong>Hazard reduction burn</strong><br />Tea Tree West Hazard Reduction <br/>
+Bounded by: Felled Timber Creek, Claytons Fire Trail, Tea Tree Fire Trail.<br/>
+No closures to Abercrombie campsites, but the above Fire Trails will be closed.<br/>
+ Contact Oberon NPWS 63361972<br />]]></description>
+</item></channel>
+</rss>
