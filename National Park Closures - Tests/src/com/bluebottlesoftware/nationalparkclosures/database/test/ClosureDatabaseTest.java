@@ -13,7 +13,7 @@ import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
 import com.bluebottlesoftware.nationalparkclosures.data.State;
-import com.bluebottlesoftware.nationalparkclosures.database.ClosureDatabase;
+import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nswnpclosures.test.R;
@@ -32,7 +32,7 @@ public class ClosureDatabaseTest extends ActivityTestCase
         SQLiteDatabase db = helper.getWritableDatabase();
         helper.dropAllTables(db);
         helper.onCreate(db);
-        Cursor c = ClosureDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
         assertEquals(0,c.getCount());
         c.close();
         return db;
@@ -52,8 +52,8 @@ public class ClosureDatabaseTest extends ActivityTestCase
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumNswValidEntries,items.size());
-        ClosureDatabase.writeFeedItemsToDatabase(db, items, State.Nsw);
-        Cursor c = ClosureDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        FeedDatabase.writeFeedItemsToDatabase(db, items, State.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         matchDatasets(c,items);
@@ -71,7 +71,7 @@ public class ClosureDatabaseTest extends ActivityTestCase
     {
         assert(c.getCount() >= 2);
         FeedItem previousItem = null;
-        List<FeedItem> items = ClosureDatabase.getItemsForCursor(c);
+        List<FeedItem> items = FeedDatabase.getItemsForCursor(c);
         for(FeedItem item : items)
         {
             if(previousItem != null)
@@ -87,7 +87,7 @@ public class ClosureDatabaseTest extends ActivityTestCase
     private static void matchDatasets(Cursor c, List<FeedItem> items)
     {
         assertEquals(c.getCount(), items.size());
-        List<FeedItem>cursorItems = ClosureDatabase.getItemsForCursor(c);
+        List<FeedItem>cursorItems = FeedDatabase.getItemsForCursor(c);
         for(FeedItem item : cursorItems)
         {
             assertItemOnList(item,items);

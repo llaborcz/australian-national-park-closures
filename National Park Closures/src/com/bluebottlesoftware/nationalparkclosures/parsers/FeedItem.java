@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 
 import android.util.Log;
 
-import com.bluebottlesoftware.nationalparkclosures.database.ClosureDatabase;
+import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 
 
 /**
@@ -18,7 +18,7 @@ import com.bluebottlesoftware.nationalparkclosures.database.ClosureDatabase;
 public class FeedItem
 {
     private static final String TAG = "FeedItem";
-    private long   m_rowId = ClosureDatabase.INVALIDROWID;
+    private long   m_rowId = FeedDatabase.INVALIDROWID;
     private String m_title;
     private String m_description;
     private String m_link;
