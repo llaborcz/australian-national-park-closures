@@ -14,11 +14,11 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Database that stores information from the various closure RSS feeds
  */
-public class ClosureDatabase
+public class FeedDatabase
 {
     public static final long INVALIDROWID = -1; // Row ID that can never exist in the database 
     
-    private static final String CLOSURE_TABLE = "closuretable";
+    private static final String FEED_TABLE = "closuretable";
     private static final String COLUMN_ID = "_id";  // This is a well known column name in SQLite
     private static final String COLUMN_STATE = "state";
     private static final String COLUMN_TITLE = "title";
@@ -30,8 +30,8 @@ public class ClosureDatabase
     private static final String COLUMN_CATEGORY = "category";
 
     // Raw SQL to create the database table
-    private static final String CREATE_CLOSURE_TABLE = 
-        "CREATE TABLE "  + CLOSURE_TABLE + 
+    private static final String CREATE_FEED_TABLE = 
+        "CREATE TABLE "  + FEED_TABLE + 
         COLUMN_ID    + " INTEGER PRIMARY KEY AUTOINCREMENT," +
         COLUMN_STATE + " INTEGER," +
         COLUMN_TITLE + " TEXT," + 
@@ -43,7 +43,7 @@ public class ClosureDatabase
         COLUMN_CATEGORY + " TEXT);";
         
     // Raw SQL to drop the database closure table
-    private static final String DROP_CLOSURE_TABLE = "DROP TABLE IF EXISTS "+ CLOSURE_TABLE;
+    private static final String DROP_CLOSURE_TABLE = "DROP TABLE IF EXISTS "+ FEED_TABLE;
     
     /**
      * Creates the actual tables into the database
@@ -51,7 +51,7 @@ public class ClosureDatabase
      */
     public static void createTables(SQLiteDatabase db)
     {
-        db.execSQL(CREATE_CLOSURE_TABLE);
+        db.execSQL(CREATE_FEED_TABLE);
     }
 
     /**
@@ -65,7 +65,7 @@ public class ClosureDatabase
     public Cursor getFeedItemsForState(SQLiteDatabase db,State state)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
-        Cursor c = db.query(CLOSURE_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null,null,null);
+        Cursor c = db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null,null,null);
         return c;
     }
     
@@ -78,7 +78,7 @@ public class ClosureDatabase
     public static int eraseAllEntriesForState(SQLiteDatabase db, int state)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ").append(state);
-        int rowsDeleted = db.delete(CLOSURE_TABLE, sqlWhereClause.toString(), null);
+        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause.toString(), null);
         return rowsDeleted;
     }
 
@@ -112,7 +112,7 @@ public class ClosureDatabase
         values.put(COLUMN_GUID, item.getGuid());
         values.put(COLUMN_CATEGORY,item.getCategory());
         values.put(COLUMN_DATE_MS,item.getDateAsms());
-        db.insert(CLOSURE_TABLE, null, values);
+        db.insert(FEED_TABLE, null, values);
     }
     
     /**
@@ -125,7 +125,7 @@ public class ClosureDatabase
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
         StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
-        return db.query(CLOSURE_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null, orderByClause.toString());
+        return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null, orderByClause.toString());
     }
 
     /**

@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        ClosureDatabase.createTables(db);
+        FeedDatabase.createTables(db);
     }
 
     /**
@@ -33,12 +33,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        ClosureDatabase.dropTables(db);
+        FeedDatabase.dropTables(db);
         onCreate(db);
     }
     
     public void dropAllTables(SQLiteDatabase db)
     {
-        ClosureDatabase.dropTables(db);
+        FeedDatabase.dropTables(db);
     }
 }

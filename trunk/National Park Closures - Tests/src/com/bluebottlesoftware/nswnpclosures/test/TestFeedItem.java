@@ -3,7 +3,7 @@ package com.bluebottlesoftware.nswnpclosures.test;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import com.bluebottlesoftware.nationalparkclosures.database.ClosureDatabase;
+import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
@@ -45,7 +45,7 @@ public class TestFeedItem extends TestCase
         assertTrue(category.equals(readCategory));
         
         long rowId = item.getRowId();
-        assertEquals(ClosureDatabase.INVALIDROWID, rowId);
+        assertEquals(FeedDatabase.INVALIDROWID, rowId);
     }
     
     /**
