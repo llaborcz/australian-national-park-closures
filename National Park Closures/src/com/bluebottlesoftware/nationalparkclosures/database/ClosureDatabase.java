@@ -36,7 +36,7 @@ public class ClosureDatabase
         COLUMN_STATE + " INTEGER," +
         COLUMN_TITLE + " TEXT," + 
         COLUMN_DATE  + " TEXT," +
-        COLUMN_DATE_MS  + " LONG," +    // TODO Is this the correct data type?
+        COLUMN_DATE_MS  + " INTEGER," +
         COLUMN_LINK  + " TEXT," +
         COLUMN_GUID  + " TEXT," +
         COLUMN_DESCRIPTION + " TEXT," +
@@ -124,7 +124,7 @@ public class ClosureDatabase
     public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,State state)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
-        StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DES ");   // TODO Check that this is really the descending keyword
+        StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
         return db.query(CLOSURE_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null, orderByClause.toString());
     }
 
