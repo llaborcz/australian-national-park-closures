@@ -2,6 +2,7 @@ package com.bluebottlesoftware.nationalparkclosures.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,7 @@ public class NswFeedParser
      * @param item
      * @return
      * @throws XPathExpressionException 
+     * @throws ParseException 
      */
     private FeedItem createItemFromXPath(Node node,XPath xpath) throws XPathExpressionException
     {
@@ -95,7 +97,7 @@ public class NswFeedParser
         String category = (String) xpath.evaluate(Category, node,XPathConstants.STRING);
         String description = (String) xpath.evaluate(Description, node,XPathConstants.STRING);
         
-        FeedItem item = new FeedItem(date,title,link,guid,description,category);
+        FeedItem item = new FeedItem(date,DateFormats.NswDateFormat,title,link,guid,description,category);
         return item;
     }
 }

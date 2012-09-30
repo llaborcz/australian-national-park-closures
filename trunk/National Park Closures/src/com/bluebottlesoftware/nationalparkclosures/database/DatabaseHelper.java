@@ -36,4 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
         ClosureDatabase.dropTables(db);
         onCreate(db);
     }
+    
+    public void dropAllTables(SQLiteDatabase db)
+    {
+        ClosureDatabase.dropTables(db);
+    }
 }
