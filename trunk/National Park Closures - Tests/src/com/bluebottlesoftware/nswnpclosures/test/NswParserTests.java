@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 import android.test.ActivityTestCase;
 import android.util.Log;
 
+import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nationalparkclosures.parsers.NswFeedParser;
 
@@ -20,8 +21,6 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.NswFeedParser;
  */
 public class NswParserTests extends ActivityTestCase
 {
-    private static final int NswItemCount = 79; // As returned by xv feed renderer extension in chrome
-    
     protected void setUp() throws Exception
     {
         super.setUp();
@@ -66,7 +65,7 @@ public class NswParserTests extends ActivityTestCase
             
             Log.d("item",item.toString());
         }
-        assertEquals(NswItemCount,items.size());
+        assertEquals(TestConstants.NumNswValidEntries,items.size());
     }
     
     public void testParseOfCorruptFile()
