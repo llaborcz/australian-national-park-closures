@@ -3,7 +3,6 @@ package com.bluebottlesoftware.nationalparkclosures.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bluebottlesoftware.nationalparkclosures.data.State;
 import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
@@ -31,7 +30,7 @@ public class FeedDatabase
 
     // Raw SQL to create the database table
     private static final String CREATE_FEED_TABLE = 
-        "CREATE TABLE "  + FEED_TABLE + 
+        "CREATE TABLE "  + FEED_TABLE + "(" + 
         COLUMN_ID    + " INTEGER PRIMARY KEY AUTOINCREMENT," +
         COLUMN_STATE + " INTEGER," +
         COLUMN_TITLE + " TEXT," + 
@@ -62,10 +61,10 @@ public class FeedDatabase
         db.execSQL(DROP_CLOSURE_TABLE);
     }
 
-    public Cursor getFeedItemsForState(SQLiteDatabase db,State state)
+    public Cursor getFeedItemsForState(SQLiteDatabase db,int state)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
-        Cursor c = db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null,null,null);
+        Cursor c = db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null,null,null);
         return c;
     }
     
@@ -88,7 +87,7 @@ public class FeedDatabase
      * @param feedItems
      * @param nsw
      */
-    public static void writeFeedItemsToDatabase(SQLiteDatabase db,List<FeedItem> feedItems, State state)
+    public static void writeFeedItemsToDatabase(SQLiteDatabase db,List<FeedItem> feedItems, int state)
     {
         for(FeedItem item : feedItems)
         {
@@ -97,21 +96,43 @@ public class FeedDatabase
     }
 
     /**
+     * Updates the database using a transaction to delete existing entries for the given state and replace them with the new entries
+     * @param db
+     * @param feedItems
+     * @param state
+     */
+    public static void updateDatabaseWithTransaction(SQLiteDatabase db,List<FeedItem> feedItems,int state)
+    {
+        try
+        {
+            db.beginTransaction();
+            eraseAllEntriesForState(db,state);
+            writeFeedItemsToDatabase(db, feedItems, state);
+            db.setTransactionSuccessful();
+        }
+        finally
+        {
+            db.endTransaction();
+        }
+    }
+    
+    /**
      * Writes a single feed item to the database
      * @param db
      * @param item
      * @param state
      */
-    private static void writeFeedItemToDatabase(SQLiteDatabase db,FeedItem item, State state)
+    private static void writeFeedItemToDatabase(SQLiteDatabase db,FeedItem item, int state)
     {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_STATE, state.ordinal());
+        values.put(COLUMN_STATE, state);
         values.put(COLUMN_TITLE, item.getTitle());
         values.put(COLUMN_DATE, item.getDate());
         values.put(COLUMN_LINK,item.getLink());
         values.put(COLUMN_GUID, item.getGuid());
         values.put(COLUMN_CATEGORY,item.getCategory());
         values.put(COLUMN_DATE_MS,item.getDateAsms());
+        values.put(COLUMN_DESCRIPTION, item.getDescription());
         db.insert(FEED_TABLE, null, values);
     }
     
@@ -121,11 +142,11 @@ public class FeedDatabase
      * @param state
      * @return
      */
-    public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,State state)
+    public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,int state)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
         StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
-        return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state.ordinal())}, null, null, orderByClause.toString());
+        return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null, orderByClause.toString());
     }
 
     /**
@@ -154,7 +175,7 @@ public class FeedDatabase
                 String category = c.getString(categoryOffset);
                 String link = c.getString(linkOffset);
                 String description = c.getString(descriptionOffset);
-                String dateFormat = DateFormats.getDateFormatForState(State.valueOf(Integer.toString(c.getInt(stateOffset))));
+                String dateFormat = DateFormats.getDateFormatForState(c.getInt(stateOffset));
                 int rowId = c.getInt(rowIdOffset);
                 FeedItem item = new FeedItem(date, dateFormat, title, link, guid, description, category, rowId);
                 items.add(item);
