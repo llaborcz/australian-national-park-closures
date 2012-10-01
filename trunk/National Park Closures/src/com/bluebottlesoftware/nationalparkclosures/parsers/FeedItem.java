@@ -3,9 +3,11 @@ package com.bluebottlesoftware.nationalparkclosures.parsers;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import android.util.Log;
 
@@ -29,7 +31,7 @@ public class FeedItem
     private Calendar m_calendar;
     private long     m_dateTimeInMs;
     
-    public FeedItem(String date, String dateFormat,String title, String link, String guid,String description,String category)
+    public FeedItem(String date, String dateFormat,String title, String link, String guid,String description,List<String> categories)
     {
         m_date  = date == null ? "" : date;
         m_dateFormat = dateFormat == null ? "" : dateFormat;
@@ -37,11 +39,45 @@ public class FeedItem
         m_link  = link == null ? "" : link;
         m_guid  = guid == null ? "" : guid;
         m_description = description == null ? "" : description;
-        m_category = category == null ? "" : category;
+        if(categories == null || categories.size() == 0)
+        {
+            m_category = "";
+        }
+        else
+        {
+            m_category = getCategoryString(categories);
+        }
         m_calendar = createCalendarFromDateAndFormat(m_date,dateFormat);
         m_dateTimeInMs = m_calendar.getTime().getTime();
     }
 
+    /**
+     * Creates the categories string from the list of categories provided
+     * @param categories
+     * @return
+     */
+    private static String getCategoryString(List<String> categories)
+    {
+        StringBuilder builder = new StringBuilder();
+        for(String category : categories)
+        {
+            builder.append(category);
+            builder.append(';');
+        }
+        return builder.substring(0, builder.length()-1);
+    }
+
+    public static List<String> getCategoriesFromString(String categoriesString)
+    {
+        ArrayList<String> categoryArray = new ArrayList<String>();
+        String [] categories = categoriesString.split(";");
+        for(String category : categories)
+        {
+            categoryArray.add(category);
+        }
+        return categoryArray;
+    }
+    
     /**
      * Alternate constructor for when this FeedItem is read from the database and has an associated rowid
      * @param date
@@ -53,9 +89,9 @@ public class FeedItem
      * @param rowId
      * @throws ParseException 
      */
-    public FeedItem(String date, String dateFormat,String title, String link, String guid,String description,String category,long rowId)
+    public FeedItem(String date, String dateFormat,String title, String link, String guid,String description,List<String> categories,long rowId)
     {
-        this(date,dateFormat,title,link,guid,description,category);
+        this(date,dateFormat,title,link,guid,description,categories);
         m_rowId = rowId;
     }
     

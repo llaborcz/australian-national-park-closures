@@ -63,6 +63,20 @@ public class NswDataConsumerTest extends ActivityTestCase
         DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(1, items.size());    
+        FeedItem item = items.get(0);
+        String category  = item.getCategory();
+        assert(TestConstants.SingleEntryCategory.equals(category));
+    }
+    
+    public void testTwoCategories() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.twocategories);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
+        assertEquals(1, items.size());    
+        FeedItem item = items.get(0);
+        String category  = item.getCategory();
+        assert(TestConstants.TwoCategories.equals(category));        
     }
     
     public void testSingleItemMissingElements() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException

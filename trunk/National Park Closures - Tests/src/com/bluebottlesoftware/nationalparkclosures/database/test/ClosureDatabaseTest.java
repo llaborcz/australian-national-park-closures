@@ -90,6 +90,38 @@ public class ClosureDatabaseTest extends ActivityTestCase
         c.close();
         db.close();
     }
+    
+    public void testInsertThenUpdateWithTransactions() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        SQLiteDatabase db = getEmptyDatabase();
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
+        List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
+        assertEquals(TestConstants.NumNswValidEntries,items.size());
+        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        
+        // Now make sure that what we read out corresponds exactly to  the contents of the list
+        matchDatasets(c,items);
+        
+        // Make sure that the items are in fact sorted by decreasing date order
+        assertListIsDecreasing(c);
+        c.close();
+        
+        // Now write all the entries again and repeat the tests the results should be the same
+        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
+        c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        
+        // Now make sure that what we read out corresponds exactly to  the contents of the list
+        matchDatasets(c,items);
+        
+        // Make sure that the items are in fact sorted by decreasing date order
+        assertListIsDecreasing(c);
+        c.close();
+        
+        db.close();
+        
+    }
 
     /**
      * Asserts that the list of items is in decreasing order. Cursor must have at least two entries

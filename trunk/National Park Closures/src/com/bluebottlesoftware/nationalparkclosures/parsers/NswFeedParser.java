@@ -94,10 +94,17 @@ public class NswFeedParser
         String title = (String) xpath.evaluate(Title, node,XPathConstants.STRING);
         String link  = (String) xpath.evaluate(Link, node,XPathConstants.STRING);
         String guid  = (String) xpath.evaluate(Guid, node,XPathConstants.STRING);
-        String category = (String) xpath.evaluate(Category, node,XPathConstants.STRING);
         String description = (String) xpath.evaluate(Description, node,XPathConstants.STRING);
+        NodeList categories = (NodeList) xpath.evaluate(Category, node,XPathConstants.NODESET);
+        ArrayList<String> categoryArray = new ArrayList<String>();
+        for(int i=0;i<categories.getLength();i++)
+        {
+            Node catNode = categories.item(i);
+            String cat = catNode.getTextContent();
+            categoryArray.add(cat);
+        }
         
-        FeedItem item = new FeedItem(date,DateFormats.NswDateFormat,title,link,guid,description,category);
+        FeedItem item = new FeedItem(date,DateFormats.NswDateFormat,title,link,guid,description,categoryArray);
         return item;
     }
 }

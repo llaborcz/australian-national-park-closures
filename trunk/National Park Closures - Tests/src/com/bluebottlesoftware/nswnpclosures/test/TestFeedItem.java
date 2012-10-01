@@ -1,6 +1,7 @@
 package com.bluebottlesoftware.nswnpclosures.test;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
@@ -24,7 +25,9 @@ public class TestFeedItem extends TestCase
      */
     public void testSimpleCreateAndReadback() throws ParseException
     {
-        FeedItem item = new FeedItem(nswTestDate1, DateFormats.NswDateFormat,title, link, guid, description, category);
+        ArrayList<String> categories = new ArrayList<String>();
+        categories.add(category);
+        FeedItem item = new FeedItem(nswTestDate1, DateFormats.NswDateFormat,title, link, guid, description, categories);
         
         String readDate = item.getDate();
         assertTrue(nswTestDate1.equals(readDate));
