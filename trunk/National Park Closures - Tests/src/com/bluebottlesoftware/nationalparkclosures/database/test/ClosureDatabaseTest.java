@@ -18,17 +18,18 @@ import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nswnpclosures.test.R;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityTestCase;
-import android.util.Log;
 
 public class ClosureDatabaseTest extends ActivityTestCase
 {
     private SQLiteDatabase getEmptyDatabase()
     {
         // Empty the database
-        DatabaseHelper helper = new DatabaseHelper(getActivity());  // TODO Is the getActivity call right here?
+        Context context = this.getInstrumentation().getTargetContext().getApplicationContext();
+        DatabaseHelper helper = new DatabaseHelper(context);
         SQLiteDatabase db = helper.getWritableDatabase();
         helper.dropAllTables(db);
         helper.onCreate(db);
@@ -61,6 +62,33 @@ public class ClosureDatabaseTest extends ActivityTestCase
         // Make sure that the items are in fact sorted by decreasing date order
         assertListIsDecreasing(c);
         c.close();
+        db.close();
+    }
+    
+    /**
+     * Tests the flow of insertion into the database using a transaction
+     * @throws XPathExpressionException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
+    public void testInsertIntoDatabaseWithTransaction() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        SQLiteDatabase db = getEmptyDatabase();
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
+        List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
+        assertEquals(TestConstants.NumNswValidEntries,items.size());
+        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        
+        // Now make sure that what we read out corresponds exactly to  the contents of the list
+        matchDatasets(c,items);
+        
+        // Make sure that the items are in fact sorted by decreasing date order
+        assertListIsDecreasing(c);
+        c.close();
+        db.close();
     }
 
     /**
@@ -105,7 +133,6 @@ public class ClosureDatabaseTest extends ActivityTestCase
                 break;
             }
         }
-        Log.e("assertItemOnList",item.toString() + " not found in list");
         assertEquals(true, bFound);
     }
 }

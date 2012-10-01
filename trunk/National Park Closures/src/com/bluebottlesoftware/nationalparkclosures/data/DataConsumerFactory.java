@@ -7,12 +7,12 @@ public class DataConsumerFactory
      * @param state
      * @return
      */
-    public static DataConsumer createDataConsumer(State state)
+    public static DataConsumer createDataConsumer(int state)
     {
         DataConsumer consumer;
         switch(state)
         {
-        case Nsw:
+        case State.Nsw:
             consumer = new NswDataConsumer();
             break;
             
