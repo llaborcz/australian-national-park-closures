@@ -177,7 +177,7 @@ public class FeedDatabase
                 String description = c.getString(descriptionOffset);
                 String dateFormat = DateFormats.getDateFormatForState(c.getInt(stateOffset));
                 int rowId = c.getInt(rowIdOffset);
-                FeedItem item = new FeedItem(date, dateFormat, title, link, guid, description, category, rowId);
+                FeedItem item = new FeedItem(date, dateFormat, title, link, guid, description, FeedItem.getCategoriesFromString(category), rowId);
                 items.add(item);
                 c.moveToNext();
             }
