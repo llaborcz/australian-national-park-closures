@@ -18,15 +18,15 @@ public class FeedDatabase
     public static final long INVALIDROWID = -1; // Row ID that can never exist in the database 
     
     private static final String FEED_TABLE = "closuretable";
-    private static final String COLUMN_ID = "_id";  // This is a well known column name in SQLite
-    private static final String COLUMN_STATE = "state";
-    private static final String COLUMN_TITLE = "title";
-    private static final String COLUMN_DATE = "date";
-    private static final String COLUMN_DATE_MS = "datems";
-    private static final String COLUMN_LINK = "link";
-    private static final String COLUMN_GUID = "guid";
-    private static final String COLUMN_DESCRIPTION = "description";
-    private static final String COLUMN_CATEGORY = "category";
+    public static final String COLUMN_ID = "_id";  // This is a well known column name in SQLite
+    public static final String COLUMN_STATE = "state";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_DATE_MS = "datems";
+    public static final String COLUMN_LINK = "link";
+    public static final String COLUMN_GUID = "guid";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_CATEGORY = "category";
 
     // Raw SQL to create the database table
     private static final String CREATE_FEED_TABLE = 
