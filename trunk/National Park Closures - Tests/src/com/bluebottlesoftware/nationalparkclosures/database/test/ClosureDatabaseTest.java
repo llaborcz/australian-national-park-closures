@@ -109,6 +109,12 @@ public class ClosureDatabaseTest extends ActivityTestCase
         c.close();
         
         // Now write all the entries again and repeat the tests the results should be the same
+        consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nsw_78);
+        items  = consumer.getFeedItemsForFeed(stream);
+        assertEquals(TestConstants.NumNswValid78Entries,items.size());
+        
+        
         FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
         c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
         
