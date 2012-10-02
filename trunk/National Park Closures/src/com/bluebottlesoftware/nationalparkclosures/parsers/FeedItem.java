@@ -20,6 +20,7 @@ import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 public class FeedItem
 {
     private static final String TAG = "FeedItem";
+    public static final char CategorySeparatorChar = ',';
     private long   m_rowId = FeedDatabase.INVALIDROWID;
     private String m_title;
     private String m_description;
@@ -62,7 +63,7 @@ public class FeedItem
         for(String category : categories)
         {
             builder.append(category);
-            builder.append(';');
+            builder.append(CategorySeparatorChar);
         }
         return builder.substring(0, builder.length()-1);
     }
@@ -70,7 +71,7 @@ public class FeedItem
     public static List<String> getCategoriesFromString(String categoriesString)
     {
         ArrayList<String> categoryArray = new ArrayList<String>();
-        String [] categories = categoriesString.split(";");
+        String [] categories = categoriesString.split(new String(new char[]{CategorySeparatorChar}));
         for(String category : categories)
         {
             categoryArray.add(category);
