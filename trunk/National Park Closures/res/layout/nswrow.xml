@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <!-- Title for our entry -->
+    <TextView
+        android:id="@+id/title"
+        android:text="@string/titleTest"
+        style="@style/ListViewTitleStyle"
+        />
+
+    <!-- Below that comes the date -->
+    <TextView 
+        android:id="@+id/date"
+        android:text="@string/dateTest"
+        style="@style/ListViewDateStyle"
+     />
+    
+    <!-- Finally the list of categories -->
+    <TextView 
+        android:id="@+id/category"
+        android:text="@string/categoryTest"
+        style="@style/ListViewCategoryListStyles"
+     />
+    
+</LinearLayout>
