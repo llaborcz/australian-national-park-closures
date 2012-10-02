@@ -20,7 +20,6 @@ public class NswFeedDataAdapter extends CursorAdapter
     private int mTitleColumn;       // Column index of title
     private int mDateColumn;        // Column index of date
     private int mCategoryColumn;    // Column index of category
-    private int mIdColumn;          // Column index of our _id row
     
     public NswFeedDataAdapter(Context context, Cursor c, int flags)
     {
@@ -29,7 +28,6 @@ public class NswFeedDataAdapter extends CursorAdapter
         mTitleColumn = c.getColumnIndex(FeedDatabase.COLUMN_TITLE);
         mDateColumn  = c.getColumnIndex(FeedDatabase.COLUMN_DATE);
         mCategoryColumn = c.getColumnIndex(FeedDatabase.COLUMN_CATEGORY);
-        mIdColumn = c.getColumnIndex(FeedDatabase.COLUMN_ID);
     }
 
     /**
@@ -50,23 +48,6 @@ public class NswFeedDataAdapter extends CursorAdapter
         titleView.setText(title);
         dateView.setText(getFormattedDateForNSW(date));
         categoryView.setText(category);
-        view.setId((int) cursor.getLong(mIdColumn));    // This'll allow us to get back our database ID
-        
-        // Now set the onClick listener for the row which will cause us to start our web activity that contains
-        // more information
-        
-        view.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                int entryRowId = v.getId();
-                if(View.NO_ID != entryRowId)
-                {
-                    // TODO At this point we need to start our webview activity with the specified database entry ID
-                }
-            }
-        });
     }
 
     @Override
