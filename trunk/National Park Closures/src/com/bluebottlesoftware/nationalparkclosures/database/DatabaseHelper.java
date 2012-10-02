@@ -3,14 +3,12 @@ package com.bluebottlesoftware.nationalparkclosures.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
     private static final int DatabaseVersion = 1;
-    private static final String DatabaseName = "closuredb.db";
+    private static final String DatabaseName = "closuredb.sqlite";
     
-    private static final String TAG = "DatabaseHelper";
     
     /**
      * Sets up the database backing file with this
@@ -27,7 +25,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        Log.d(TAG,"onCreate");
         FeedDatabase.createTables(db);
     }
 
@@ -37,7 +34,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        Log.d(TAG,"onCreate");
         FeedDatabase.dropTables(db);
         onCreate(db);
     }
