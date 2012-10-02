@@ -5,4 +5,8 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <!-- Some strings that are usde for testing -->
+    <string name="titleTest">Morton national park</string>
+    <string name="dateTest">Wed, 12 Sep 2012</string>
+    <string name="categoryTest">Closed areas, backburning</string>
 </resources>
