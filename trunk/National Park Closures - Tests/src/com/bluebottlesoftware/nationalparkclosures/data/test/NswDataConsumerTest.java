@@ -65,7 +65,7 @@ public class NswDataConsumerTest extends ActivityTestCase
         assertEquals(1, items.size());    
         FeedItem item = items.get(0);
         String category  = item.getCategory();
-        assert(TestConstants.SingleEntryCategory.equals(category));
+        assertTrue(TestConstants.SingleEntryCategory.equals(category));
     }
     
     public void testTwoCategories() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
@@ -76,7 +76,7 @@ public class NswDataConsumerTest extends ActivityTestCase
         assertEquals(1, items.size());    
         FeedItem item = items.get(0);
         String category  = item.getCategory();
-        assert(TestConstants.TwoCategories.equals(category));        
+        assertTrue(TestConstants.TwoCategories.equals(category));        
     }
     
     public void testSingleItemMissingElements() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
