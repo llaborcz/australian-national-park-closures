@@ -12,6 +12,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
 import com.bluebottlesoftware.nationalparkclosures.data.State;
@@ -85,6 +86,7 @@ public class FeedReader
         
         InputStream feedStream = getFeedStream(mUrl);
         items = mDataConsumer.getFeedItemsForFeed(feedStream);
+        feedStream.close();
         return items;
     }
 
