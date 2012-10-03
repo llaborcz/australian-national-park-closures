@@ -10,7 +10,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestUtils;
-import com.bluebottlesoftware.nationalparkclosures.data.State;
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.database.test.ClosureDatabaseTest;
 import com.bluebottlesoftware.nationalparkclosures.network.FeedReader;
@@ -36,7 +36,7 @@ public class FeedReaderTest extends ActivityTestCase
         FeedReader reader  = null;
         try
         {
-            reader = FeedReader.createInstance(State.Qld);
+            reader = FeedReader.createInstance(Region.Qld);
         }
         catch(IllegalArgumentException e)
         {
@@ -53,7 +53,7 @@ public class FeedReaderTest extends ActivityTestCase
     public void testNswReaderCreation() throws MalformedURLException
     {
         FeedReader reader = null;
-        reader = FeedReader.createInstance(State.Nsw);
+        reader = FeedReader.createInstance(Region.Nsw);
         assertFalse(reader == null);
     }
     
@@ -66,7 +66,7 @@ public class FeedReaderTest extends ActivityTestCase
      */
     public void testNswReaderFetch() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
-        FeedReader reader = FeedReader.createInstance(State.Nsw);
+        FeedReader reader = FeedReader.createInstance(Region.Nsw);
         List<FeedItem> items = reader.connectAndGetFeedItems();
         for(FeedItem item : items)
         {
@@ -84,11 +84,11 @@ public class FeedReaderTest extends ActivityTestCase
     public void testReadFromNetworkAndWriteToDatbase() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = ClosureDatabaseTest.getEmptyDatabase(this); // We've got an empty database
-        FeedReader reader = FeedReader.createInstance(State.Nsw);
+        FeedReader reader = FeedReader.createInstance(Region.Nsw);
         List<FeedItem> items = reader.connectAndGetFeedItems();
         
-        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);

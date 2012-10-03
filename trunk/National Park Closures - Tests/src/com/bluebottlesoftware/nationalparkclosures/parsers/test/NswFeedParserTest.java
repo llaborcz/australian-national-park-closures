@@ -1,4 +1,4 @@
-package com.bluebottlesoftware.nswnpclosures.test;
+package com.bluebottlesoftware.nationalparkclosures.parsers.test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,11 +15,12 @@ import android.util.Log;
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nationalparkclosures.parsers.NswFeedParser;
+import com.bluebottlesoftware.nswnpclosures.test.R;
 
 /**
  * Contains various test cases for the NSW data feed parser
  */
-public class NswParserTests extends ActivityTestCase
+public class NswFeedParserTest extends ActivityTestCase
 {
     protected void setUp() throws Exception
     {

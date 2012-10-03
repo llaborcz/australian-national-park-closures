@@ -1,4 +1,4 @@
-package com.bluebottlesoftware.nswnpclosures.test;
+package com.bluebottlesoftware.nationalparkclosures.parsers.test;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 import junit.framework.TestCase;
 
-public class TestFeedItem extends TestCase
+public class FeedItemTest extends TestCase
 {
     private static final String nswTestDate1  = "Mon, 24 Sep 2012 05:53:00";
     private static final String title = "this is the title";
