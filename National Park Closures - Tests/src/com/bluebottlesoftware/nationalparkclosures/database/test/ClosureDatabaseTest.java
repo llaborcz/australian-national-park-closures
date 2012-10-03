@@ -7,8 +7,6 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-import junit.framework.TestCase;
-
 import org.xml.sax.SAXException;
 
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
