@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
-import com.bluebottlesoftware.nationalparkclosures.data.State;
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nswnpclosures.test.R;
 
@@ -30,7 +30,7 @@ public class NswDataConsumerTest extends ActivityTestCase
     public void testBasicFeed() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumNswValidEntries, items.size());
     }
@@ -45,7 +45,7 @@ public class NswDataConsumerTest extends ActivityTestCase
     public void testEmptyFeed() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_empty);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(0, items.size());   
     }
@@ -60,7 +60,7 @@ public class NswDataConsumerTest extends ActivityTestCase
     public void testSingleItemFeed() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(1, items.size());    
         FeedItem item = items.get(0);
@@ -71,7 +71,7 @@ public class NswDataConsumerTest extends ActivityTestCase
     public void testTwoCategories() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.twocategories);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(1, items.size());    
         FeedItem item = items.get(0);
@@ -82,7 +82,7 @@ public class NswDataConsumerTest extends ActivityTestCase
     public void testSingleItemMissingElements() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem_missingelements);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(1, items.size());    
         

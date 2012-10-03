@@ -15,7 +15,7 @@ import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestUtils;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
-import com.bluebottlesoftware.nationalparkclosures.data.State;
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
@@ -36,7 +36,7 @@ public class ClosureDatabaseTest extends ActivityTestCase
         SQLiteDatabase db = helper.getWritableDatabase();
         helper.dropAllTables(db);
         helper.onCreate(db);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
         assertEquals(0,c.getCount());
         c.close();
         return db;
@@ -52,12 +52,12 @@ public class ClosureDatabaseTest extends ActivityTestCase
     public void testInsertToEmptyDatabase() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = getEmptyDatabase(this);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumNswValidEntries,items.size());
-        FeedDatabase.writeFeedItemsToDatabase(db, items, State.Nsw);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        FeedDatabase.writeFeedItemsToDatabase(db, items, Region.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);
@@ -78,12 +78,12 @@ public class ClosureDatabaseTest extends ActivityTestCase
     public void testInsertIntoDatabaseWithTransaction() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = getEmptyDatabase(this);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumNswValidEntries,items.size());
-        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);
@@ -97,12 +97,12 @@ public class ClosureDatabaseTest extends ActivityTestCase
     public void testInsertThenUpdateWithTransactions() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = getEmptyDatabase(this);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumNswValidEntries,items.size());
-        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);
@@ -112,14 +112,14 @@ public class ClosureDatabaseTest extends ActivityTestCase
         c.close();
         
         // Now write all the entries again and repeat the tests the results should be the same
-        consumer = DataConsumerFactory.createDataConsumer(State.Nsw);
+        consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
         stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nsw_78);
         items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumNswValid78Entries,items.size());
         
         
-        FeedDatabase.updateDatabaseWithTransaction(db, items, State.Nsw);
-        c = FeedDatabase.getItemsForStateSortedByDate(db, State.Nsw);
+        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
+        c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);
