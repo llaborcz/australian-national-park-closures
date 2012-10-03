@@ -1,6 +1,8 @@
 package com.bluebottlesoftware.nationalparkclosures.parsers.test;
 
-import com.bluebottlesoftware.nationalparkclosures.data.Region;
+import android.util.Log;
+
+import com.bluebottlesoftware.nationalparkclosures.data.NswFeedDataAdapter;
 import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 
 import junit.framework.TestCase;
@@ -19,9 +21,25 @@ public class DateFormatsTest extends TestCase
         int i = 0;
         for(String input : inputDataSet)
         {
-            String output = DateFormats.getDisplayFriendlyDateForRegion(Region.Nsw, input);
-            assertEquals(outputDataSet[i], output);
+            String output = DateFormats.convertDate(input, DateFormats.NswDateFormat, NswFeedDataAdapter.FriendlyDateFormat);
+            assertTrue(output.equals(outputDataSet[i]));
             i++;
         }
+    }
+    
+    /**
+     * Feeds a bunch of dates that don't correspond to the nsw date but which should just give us back what was passed in
+     */
+    public void testInvalidNswDates()
+    {
+        String [] inputDataSet  = {"ert, 10 dp 2012 11:50:00","Wed, 1209 SSep 2012","asdfasfasdfsadf asdf ep 2012 05:53:00"};
+        
+        for(String input : inputDataSet)
+        {
+            String output = DateFormats.convertDate(input, DateFormats.NswDateFormat, NswFeedDataAdapter.FriendlyDateFormat);
+            Log.d(input,output);
+            assertTrue(output.equals(input));
+        }
+        
     }
 }
