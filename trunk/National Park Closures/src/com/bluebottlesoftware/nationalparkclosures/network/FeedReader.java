@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
-import com.bluebottlesoftware.nationalparkclosures.data.State;
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 /**
@@ -24,7 +24,6 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
  */
 public class FeedReader
 {
-    private static final String NswFeedAddress = "http://data.nsw.gov.au/redirect.php?title=National+Park+Fire%2C+Flood+and+Park+Closure+Updates.&file=XML";
     
     private URL mUrl;
     private DataConsumer mDataConsumer;
@@ -45,13 +44,13 @@ public class FeedReader
      * @return
      * @throws MalformedURLException 
      */
-    public static FeedReader createInstance(int state) throws MalformedURLException
+    public static FeedReader createInstance(int state) throws MalformedURLException, IllegalArgumentException
     {
         FeedReader reader = null;
         switch(state)
         {
-        case State.Nsw:
-            reader = new FeedReader(new URL(NswFeedAddress), DataConsumerFactory.createDataConsumer(state));
+        case Region.Nsw:
+            reader = new FeedReader(new URL(Region.getFeedForStateOrRegion(state)), DataConsumerFactory.createDataConsumer(state));
             break;
             
         default:

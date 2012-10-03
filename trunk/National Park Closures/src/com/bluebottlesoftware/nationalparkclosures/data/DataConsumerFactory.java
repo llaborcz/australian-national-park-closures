@@ -12,7 +12,7 @@ public class DataConsumerFactory
         DataConsumer consumer;
         switch(state)
         {
-        case State.Nsw:
+        case Region.Nsw:
             consumer = new NswDataConsumer();
             break;
             

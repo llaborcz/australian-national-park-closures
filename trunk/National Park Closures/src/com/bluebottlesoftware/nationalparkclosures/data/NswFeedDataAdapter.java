@@ -1,6 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.data;
 
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
+import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.content.Context;
@@ -46,7 +47,7 @@ public class NswFeedDataAdapter extends CursorAdapter
         TextView categoryView = (TextView) view.findViewById(R.id.category);
         
         titleView.setText(title);
-        dateView.setText(getFormattedDateForNSW(date));
+        dateView.setText(DateFormats.getDisplayFriendlyDateForRegion(Region.Nsw,date));
         categoryView.setText(category);
     }
 
@@ -57,16 +58,4 @@ public class NswFeedDataAdapter extends CursorAdapter
         bindView(rowView, context, cursor);
         return rowView;
     }
-    
-    /**
-     * Returns the date formatted appropriately for NSW
-     * @param date
-     * @return
-     */
-    private static String getFormattedDateForNSW(String date)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }
