@@ -40,7 +40,7 @@ public class TestUtils
      */
     public static void assertListIsDecreasing(Cursor c)
     {
-        assert(c.getCount() >= 2);
+        TestCase.assertTrue(c.getCount() >= 2);
         FeedItem previousItem = null;
         List<FeedItem> items = FeedDatabase.getItemsForCursor(c);
         for(FeedItem item : items)
@@ -49,7 +49,7 @@ public class TestUtils
             {
                 long prevDateAsMs = item.getDateAsms();
                 long dateInMs = item.getDateAsms();
-                assert(prevDateAsMs >= dateInMs);
+                TestCase.assertTrue(prevDateAsMs >= dateInMs);
             }
             previousItem = item;
         }

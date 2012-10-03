@@ -17,6 +17,8 @@ import android.widget.TextView;
  */
 public class NswFeedDataAdapter extends CursorAdapter
 {
+    public static final String FriendlyDateFormat = "E, dd MMM yyyy";       /**<Date format as we display in list*/
+    
     private LayoutInflater mLayoutInflater; // inflates our views
     private int mTitleColumn;       // Column index of title
     private int mDateColumn;        // Column index of date
@@ -47,7 +49,7 @@ public class NswFeedDataAdapter extends CursorAdapter
         TextView categoryView = (TextView) view.findViewById(R.id.category);
         
         titleView.setText(title);
-        dateView.setText(DateFormats.getDisplayFriendlyDateForRegion(Region.Nsw,date));
+        dateView.setText(DateFormats.convertDate(date,DateFormats.NswDateFormat,FriendlyDateFormat));
         categoryView.setText(category);
     }
 

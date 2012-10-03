@@ -1,5 +1,12 @@
 package com.bluebottlesoftware.nationalparkclosures.parsers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.util.Log;
+
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 
 /**
@@ -10,7 +17,7 @@ import com.bluebottlesoftware.nationalparkclosures.data.Region;
 public class DateFormats
 {   
     public static final String NswDateFormat = "E, dd MMM yyyy HH:mm:ss";   /**<Date format used by NSW feed*/
-
+    
     public static String getDateFormatForState(int state)
     {
         String dateFormat;
@@ -31,29 +38,21 @@ public class DateFormats
      * @param date
      * @return
      */
-    public static String getDisplayFriendlyDateForRegion(int region, String date)
+    public static String convertDate(String srcDate,String srcDateFormat,String destDateFormat)
     {
-        String friendlyDate;
-        switch(region)
+        DateFormat srcFormat = new SimpleDateFormat(srcDateFormat);
+
+        String friendlyDate = srcDate;
+        try
         {
-        case Region.Nsw:
-            friendlyDate = getFriendlyDateForNsw(date);
-            break;
-            
-        default:
-            throw new IllegalArgumentException("Region " + region + " not supported");
+            Date src = srcFormat.parse(srcDate);
+            DateFormat dstFormat = new SimpleDateFormat(destDateFormat);
+            friendlyDate = dstFormat.format(src); 
+        }
+        catch(ParseException e)
+        {
+            Log.e("getDisplayFriendlyDateForRegion","Caught ParseException on date");
         }
         return friendlyDate;
-    }
-
-    /**
-     * Returns a date that's appropriately formatted for display based on the NSW format date provided
-     * @param date
-     * @return
-     */
-    private static String getFriendlyDateForNsw(String date)
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 }
