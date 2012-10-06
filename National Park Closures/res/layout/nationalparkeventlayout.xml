@@ -6,9 +6,10 @@
 
     <!-- This is the listview that contains the list of national park closures -->
     <ListView
-        android:id="@+id/nationalParkListView"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
 
+    <include layout="@layout/emptyview"/>
 </LinearLayout>
