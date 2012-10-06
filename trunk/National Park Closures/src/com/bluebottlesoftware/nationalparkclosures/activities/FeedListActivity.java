@@ -10,6 +10,12 @@ import android.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 
+/**
+ * This is the activity that displays the feed for a particular state. 
+ * TOOD Add refresh action bar entry
+ * TODO Change the icon
+ * TODO Change the title to match the state that's being displayed
+ */
 public class FeedListActivity extends Activity implements RefreshListener
 {
     @Override
