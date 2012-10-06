@@ -22,7 +22,7 @@ import com.bluebottlesoftware.nationalparkclosures.Util.XmlUtils;
 /**
  * XPath based parser for NSW national park feed
  */
-public class NswFeedParser
+public class FeedParser
 {
     private static final String ItemQuery = "/rss/channel/item";    // Returns back all of the items
     private static final String Date  = "pubDate";
@@ -37,7 +37,7 @@ public class NswFeedParser
     /**
      * Prevent instantiation
      */
-    private NswFeedParser()
+    private FeedParser()
     {
     }
     
@@ -48,9 +48,9 @@ public class NswFeedParser
      * @throws SAXException 
      * @throws XPathExpressionException 
      */
-    public static NswFeedParser createFromStream(InputStream stream) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException
+    public static FeedParser createFromStream(InputStream stream) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException
     {
-        NswFeedParser parser = new NswFeedParser();
+        FeedParser parser = new FeedParser();
         Document xmlDocument = XmlUtils.readXml(stream);
         XPath xpath = XPathFactory.newInstance().newXPath();
         parser.parse(xmlDocument,xpath);
@@ -104,7 +104,7 @@ public class NswFeedParser
             categoryArray.add(cat);
         }
         
-        FeedItem item = new FeedItem(date,DateFormats.NswDateFormat,title,link,guid,description,categoryArray);
+        FeedItem item = new FeedItem(date,title,link,guid,description,categoryArray);
         return item;
     }
 }

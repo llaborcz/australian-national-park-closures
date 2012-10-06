@@ -2,8 +2,8 @@ package com.bluebottlesoftware.nationalparkclosures.parsers.test;
 
 import android.util.Log;
 
+import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
 import com.bluebottlesoftware.nationalparkclosures.data.NswFeedDataAdapter;
-import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 
 import junit.framework.TestCase;
 
@@ -21,7 +21,7 @@ public class DateFormatsTest extends TestCase
         int i = 0;
         for(String input : inputDataSet)
         {
-            String output = DateFormats.convertDate(input, DateFormats.NswDateFormat, NswFeedDataAdapter.FriendlyDateFormat);
+            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, NswFeedDataAdapter.FriendlyDateFormat);
             assertTrue(output.equals(outputDataSet[i]));
             i++;
         }
@@ -36,7 +36,7 @@ public class DateFormatsTest extends TestCase
         
         for(String input : inputDataSet)
         {
-            String output = DateFormats.convertDate(input, DateFormats.NswDateFormat, NswFeedDataAdapter.FriendlyDateFormat);
+            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, NswFeedDataAdapter.FriendlyDateFormat);
             Log.d(input,output);
             assertTrue(output.equals(input));
         }

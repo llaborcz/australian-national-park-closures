@@ -10,7 +10,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
-import com.bluebottlesoftware.nationalparkclosures.parsers.NswFeedParser;
+import com.bluebottlesoftware.nationalparkclosures.parsers.FeedParser;
 
 
 /**
@@ -30,7 +30,7 @@ class NswDataConsumer implements DataConsumer
     @Override
     public List<FeedItem> getFeedItemsForFeed(InputStream feed) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
-        NswFeedParser parser = NswFeedParser.createFromStream(feed);
+        FeedParser parser = FeedParser.createFromStream(feed);
         return parser.getFeedItems();
     }
 }

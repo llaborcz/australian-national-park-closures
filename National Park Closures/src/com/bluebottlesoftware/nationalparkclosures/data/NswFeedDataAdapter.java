@@ -1,7 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.data;
 
+import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
-import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.content.Context;
@@ -23,6 +23,7 @@ public class NswFeedDataAdapter extends CursorAdapter
     private int mTitleColumn;       // Column index of title
     private int mDateColumn;        // Column index of date
     private int mCategoryColumn;    // Column index of category
+    private int mStateColumn;       // Column index of state
     
     public NswFeedDataAdapter(Context context, Cursor c, int flags)
     {
@@ -31,6 +32,7 @@ public class NswFeedDataAdapter extends CursorAdapter
         mTitleColumn = c.getColumnIndex(FeedDatabase.COLUMN_TITLE);
         mDateColumn  = c.getColumnIndex(FeedDatabase.COLUMN_DATE);
         mCategoryColumn = c.getColumnIndex(FeedDatabase.COLUMN_CATEGORY);
+        mStateColumn = c.getColumnIndex(FeedDatabase.COLUMN_STATE);
     }
 
     /**
@@ -48,8 +50,9 @@ public class NswFeedDataAdapter extends CursorAdapter
         TextView dateView  = (TextView) view.findViewById(R.id.date);
         TextView categoryView = (TextView) view.findViewById(R.id.category);
         
+        String dateFormat = CalendarUtils.getDateFormatForState(cursor.getInt(mStateColumn));
         titleView.setText(title);
-        dateView.setText(DateFormats.convertDate(date,DateFormats.NswDateFormat,FriendlyDateFormat));
+        dateView.setText(CalendarUtils.convertDate(date,dateFormat,FriendlyDateFormat));
         categoryView.setText(category);
     }
 

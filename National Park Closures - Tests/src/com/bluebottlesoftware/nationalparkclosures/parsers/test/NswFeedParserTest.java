@@ -14,7 +14,7 @@ import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
-import com.bluebottlesoftware.nationalparkclosures.parsers.NswFeedParser;
+import com.bluebottlesoftware.nationalparkclosures.parsers.FeedParser;
 import com.bluebottlesoftware.nswnpclosures.test.R;
 
 /**
@@ -42,7 +42,7 @@ public class NswFeedParserTest extends ActivityTestCase
     public void testBasicParse() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
-        NswFeedParser parser = NswFeedParser.createFromStream(stream);
+        FeedParser parser = FeedParser.createFromStream(stream);
         List<FeedItem> items = parser.getFeedItems();
         for(FeedItem item : items)
         {
@@ -84,7 +84,7 @@ public class NswFeedParserTest extends ActivityTestCase
     public void testNoItemsFile() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_empty);
-        NswFeedParser parser = NswFeedParser.createFromStream(stream);
+        FeedParser parser = FeedParser.createFromStream(stream);
         List<FeedItem> items = parser.getFeedItems();
         assertEquals(0, items.size());
     }
@@ -92,7 +92,7 @@ public class NswFeedParserTest extends ActivityTestCase
     public void testSingleItemFile() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem);
-        NswFeedParser parser = NswFeedParser.createFromStream(stream);
+        FeedParser parser = FeedParser.createFromStream(stream);
         List<FeedItem> items = parser.getFeedItems();
         assertEquals(1, items.size());        
     }
@@ -100,7 +100,7 @@ public class NswFeedParserTest extends ActivityTestCase
     public void testSingleItemMissingItemElementsFile() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem_missingelements);
-        NswFeedParser parser = NswFeedParser.createFromStream(stream);
+        FeedParser parser = FeedParser.createFromStream(stream);
         List<FeedItem> items = parser.getFeedItems();
         assertEquals(1, items.size());
         FeedItem item = items.get(0);

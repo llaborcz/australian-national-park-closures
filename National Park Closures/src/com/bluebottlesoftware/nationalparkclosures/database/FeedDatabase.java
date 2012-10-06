@@ -3,7 +3,7 @@ package com.bluebottlesoftware.nationalparkclosures.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
+import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 import android.content.ContentValues;
@@ -131,7 +131,7 @@ public class FeedDatabase
         values.put(COLUMN_LINK,item.getLink());
         values.put(COLUMN_GUID, item.getGuid());
         values.put(COLUMN_CATEGORY,item.getCategory());
-        values.put(COLUMN_DATE_MS,item.getDateAsms());
+        values.put(COLUMN_DATE_MS,CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(state)).getTimeInMillis());
         values.put(COLUMN_DESCRIPTION, item.getDescription());
         db.insert(FEED_TABLE, null, values);
     }
@@ -165,7 +165,6 @@ public class FeedDatabase
             int categoryOffset = c.getColumnIndex(COLUMN_CATEGORY);
             int linkOffset = c.getColumnIndex(COLUMN_LINK);
             int descriptionOffset = c.getColumnIndex(COLUMN_DESCRIPTION);
-            int stateOffset = c.getColumnIndex(COLUMN_STATE);
             int titleIndex  = c.getColumnIndex(COLUMN_TITLE);
             while(!c.isAfterLast())
             {
@@ -175,9 +174,8 @@ public class FeedDatabase
                 String category = c.getString(categoryOffset);
                 String link = c.getString(linkOffset);
                 String description = c.getString(descriptionOffset);
-                String dateFormat = DateFormats.getDateFormatForState(c.getInt(stateOffset));
                 int rowId = c.getInt(rowIdOffset);
-                FeedItem item = new FeedItem(date, dateFormat, title, link, guid, description, FeedItem.getCategoriesFromString(category), rowId);
+                FeedItem item = new FeedItem(date, title, link, guid, description, FeedItem.getCategoriesFromString(category), rowId);
                 items.add(item);
                 c.moveToNext();
             }

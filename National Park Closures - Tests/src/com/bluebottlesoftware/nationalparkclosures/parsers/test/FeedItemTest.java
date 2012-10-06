@@ -4,8 +4,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
-import com.bluebottlesoftware.nationalparkclosures.parsers.DateFormats;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 import junit.framework.TestCase;
@@ -27,7 +28,7 @@ public class FeedItemTest extends TestCase
     {
         ArrayList<String> categories = new ArrayList<String>();
         categories.add(category);
-        FeedItem item = new FeedItem(nswTestDate1, DateFormats.NswDateFormat,title, link, guid, description, categories);
+        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, description, categories);
         
         String readDate = item.getDate();
         assertTrue(nswTestDate1.equals(readDate));
@@ -57,7 +58,7 @@ public class FeedItemTest extends TestCase
      */
     public void testNullParameters() throws ParseException
     {
-        FeedItem item = new FeedItem(nswTestDate1, DateFormats.NswDateFormat,title, link, guid, null, null);
+        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null);
         
         String readDate = item.getDate();
         assertTrue(nswTestDate1.equals(readDate));
@@ -84,9 +85,9 @@ public class FeedItemTest extends TestCase
      */
     public void testNswDateParse() throws ParseException
     {
-        FeedItem item = new FeedItem(nswTestDate1, DateFormats.NswDateFormat,title, link, guid, null, null);
-        Calendar cal  = item.getCalendar();
-
+        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null);
+        
+        Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(Region.Nsw));
         int dayOfWeek  = cal.get(Calendar.DAY_OF_WEEK);
         assertEquals(Calendar.MONDAY, dayOfWeek);
         
@@ -116,8 +117,8 @@ public class FeedItemTest extends TestCase
     {
         final String nswMalformedDate1 = "24 Sep 1908"; // Date that is not of the expected format
 
-        FeedItem item = new FeedItem(nswMalformedDate1, DateFormats.NswDateFormat,title, link, guid, null, null);
-        Calendar cal  = item.getCalendar();
+        FeedItem item = new FeedItem(nswMalformedDate1,title, link, guid, null, null);
+        Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(Region.Nsw));
         assertNotNull(cal);
         
         int year = cal.get(Calendar.YEAR);
