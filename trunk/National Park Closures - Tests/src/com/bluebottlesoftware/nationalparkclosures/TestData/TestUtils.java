@@ -5,6 +5,8 @@ import java.util.List;
 import junit.framework.TestCase;
 import android.database.Cursor;
 
+import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
@@ -42,16 +44,20 @@ public class TestUtils
     {
         TestCase.assertTrue(c.getCount() >= 2);
         FeedItem previousItem = null;
+        int previousState = Region.Nsw;
         List<FeedItem> items = FeedDatabase.getItemsForCursor(c);
+        c.moveToFirst();
         for(FeedItem item : items)
         {
             if(previousItem != null)
             {
-                long prevDateAsMs = item.getDateAsms();
-                long dateInMs = item.getDateAsms();
+                long prevDateAsMs = CalendarUtils.createCalendarFromDateAndFormat(previousItem.getDate(), CalendarUtils.getDateFormatForState(previousState)).getTimeInMillis();
+                long dateInMs = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_STATE)))).getTimeInMillis();
                 TestCase.assertTrue(prevDateAsMs >= dateInMs);
             }
             previousItem = item;
+            previousState= c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_STATE));
+            c.moveToNext();
         }
     }
 }

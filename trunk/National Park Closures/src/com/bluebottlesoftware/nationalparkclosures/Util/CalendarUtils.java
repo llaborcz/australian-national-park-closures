@@ -1,9 +1,11 @@
-package com.bluebottlesoftware.nationalparkclosures.parsers;
+package com.bluebottlesoftware.nationalparkclosures.Util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import android.util.Log;
 
@@ -14,7 +16,7 @@ import com.bluebottlesoftware.nationalparkclosures.data.Region;
  * @author lee
  *
  */
-public class DateFormats
+public class CalendarUtils
 {   
     public static final String NswDateFormat = "E, dd MMM yyyy HH:mm:ss";   /**<Date format used by NSW feed*/
     
@@ -55,4 +57,29 @@ public class DateFormats
         }
         return friendlyDate;
     }
+    
+    
+    /**
+     * Returns a calendar object based on the date provided and the format of that date
+     * @param date
+     * @param dateFormat
+     * @return
+     * @throws ParseException 
+     */
+    public static Calendar createCalendarFromDateAndFormat(String itemDate,String itemDateFormat)
+    {
+        Calendar cal  = new GregorianCalendar();
+        try
+        {
+            DateFormat dateFormat = new SimpleDateFormat(itemDateFormat);
+            Date date = dateFormat.parse(itemDate);
+            cal.setTime(date);
+        }   
+        catch(ParseException e)
+        {
+            Log.e("createCalendarFromDateAndFormat","Caught ParseException while processing date");
+        }
+        return cal;
+    }
+
 }

@@ -1,15 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.parsers;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 
@@ -19,7 +11,6 @@ import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
  */
 public class FeedItem
 {
-    private static final String TAG = "FeedItem";
     public static final char CategorySeparatorChar = ',';
     private long   m_rowId = FeedDatabase.INVALIDROWID;
     private String m_title;
@@ -28,14 +19,10 @@ public class FeedItem
     private String m_date;
     private String m_guid;
     private String m_category;
-    private String m_dateFormat;
-    private Calendar m_calendar;
-    private long     m_dateTimeInMs;
     
-    public FeedItem(String date, String dateFormat,String title, String link, String guid,String description,List<String> categories)
+    public FeedItem(String date, String title, String link, String guid,String description,List<String> categories)
     {
         m_date  = date == null ? "" : date;
-        m_dateFormat = dateFormat == null ? "" : dateFormat;
         m_title = title == null ? "": title;
         m_link  = link == null ? "" : link;
         m_guid  = guid == null ? "" : guid;
@@ -48,8 +35,6 @@ public class FeedItem
         {
             m_category = getCategoryString(categories);
         }
-        m_calendar = createCalendarFromDateAndFormat(m_date,dateFormat);
-        m_dateTimeInMs = m_calendar.getTime().getTime();
     }
 
     /**
@@ -90,37 +75,12 @@ public class FeedItem
      * @param rowId
      * @throws ParseException 
      */
-    public FeedItem(String date, String dateFormat,String title, String link, String guid,String description,List<String> categories,long rowId)
+    public FeedItem(String date,String title, String link, String guid,String description,List<String> categories,long rowId)
     {
-        this(date,dateFormat,title,link,guid,description,categories);
+        this(date,title,link,guid,description,categories);
         m_rowId = rowId;
     }
     
-    
-    /**
-     * Returns a calendar object based on the date provided and the format of that date
-     * @param date
-     * @param dateFormat
-     * @return
-     * @throws ParseException 
-     */
-    private static Calendar createCalendarFromDateAndFormat(String itemDate,String itemDateFormat)
-    {
-        Calendar cal  = new GregorianCalendar();
-        try
-        {
-            DateFormat dateFormat = new SimpleDateFormat(itemDateFormat);
-            Date date = dateFormat.parse(itemDate);
-            cal.setTime(date);
-        }   
-        catch(ParseException e)
-        {
-            Log.e(TAG,"Caught ParseException while processing date");
-        }
-        
-        return cal;
-    }
-
     public String getTitle()
     {
         return m_title;
@@ -180,26 +140,7 @@ public class FeedItem
     {
         this.m_category = category;
     }
-    
-    public String getDateFormat()
-    {
-        return m_dateFormat;
-    }
 
-    public long getDateAsms()
-    {
-        return m_dateTimeInMs;
-    }
-    
-    /**
-     * Returns the calendar object that defines the date associated with this entry
-     * @return
-     */
-    public Calendar getCalendar()
-    {
-        return m_calendar;
-    }
-    
     /**
      * Returns rowid in database or -1 if this wasn't read from the database
      * @return
