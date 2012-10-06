@@ -9,11 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 /**
- * Fragment class that hosts the ListView that contains the feed
+ * Fragment class that hosts the ListView that contains the feed.
+ * TODO Load the data
  */
-
 public class FeedListFragment extends ListFragment
 {
     private RefreshListener mListener;
@@ -29,6 +30,7 @@ public class FeedListFragment extends ListFragment
         super.onActivityCreated(savedInstanceState);
     }
     
+    @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View listView = inflater.inflate(R.layout.nationalparkeventlayout,container,false);
@@ -43,5 +45,14 @@ public class FeedListFragment extends ListFragment
             }
         });
         return listView;
+    }
+    
+    /**
+     * Called when the user clicks an entry in the list
+     */
+    @Override
+    public void onListItemClick(ListView listView, View view, int position, long id)
+    {
+        // TODO Find the entry and start the webview activity
     }
 }
