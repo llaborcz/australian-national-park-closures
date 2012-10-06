@@ -14,6 +14,7 @@ import android.widget.ListView;
 /**
  * Fragment class that hosts the ListView that contains the feed.
  * TODO Load the data
+ * TODO Set long click listener
  */
 public class FeedListFragment extends ListFragment
 {
