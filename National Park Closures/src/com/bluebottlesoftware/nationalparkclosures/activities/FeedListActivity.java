@@ -22,7 +22,7 @@ public class FeedListActivity extends Activity implements RefreshListener
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.listviewactivity);
         FragmentManager fm = getFragmentManager();
         FeedListFragment listFragment = (FeedListFragment) fm.findFragmentById(R.id.listFragmentContent);  
         
