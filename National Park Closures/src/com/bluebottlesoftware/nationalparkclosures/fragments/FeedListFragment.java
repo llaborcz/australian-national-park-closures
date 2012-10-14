@@ -1,5 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.fragments;
 
+import com.bluebottlesoftware.nswnpclosures.R;
+
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ public class FeedListFragment extends ListFragment
     public void onActivityCreated(Bundle savedInstanceState) 
     {
         super.onActivityCreated(savedInstanceState);
+        setEmptyText(getResources().getString(R.string.emptyText));
     }
     
     /**
