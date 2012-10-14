@@ -1,13 +1,35 @@
 <resources>
 
-    <string name="app_name">NSW National Park Closures</string>
+    <string name="app_name">Australian National Park Closures</string>
+    <string name="nswClosures">NSW National Parks</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
 
     <!-- Some strings that are usde for testing -->
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>
     <string name="categoryTest">Closed areas, backburning</string>
-    <string name="noEventsFound">No events found</string>
+    <string name="emptyText">No events found</string>
     <string name="refresh">Refresh</string>
+    <string name="loading">Loading&#8230;</string>
+    
+    <!-- Region strings -->
+    <string name="nsw">NSW</string>
+    <string name="qld">QLD</string>
+    <string name="nt">NT</string>
+    <string name="wa">WA</string>
+    <string name="sa">SA</string>
+    <string name="vic">VIC</string>
+    <string name="tas">TAS</string>
+    
+    <!-- Arrray of all the regions that we know about -->
+    <string-array name="regions">
+        <item>@string/nsw</item>
+        <item>@string/qld</item>
+        <item>@string/nt</item>
+        <item>@string/wa</item>
+        <item>@string/sa</item>
+        <item>@string/vic</item>
+        <item>@string/tas</item>
+    </string-array>
+    
 </resources>

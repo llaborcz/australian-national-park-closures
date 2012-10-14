@@ -1,5 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.data;
 
+import com.bluebottlesoftware.nswnpclosures.R;
+
 /**
  * Enumeration of states and regions that are enumeratable.
  * Currently this is just states but will be extended to other regions. For example QLD has a number
@@ -38,5 +40,47 @@ public class Region
             throw new IllegalArgumentException("State or region " + stateOrRegion + " not supported");
         }
         return url;
+    }
+
+    /**
+     * Returns the current region as a string identifier into the resources directory
+     * @param mRegion
+     * @return
+     */
+    public static int getAsStringId(int region)
+    {
+        int id;
+        switch(region)
+        {
+        case Nsw:
+        default:
+            id = R.string.nsw;
+            break;
+            
+        case Qld:
+            id = R.string.qld;
+            break;
+            
+        case Nt:
+            id = R.string.nt;
+            break;
+            
+        case Wa:
+            id = R.string.wa;
+            break;
+            
+        case Sa:
+            id = R.string.sa;
+            break;
+            
+        case Vic:
+            id = R.string.vic;
+            break;
+            
+        case Tas:
+            id = R.string.tas;
+            break;
+        }
+        return id;
     }
 }
