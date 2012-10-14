@@ -1,9 +1,11 @@
 <resources>
 
-    <string name="app_name">Australian National Park Closures</string>
+    <string name="app_name">National Park Closures</string>
     <string name="nswClosures">NSW National Parks</string>
     <string name="menu_settings">Settings</string>
 
+    <!-- menus -->
+    <string name="menu_refresh">Refresh</string>
     <!-- Some strings that are usde for testing -->
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>

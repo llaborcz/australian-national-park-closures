@@ -14,6 +14,7 @@ import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * This is the activity that displays the feed for a particular state. 
@@ -26,7 +27,7 @@ public class FeedListActivity extends Activity
     private static final String CURRENTREGIONKEY = "currentregion"; // Key for the current region being viewed
     
     private int mRegion; // Region being viewed
-    
+    private FeedListFragment mListFragment;
     /**
      * Saved state:
      * State being viewed
@@ -50,19 +51,17 @@ public class FeedListActivity extends Activity
         
         setContentView(R.layout.listviewactivity);
         FragmentManager fm = getFragmentManager();
-        FeedListFragment listFragment = (FeedListFragment) fm.findFragmentById(R.id.listFragmentContent);  
-        
-        if (listFragment == null) 
+        mListFragment = (FeedListFragment) fm.findFragmentById(R.id.listFragmentContent);  
+        if (mListFragment == null) 
         {
-            listFragment = new FeedListFragment();
+            mListFragment = new FeedListFragment();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.listFragmentContent, listFragment);
+            ft.add(R.id.listFragmentContent, mListFragment);
             ft.commit();  
         }
-        
         SQLiteDatabase db = new DatabaseHelper(this).getReadableDatabase();
         Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
-        listFragment.setListAdapter(new FeedDataAdapter(this, c, 0));
+        mListFragment.setListAdapter(new FeedDataAdapter(this, c, 0));
     }
     
     /**
@@ -80,5 +79,24 @@ public class FeedListActivity extends Activity
     {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+        boolean bResult = false;
+        switch(item.getItemId())
+        {
+        case R.id.menu_refresh:
+            onRefreshFeed();
+            bResult = true;
+            break;
+        }
+        return bResult;
+    }
+    
+    private void onRefreshFeed()
+    {
+        mListFragment.setListShown(false);
     }
 }
