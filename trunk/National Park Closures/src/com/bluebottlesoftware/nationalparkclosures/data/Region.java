@@ -20,7 +20,7 @@ public class Region
     /**
      * Feed addresses for the various states and regions
      */
-    private static final String NswFeedAddress = "http://data.nsw.gov.au/redirect.php?title=National+Park+Fire%2C+Flood+and+Park+Closure+Updates.&file=XML";
+    private static final String NswFeedAddress = "http://www.environment.nsw.gov.au/nationalparks/rss/fireclosure.aspx";
     private static final String QldFeedAddress = "http://www.nprsr.qld.gov.au/xml/rss/parkalerts.xml";
     
     public static String getFeedForStateOrRegion(int stateOrRegion) throws IllegalArgumentException
