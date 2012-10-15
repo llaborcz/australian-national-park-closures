@@ -1,10 +1,21 @@
 package com.bluebottlesoftware.nationalparkclosures.fragments;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
+
 import com.bluebottlesoftware.nationalparkclosures.activities.FeedListCallbacks;
 import com.bluebottlesoftware.nationalparkclosures.data.FeedDataAdapter;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
+import com.bluebottlesoftware.nationalparkclosures.network.FeedReader;
+import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.app.ListFragment;
@@ -12,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.View;
 import android.widget.ListView;
 
@@ -26,6 +38,7 @@ public class FeedListFragment extends ListFragment
     private RefreshFeedAsyncTask mRefreshFeedTask;
     private SQLiteDatabase       mDb;
     private FeedListCallbacks    mCallbacks;
+    private int                  mRegion = Region.Nsw;
     
     @Override
     public void onCreate (Bundle savedInstanceState)
@@ -40,7 +53,7 @@ public class FeedListFragment extends ListFragment
     {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getResources().getString(R.string.emptyText));
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, Region.Nsw);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
         setListAdapter(new FeedDataAdapter(getActivity(), c, 0));   
         if(mRefreshFeedTask != null)
         {
@@ -71,12 +84,22 @@ public class FeedListFragment extends ListFragment
     }
     
     /**
+     * Sets the current region
+     * @param region
+     */
+    public void setRegion(int region)
+    {
+        mRegion = region;
+        // TODO Once we support additional regions here display them
+    }
+    
+    /**
      * Called when the user clicks an entry in the list
      */
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id)
     {
-        // TODO Find the entry and start the webview activity
+        mCallbacks.onListEntrySelected(id);
     }
     
     public class RefreshFeedAsyncTask extends AsyncTask<Integer, Void,Boolean>
@@ -86,12 +109,35 @@ public class FeedListFragment extends ListFragment
         {
             try
             {
-                Thread.sleep(5000);
-            } catch (InterruptedException e)
+                FeedReader reader     = FeedReader.createInstance(mRegion);
+                List <FeedItem> items = reader.connectAndGetFeedItems();
+                FeedDatabase.updateDatabaseWithTransaction(mDb, items, mRegion);
+            } catch (MalformedURLException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalArgumentException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (XPathExpressionException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (SAXException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (ParserConfigurationException e)
             {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            
             return true;
         }
         
@@ -100,7 +146,7 @@ public class FeedListFragment extends ListFragment
         {
             mRefreshFeedTask = null;
             mCallbacks.onRefreshFinished();
-            Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, Region.Nsw);
+            Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
             setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
         }
     }

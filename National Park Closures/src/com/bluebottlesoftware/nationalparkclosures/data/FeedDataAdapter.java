@@ -42,9 +42,9 @@ public class FeedDataAdapter extends CursorAdapter
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {
-        String title = context.getString(mTitleColumn);
-        String date  = context.getString(mDateColumn);
-        String category = context.getString(mCategoryColumn);
+        String title = cursor.getString(mTitleColumn);
+        String date  = cursor.getString(mDateColumn);
+        String category = cursor.getString(mCategoryColumn);
         
         TextView titleView = (TextView) view.findViewById(R.id.title);
         TextView dateView  = (TextView) view.findViewById(R.id.date);
@@ -59,7 +59,7 @@ public class FeedDataAdapter extends CursorAdapter
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent)
     {
-        View rowView = mLayoutInflater.inflate(R.layout.nswrow, parent);
+        View rowView = mLayoutInflater.inflate(R.layout.feedlistrow, null);
         bindView(rowView, context, cursor);
         return rowView;
     }

@@ -11,4 +11,10 @@ public interface FeedListCallbacks
      * Called when the refresh finishes
      */
     public void onRefreshFinished();
+    
+    /**
+     * Called when a list entry selected in the feed
+     * @param rowId Database row id of the selected row
+     */
+    public void onListEntrySelected(long rowId);
 }

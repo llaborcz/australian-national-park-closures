@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 /**
  * This is the activity that displays the feed for a particular state. 
@@ -23,7 +23,9 @@ public class FeedListActivity extends Activity implements FeedListCallbacks
     private static final String CURRENTREGIONKEY = "currentregion"; // Key for the current region being viewed
     private int mRegion;                    // Region being viewed
     private FeedListFragment mListFragment; // Our retained list fragment
-
+    private MenuItem mRefresh;
+    private boolean mbRefresh;
+    
     /**
      * Saved state:
      * State being viewed
@@ -32,7 +34,6 @@ public class FeedListActivity extends Activity implements FeedListCallbacks
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.listviewactivity);
         FragmentManager fm = getFragmentManager();
         mListFragment = (FeedListFragment) fm.findFragmentById(R.id.listFragmentContent);  
@@ -58,7 +59,7 @@ public class FeedListActivity extends Activity implements FeedListCallbacks
             setTitle(Region.getAsStringId(mRegion));
         }
     }
-    
+
     /**
      * Saves the current state: 
      * Region being viewed
@@ -73,6 +74,8 @@ public class FeedListActivity extends Activity implements FeedListCallbacks
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
+        super.onCreateOptionsMenu(menu);
+        
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
@@ -92,14 +95,36 @@ public class FeedListActivity extends Activity implements FeedListCallbacks
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+        mRefresh = menu.findItem(R.id.menu_refresh);
+        if(mbRefresh)
+        {
+            mRefresh.setActionView(R.layout.refresh_menuitem);
+        }
+        return true; 
+    }
+    
+    @Override
     public void onRefreshStarted()
     {
-        setProgressBarIndeterminateVisibility(true);
+        mbRefresh = true;
+        if(mRefresh != null)
+        {
+            mRefresh.setActionView(R.layout.refresh_menuitem);
+        }
     }
 
     @Override
     public void onRefreshFinished()
     {
-        setProgressBarIndeterminateVisibility(false);        
+        mbRefresh = false;
+        mRefresh.setActionView(null);
+    }
+
+    @Override
+    public void onListEntrySelected(long rowId)
+    {
     }
 }
