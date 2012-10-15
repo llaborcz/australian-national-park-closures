@@ -1,9 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
-import com.bluebottlesoftware.nationalparkclosures.data.FeedDataAdapter;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
-import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
-import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.fragments.FeedListFragment;
 import com.bluebottlesoftware.nswnpclosures.R;
 
@@ -11,10 +8,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 /**
  * This is the activity that displays the feed for a particular state. 
@@ -22,12 +18,12 @@ import android.view.MenuItem;
  * TODO Change the icon
  * TODO Change the title to match the state that's being displayed
  */
-public class FeedListActivity extends Activity
+public class FeedListActivity extends Activity implements FeedListCallbacks
 {
     private static final String CURRENTREGIONKEY = "currentregion"; // Key for the current region being viewed
-    
-    private int mRegion; // Region being viewed
-    private FeedListFragment mListFragment;
+    private int mRegion;                    // Region being viewed
+    private FeedListFragment mListFragment; // Our retained list fragment
+
     /**
      * Saved state:
      * State being viewed
@@ -36,19 +32,7 @@ public class FeedListActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null)
-        {
-            // We've got a saved state
-            mRegion = savedInstanceState.getInt(CURRENTREGIONKEY);
-            setTitle(Region.getAsStringId(mRegion));
-        }
-        else
-        {
-            // Set the region to the default region
-            mRegion = Region.Nsw;
-            setTitle(R.string.nsw);
-        }
-        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.listviewactivity);
         FragmentManager fm = getFragmentManager();
         mListFragment = (FeedListFragment) fm.findFragmentById(R.id.listFragmentContent);  
@@ -59,18 +43,30 @@ public class FeedListActivity extends Activity
             ft.add(R.id.listFragmentContent, mListFragment);
             ft.commit();  
         }
-        SQLiteDatabase db = new DatabaseHelper(this).getReadableDatabase();
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
-        mListFragment.setListAdapter(new FeedDataAdapter(this, c, 0));
+        
+        mListFragment.setActivityCallbacks(this);
+        if(savedInstanceState == null)
+        {
+            // Set the region to the default region
+            mRegion = Region.Nsw;
+            setTitle(R.string.nsw);
+        }
+        else
+        {
+            // We've got a saved state
+            mRegion  = savedInstanceState.getInt(CURRENTREGIONKEY);
+            setTitle(Region.getAsStringId(mRegion));
+        }
     }
     
     /**
      * Saves the current state: 
-     * List being viewed
+     * Region being viewed
      */
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
+        super.onSaveInstanceState(outState);
         outState.putInt(CURRENTREGIONKEY,mRegion);
     }
     
@@ -88,15 +84,22 @@ public class FeedListActivity extends Activity
         switch(item.getItemId())
         {
         case R.id.menu_refresh:
-            onRefreshFeed();
+            mListFragment.refreshFeed();
             bResult = true;
             break;
         }
         return bResult;
     }
-    
-    private void onRefreshFeed()
+
+    @Override
+    public void onRefreshStarted()
     {
-        mListFragment.setListShown(false);
+        setProgressBarIndeterminateVisibility(true);
+    }
+
+    @Override
+    public void onRefreshFinished()
+    {
+        setProgressBarIndeterminateVisibility(false);        
     }
 }
