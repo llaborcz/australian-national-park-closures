@@ -2,13 +2,14 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
-    <style name="ListViewTitleStyle" parent="@android:style/TextAppearance.Medium">
+    <style name="ListViewTitleStyle" parent="@android:style/TextAppearance.Large">
         <item name="android:singleLine">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
     </style>
     
-    <style name="ListViewDateStyle" parent="@android:style/TextAppearance.Medium">
+    <style name="ListViewDateStyle" parent="@android:style/TextAppearance.Large">
         <item name="android:singleLine">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -16,6 +17,7 @@
 
     <style name="ListViewCategoryListStyles" parent="@android:style/TextAppearance.Small">
         <item name="android:singleLine">true</item>
+        <item name="android:typeface">serif</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
