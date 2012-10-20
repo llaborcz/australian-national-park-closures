@@ -34,6 +34,7 @@ public class FeedListActivity extends Activity implements FeedListCallbacks
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayShowHomeEnabled(false);
         setContentView(R.layout.listviewactivity);
         FragmentManager fm = getFragmentManager();
         mListFragment = (FeedListFragment) fm.findFragmentById(R.id.listFragmentContent);  
