@@ -183,6 +183,18 @@ public class FeedDatabase
         return items;
     }
     
+    private static String getStringEntry(SQLiteDatabase db,long rowId,String column)
+    {
+        String data = null;
+        StringBuilder sqlWhereStatement = new StringBuilder().append(COLUMN_ID).append('=').append(rowId);
+        Cursor c = db.query(FEED_TABLE, new String [] {column}, sqlWhereStatement.toString(), null, null, null, null);
+        if(c.moveToFirst())
+        {
+            data = c.getString(c.getColumnIndex(column));
+        }
+        c.close();
+        return data;
+    }
     /**
      * Returns the description for the given row id
      * @param rowId
@@ -190,14 +202,17 @@ public class FeedDatabase
      */
     public static String getDescriptionForEntry(SQLiteDatabase db, long rowId)
     {
-        String description = null;
-        StringBuilder sqlWhereStatement = new StringBuilder().append(COLUMN_ID).append('=').append(rowId);
-        Cursor c = db.query(FEED_TABLE, new String [] {COLUMN_DESCRIPTION}, sqlWhereStatement.toString(), null, null, null, null);
-        if(c.moveToFirst())
-        {
-            description = c.getString(c.getColumnIndex(COLUMN_DESCRIPTION));
-        }
-        c.close();
-        return description;
+        return getStringEntry(db, rowId, COLUMN_DESCRIPTION);
+    }
+
+    /**
+     * Returns the title for the given entry
+     * @param db
+     * @param dbRowId
+     * @return
+     */
+    public static String getTitleForEntry(SQLiteDatabase db,long rowId)
+    {
+        return getStringEntry(db, rowId, COLUMN_TITLE);
     }
 }
