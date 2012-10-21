@@ -14,7 +14,7 @@
     <string name="refresh">Refresh</string>
     <string name="loading">Loading&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>
-    
+    <string name="viewInBrowser">View in browser</string>
     <!-- Region strings -->
     <string name="nsw">NSW</string>
     <string name="qld">QLD</string>

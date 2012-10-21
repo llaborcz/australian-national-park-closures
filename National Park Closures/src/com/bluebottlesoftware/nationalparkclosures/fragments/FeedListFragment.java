@@ -122,17 +122,6 @@ public class FeedListFragment extends ListFragment
     }
     
     /**
-     * Sets the current region
-     * @param region
-     * TODO This function needs to be eliminated and the parameter passed to the constructor
-     */
-    public void setRegion(int region)
-    {
-        mRegion = region;
-        // TODO Once we support additional regions here display them
-    }
-    
-    /**
      * Called when the user clicks an entry in the list
      */
     @Override
@@ -205,7 +194,6 @@ public class FeedListFragment extends ListFragment
             Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
             setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
             mRefreshMenuItem.setActionView(null);
-            
             if(!result)
             {
                 showRefreshError();
