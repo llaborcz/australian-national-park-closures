@@ -2,7 +2,6 @@ package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,7 +34,6 @@ import android.widget.Toast;
 /**
  * Fragment class that hosts the ListView that contains the feed.
  * This is retained between activity destroy / create events
- * TODO Set long click listener
  */
 public class FeedListFragment extends ListFragment
 {
