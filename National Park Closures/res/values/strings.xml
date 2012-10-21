@@ -13,6 +13,7 @@
     <string name="emptyText">No events found</string>
     <string name="refresh">Refresh</string>
     <string name="loading">Loading&#8230;</string>
+    <string name="refreshError">Error refreshing feed</string>
     
     <!-- Region strings -->
     <string name="nsw">NSW</string>

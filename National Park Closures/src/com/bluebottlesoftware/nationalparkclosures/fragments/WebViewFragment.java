@@ -1,9 +1,11 @@
 package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
+import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.app.Fragment;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,6 @@ public class WebViewFragment extends Fragment
     public static WebViewFragment newInstance(long dbRowId)
     {
         WebViewFragment fragment = new WebViewFragment();
-        
         Bundle args = new Bundle();
         args.putLong(KEY_DBROWID, dbRowId);
         fragment.setArguments(args);
@@ -38,11 +39,16 @@ public class WebViewFragment extends Fragment
     {
         View v = inflater.inflate(R.layout.webviewfragmentlayout, group, false);
         WebView webView  = (WebView) v.findViewById(R.id.webview);
-        // TODO If we've been told to show an index we need to load it now from the database
-        
         long dbRowId = getArguments().getLong(KEY_DBROWID);
-        DatabaseHelper helper = new DatabaseHelper(getActivity());
-        // TODO Get the description string for the cursor
+        if(0 != dbRowId)
+        {
+            // We've been told to load a description from the database
+            DatabaseHelper helper = new DatabaseHelper(getActivity());
+            SQLiteDatabase db   = helper.getReadableDatabase();
+            String description  = FeedDatabase.getDescriptionForEntry(db, dbRowId);
+            db.close();
+            webView.loadData(description, "text/html", null);
+        }
         return v;
     }
 }
