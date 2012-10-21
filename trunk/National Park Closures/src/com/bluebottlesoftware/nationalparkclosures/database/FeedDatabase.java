@@ -215,4 +215,15 @@ public class FeedDatabase
     {
         return getStringEntry(db, rowId, COLUMN_TITLE);
     }
+
+    /**
+     * Returns the link for the given item
+     * @param db
+     * @param dbRowId
+     * @return
+     */
+    public static String getLinkForItem(SQLiteDatabase db, long dbRowId)
+    {
+        return getStringEntry(db, dbRowId, COLUMN_LINK);
+    }
 }

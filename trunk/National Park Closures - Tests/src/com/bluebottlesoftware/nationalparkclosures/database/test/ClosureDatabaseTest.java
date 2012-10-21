@@ -162,6 +162,10 @@ public class ClosureDatabaseTest extends ActivityTestCase
         // Now we do the same for the title
         String title = FeedDatabase.getTitleForEntry(db, rowId);
         assertTrue(title.equals(items.get(0).getTitle()));
+        
+        // And the same for the link
+        String link = FeedDatabase.getLinkForItem(db, rowId);
+        assertTrue(link.equals(items.get(0).getLink()));
     }
     
     /**

@@ -7,7 +7,6 @@ import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,8 +19,6 @@ import android.view.MenuItem;
  */
 public class DetailsViewActivity extends Activity
 {
-    private Fragment mWebFragment;  // Reference to our webview fragment
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -38,12 +35,12 @@ public class DetailsViewActivity extends Activity
         }
         setContentView(R.layout.webviewactivitylayout);
         FragmentManager fm = getFragmentManager();
-        mWebFragment = fm.findFragmentById(R.id.webviewFragmentContent);
-        if(mWebFragment == null)
+        WebViewFragment webViewFragment = (WebViewFragment) fm.findFragmentById(R.id.webviewFragmentContent);
+        if(webViewFragment == null)
         {
-            mWebFragment = WebViewFragment.newInstance(dbRowId);
+            webViewFragment = WebViewFragment.newInstance(dbRowId);
             FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.webviewFragmentContent, mWebFragment);
+            ft.add(R.id.webviewFragmentContent, webViewFragment);
             ft.commit();  
         }
     }
