@@ -2,9 +2,11 @@ package com.bluebottlesoftware.nationalparkclosures.activities;
 
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.fragments.FeedListFragment;
+import com.bluebottlesoftware.nationalparkclosures.fragments.WebViewFragment;
 import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -26,7 +28,7 @@ public class FeedListActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayShowHomeEnabled(false);
-        setContentView(R.layout.listviewactivity);
+        setContentView(R.layout.activity_main);
         if(savedInstanceState == null)
         {
             // Set the region to the default region
@@ -47,6 +49,18 @@ public class FeedListActivity extends Activity
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.listFragmentContent, listFragment);
             ft.commit();  
+        }
+        FrameLayout webViewFrame = (FrameLayout) findViewById(R.id.webFragmentContent);
+        if(webViewFrame != null)
+        {
+            WebViewFragment webViewFragment = (WebViewFragment)fm.findFragmentById(R.id.webFragmentContent);
+            if(webViewFragment == null)
+            {
+                webViewFragment = WebViewFragment.newInstance(0);
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.add(R.id.webFragmentContent, webViewFragment);
+                ft.commit();
+            }
         }
     }
     
