@@ -137,7 +137,7 @@ public class ClosureDatabaseTest extends ActivityTestCase
      * @throws IOException
      * @throws ParserConfigurationException
      */
-    public void testDescriptionReadPositive() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    public void testStringReadPositive() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = getEmptyDatabase(this);
         
@@ -158,6 +158,10 @@ public class ClosureDatabaseTest extends ActivityTestCase
         // Now read just the description and let's compare it to the entry that we read from the raw feed
         String description = FeedDatabase.getDescriptionForEntry(db, rowId);
         assertTrue(description.equals(items.get(0).getDescription()));
+        
+        // Now we do the same for the title
+        String title = FeedDatabase.getTitleForEntry(db, rowId);
+        assertTrue(title.equals(items.get(0).getTitle()));
     }
     
     /**
@@ -188,5 +192,9 @@ public class ClosureDatabaseTest extends ActivityTestCase
         // Now read just the description and let's compare it to the entry that we read from the raw feed
         String description = FeedDatabase.getDescriptionForEntry(db, rowId+234234);
         assertEquals(null, description);
+        
+        // Now we do the same for the title
+        String title = FeedDatabase.getTitleForEntry(db, rowId+234);
+        assertEquals(null, title);
     }
 }
