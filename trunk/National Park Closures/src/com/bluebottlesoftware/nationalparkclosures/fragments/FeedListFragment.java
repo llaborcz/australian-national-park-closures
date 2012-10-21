@@ -67,7 +67,22 @@ public class FeedListFragment extends ListFragment
     public void onActivityCreated(Bundle savedInstanceState) 
     {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText(getResources().getString(R.string.emptyText));
+        
+        // If this is the first time that we've been loaded and we've never refreshed we need to display an "Updating..." message
+        long lastUpdate = FeedDatabase.getLastUpdateTimeForRegion(mDb, mRegion);
+        String emptyText;
+        if(0 == lastUpdate)
+        {
+            String loadingText = getResources().getString(R.string.loading);
+            emptyText = String.format(loadingText, getResources().getString(Region.getAsStringId(mRegion)));
+            refreshFeed();
+        }
+        else
+        {
+            emptyText = getResources().getString(R.string.noEventsFound);
+        }
+        
+        setEmptyText(emptyText);
         Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
         setListAdapter(new FeedDataAdapter(getActivity(), c, 0));   
     }
@@ -194,7 +209,12 @@ public class FeedListFragment extends ListFragment
             Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
             setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
             mRefreshMenuItem.setActionView(null);
-            if(!result)
+            if(result)
+            {
+                // Need to udpate the database table with the last update time for this region
+                FeedDatabase.setLastUpdateTimeForRegion(mDb,mRegion,System.currentTimeMillis());
+            }
+            else
             {
                 showRefreshError();
             }

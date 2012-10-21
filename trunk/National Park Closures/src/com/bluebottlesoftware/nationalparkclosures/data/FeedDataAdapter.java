@@ -32,7 +32,7 @@ public class FeedDataAdapter extends CursorAdapter
         mTitleColumn = c.getColumnIndex(FeedDatabase.COLUMN_TITLE);
         mDateColumn  = c.getColumnIndex(FeedDatabase.COLUMN_DATE);
         mCategoryColumn = c.getColumnIndex(FeedDatabase.COLUMN_CATEGORY);
-        mStateColumn = c.getColumnIndex(FeedDatabase.COLUMN_STATE);
+        mStateColumn = c.getColumnIndex(FeedDatabase.COLUMN_REGION);
     }
 
     /**
