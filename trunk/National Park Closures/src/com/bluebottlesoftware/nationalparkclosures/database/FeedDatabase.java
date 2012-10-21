@@ -52,7 +52,7 @@ public class FeedDatabase
         COLUMN_LAST_REFRESH + " INTEGER);";     // last time that the feed for this region was updated
     
     // Raw SQL to drop the database closure table
-    private static final String DROP_CLOSURE_TABLE = "DROP TABLE IF EXISTS "+ FEED_TABLE;
+    private static final String DROP_FEED_TABLE    = "DROP TABLE IF EXISTS "+ FEED_TABLE;
     private static final String DROP_REGION_TABLE  = "DROP TABLE IF EXISTS "+ REGION_TABLE;
     
     /**
@@ -70,7 +70,7 @@ public class FeedDatabase
      */
     public static void dropTables(SQLiteDatabase db)
     {
-        db.execSQL(DROP_CLOSURE_TABLE);
+        db.execSQL(DROP_FEED_TABLE);
         db.execSQL(DROP_REGION_TABLE);
     }
 
