@@ -1,5 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.fragments;
 
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nswnpclosures.R;
@@ -18,7 +19,8 @@ import android.webkit.WebView;
  */
 public class WebViewFragment extends Fragment 
 {
-    public static final String KEY_DBROWID = "dbrowid";    /**<Key for the DB row ID that needs to be shown*/
+    public static final String KEY_DBROWID = "key_dbrowid";    /**<Key for the DB row ID that needs to be shown*/
+    public static final String KEY_REGION  = "key_region";
     public static WebViewFragment newInstance(long dbRowId)
     {
         WebViewFragment fragment = new WebViewFragment();
@@ -42,12 +44,13 @@ public class WebViewFragment extends Fragment
         long dbRowId = getArguments().getLong(KEY_DBROWID);
         if(0 != dbRowId)
         {
+            int region = getArguments().getInt(KEY_REGION);
             // We've been told to load a description from the database
             DatabaseHelper helper = new DatabaseHelper(getActivity());
             SQLiteDatabase db   = helper.getReadableDatabase();
             String description  = FeedDatabase.getDescriptionForEntry(db, dbRowId);
             db.close();
-            webView.loadData(description, "text/html", null);
+            webView.loadDataWithBaseURL(Region.getBaseUrlForRegion(region), description, "text/html", "utf-8", "");
         }
         return v;
     }

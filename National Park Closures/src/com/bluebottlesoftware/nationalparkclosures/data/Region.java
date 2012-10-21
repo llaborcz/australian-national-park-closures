@@ -22,6 +22,8 @@ public class Region
      */
     private static final String NswFeedAddress = "http://www.environment.nsw.gov.au/nationalparks/rss/fireclosure.aspx";
     private static final String QldFeedAddress = "http://www.nprsr.qld.gov.au/xml/rss/parkalerts.xml";
+
+    private static final String NswBaseUrl = "http://environment.nsw.gov.au";
     
     public static String getFeedForStateOrRegion(int stateOrRegion) throws IllegalArgumentException
     {
@@ -82,5 +84,21 @@ public class Region
             break;
         }
         return id;
+    }
+
+    /**
+     * Returns the base url for the region
+     * @param region
+     * @return
+     */
+    public static String getBaseUrlForRegion(int region)
+    {
+        String baseUrl = "fake://notneeded";
+        switch(region)
+        {
+        case Nsw:
+            baseUrl = NswBaseUrl;
+        }
+        return baseUrl;
     }
 }

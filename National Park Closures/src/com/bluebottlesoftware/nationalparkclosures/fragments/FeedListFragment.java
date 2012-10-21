@@ -153,6 +153,7 @@ public class FeedListFragment extends ListFragment
         Intent intent = new Intent();
         intent.setClass(getActivity(),com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity.class);
         intent.putExtra(WebViewFragment.KEY_DBROWID, id);
+        intent.putExtra(WebViewFragment.KEY_REGION, mRegion);
         startActivity(intent);
     }
 
