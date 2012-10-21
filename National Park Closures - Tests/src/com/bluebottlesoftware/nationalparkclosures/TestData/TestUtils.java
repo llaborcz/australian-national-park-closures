@@ -52,11 +52,11 @@ public class TestUtils
             if(previousItem != null)
             {
                 long prevDateAsMs = CalendarUtils.createCalendarFromDateAndFormat(previousItem.getDate(), CalendarUtils.getDateFormatForState(previousState)).getTimeInMillis();
-                long dateInMs = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_STATE)))).getTimeInMillis();
+                long dateInMs = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_REGION)))).getTimeInMillis();
                 TestCase.assertTrue(prevDateAsMs >= dateInMs);
             }
             previousItem = item;
-            previousState= c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_STATE));
+            previousState= c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_REGION));
             c.moveToNext();
         }
     }

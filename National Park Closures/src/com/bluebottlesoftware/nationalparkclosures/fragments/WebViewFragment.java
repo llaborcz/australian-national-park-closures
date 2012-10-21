@@ -66,7 +66,7 @@ public class WebViewFragment extends Fragment
             {
                 DatabaseHelper helper = new DatabaseHelper(getActivity());
                 SQLiteDatabase db = helper.getReadableDatabase();
-                String link = FeedDatabase.getLinkForItem(db,dbRowId);
+                String link = FeedDatabase.getLinkForEntry(db,dbRowId);
                 if(link != null)
                 {
                     Intent intent = new Intent();

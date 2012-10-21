@@ -127,7 +127,6 @@ public class ClosureDatabaseTest extends ActivityTestCase
         c.close();
         
         db.close();
-        
     }
 
     /**
@@ -164,8 +163,10 @@ public class ClosureDatabaseTest extends ActivityTestCase
         assertTrue(title.equals(items.get(0).getTitle()));
         
         // And the same for the link
-        String link = FeedDatabase.getLinkForItem(db, rowId);
+        String link = FeedDatabase.getLinkForEntry(db, rowId);
         assertTrue(link.equals(items.get(0).getLink()));
+        
+        db.close();
     }
     
     /**
@@ -200,5 +201,36 @@ public class ClosureDatabaseTest extends ActivityTestCase
         // Now we do the same for the title
         String title = FeedDatabase.getTitleForEntry(db, rowId+234);
         assertEquals(null, title);
+        
+        db.close();
+    }
+    
+    public void testSingleRegionTimeUpdate()
+    {
+        SQLiteDatabase db = getEmptyDatabase(this);
+        
+        long testTime = 400;
+        FeedDatabase.setLastUpdateTimeForRegion(db, Region.Nsw, testTime);
+        
+        long readBack = FeedDatabase.getLastUpdateTimeForRegion(db, Region.Nsw);
+        assertEquals(testTime, readBack);
+        
+        db.close();
+    }
+    
+    public void testMultipleUpdates()
+    {
+    SQLiteDatabase db = getEmptyDatabase(this);
+        
+        long testTime = 400;
+        FeedDatabase.setLastUpdateTimeForRegion(db, Region.Nsw, testTime);
+        
+        long readBack = FeedDatabase.getLastUpdateTimeForRegion(db, Region.Nsw);
+        assertEquals(testTime, readBack);
+        
+        testTime = 500;
+        FeedDatabase.setLastUpdateTimeForRegion(db, Region.Nsw, testTime);
+        readBack = FeedDatabase.getLastUpdateTimeForRegion(db, Region.Nsw);
+        assertEquals(testTime, readBack);
     }
 }

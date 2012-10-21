@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Parks Alerts</string>
+    <string name="app_name">National Park Updates</string>
     <string name="nswClosures">NSW National Parks</string>
     <string name="menu_settings">Settings</string>
 
@@ -10,9 +10,9 @@
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>
     <string name="categoryTest">Closed areas, backburning</string>
-    <string name="emptyText">No events found</string>
+    <string name="noEventsFound">No events found</string>
     <string name="refresh">Refresh</string>
-    <string name="loading">Loading&#8230;</string>
+    <string name="loading">Loading %1$s events&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>
     <string name="viewInBrowser">View in browser</string>
     <!-- Region strings -->

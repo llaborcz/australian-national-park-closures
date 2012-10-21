@@ -17,9 +17,11 @@ public class FeedDatabase
 {
     public static final long INVALIDROWID = -1; // Row ID that can never exist in the database 
     
-    private static final String FEED_TABLE = "closuretable";
+    private static final String FEED_TABLE   = "feedtable";
+    private static final String REGION_TABLE = "regiontable";
+    
     public static final String COLUMN_ID = "_id";  // This is a well known column name in SQLite
-    public static final String COLUMN_STATE = "state";
+    public static final String COLUMN_REGION = "state";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_DATE_MS = "datems";
@@ -27,12 +29,13 @@ public class FeedDatabase
     public static final String COLUMN_GUID = "guid";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_CATEGORY = "category";
-
+    public static final String COLUMN_LAST_REFRESH = "lastrefresh";
+    
     // Raw SQL to create the database table
     private static final String CREATE_FEED_TABLE = 
         "CREATE TABLE "  + FEED_TABLE + "(" + 
         COLUMN_ID    + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-        COLUMN_STATE + " INTEGER," +
+        COLUMN_REGION + " INTEGER," +
         COLUMN_TITLE + " TEXT," + 
         COLUMN_DATE  + " TEXT," +
         COLUMN_DATE_MS  + " INTEGER," +
@@ -41,8 +44,16 @@ public class FeedDatabase
         COLUMN_DESCRIPTION + " TEXT," +
         COLUMN_CATEGORY + " TEXT);";
         
+    // Raw SQL to create the region information table
+    private static final String CREATE_REGION_TABLE =
+        "CREATE TABLE " + REGION_TABLE + "(" + 
+        COLUMN_ID     + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+        COLUMN_REGION + " INTEGER UNIQUE," +    // Corresponds to the region code in the feed table
+        COLUMN_LAST_REFRESH + " INTEGER);";     // last time that the feed for this region was updated
+    
     // Raw SQL to drop the database closure table
     private static final String DROP_CLOSURE_TABLE = "DROP TABLE IF EXISTS "+ FEED_TABLE;
+    private static final String DROP_REGION_TABLE  = "DROP TABLE IF EXISTS "+ REGION_TABLE;
     
     /**
      * Creates the actual tables into the database
@@ -51,6 +62,7 @@ public class FeedDatabase
     public static void createTables(SQLiteDatabase db)
     {
         db.execSQL(CREATE_FEED_TABLE);
+        db.execSQL(CREATE_REGION_TABLE);
     }
 
     /**
@@ -59,11 +71,12 @@ public class FeedDatabase
     public static void dropTables(SQLiteDatabase db)
     {
         db.execSQL(DROP_CLOSURE_TABLE);
+        db.execSQL(DROP_REGION_TABLE);
     }
 
     public Cursor getFeedItemsForState(SQLiteDatabase db,int state)
     {
-        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
+        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
         Cursor c = db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null,null,null);
         return c;
     }
@@ -76,8 +89,8 @@ public class FeedDatabase
      */
     public static int eraseAllEntriesForState(SQLiteDatabase db, int state)
     {
-        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ").append(state);
-        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause.toString(), null);
+        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
+        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause.toString(), new String[]{Integer.toString(state)});
         return rowsDeleted;
     }
 
@@ -125,7 +138,7 @@ public class FeedDatabase
     private static void writeFeedItemToDatabase(SQLiteDatabase db,FeedItem item, int state)
     {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_STATE, state);
+        values.put(COLUMN_REGION, state);
         values.put(COLUMN_TITLE, item.getTitle());
         values.put(COLUMN_DATE, item.getDate());
         values.put(COLUMN_LINK,item.getLink());
@@ -144,7 +157,7 @@ public class FeedDatabase
      */
     public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,int state)
     {
-        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_STATE).append(" = ?");
+        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
         StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
         return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null, orderByClause.toString());
     }
@@ -186,8 +199,8 @@ public class FeedDatabase
     private static String getStringEntry(SQLiteDatabase db,long rowId,String column)
     {
         String data = null;
-        StringBuilder sqlWhereStatement = new StringBuilder().append(COLUMN_ID).append('=').append(rowId);
-        Cursor c = db.query(FEED_TABLE, new String [] {column}, sqlWhereStatement.toString(), null, null, null, null);
+        StringBuilder sqlWhereStatement = new StringBuilder(COLUMN_ID).append(" = ?");
+        Cursor c = db.query(FEED_TABLE, new String [] {column}, sqlWhereStatement.toString(), new String [] {Long.toString(rowId)}, null, null, null);
         if(c.moveToFirst())
         {
             data = c.getString(c.getColumnIndex(column));
@@ -195,6 +208,7 @@ public class FeedDatabase
         c.close();
         return data;
     }
+    
     /**
      * Returns the description for the given row id
      * @param rowId
@@ -222,8 +236,41 @@ public class FeedDatabase
      * @param dbRowId
      * @return
      */
-    public static String getLinkForItem(SQLiteDatabase db, long dbRowId)
+    public static String getLinkForEntry(SQLiteDatabase db, long dbRowId)
     {
         return getStringEntry(db, dbRowId, COLUMN_LINK);
+    }
+    
+    /**
+     * Returns the last update time for the given region
+     * @param db
+     * @param region
+     * @return
+     */
+    public static long getLastUpdateTimeForRegion(SQLiteDatabase db, int region)
+    {
+        long lastUpdateTime = 0;
+        StringBuilder query = new StringBuilder(COLUMN_REGION).append(" = ?");
+        Cursor c = db.query(REGION_TABLE, new String [] {COLUMN_LAST_REFRESH}, query.toString(), new String [] {Integer.toString(region)}, null, null, null);
+        if(c.moveToFirst())
+        {
+            lastUpdateTime = c.getLong(c.getColumnIndex(COLUMN_LAST_REFRESH));
+        }
+        c.close();
+        return lastUpdateTime;
+    }
+
+    /**
+     * Updates the entry in the database for the corresponding region with the time specified
+     * @param mDb
+     * @param mRegion
+     * @param currentTimeMillis
+     */
+    public static void setLastUpdateTimeForRegion(SQLiteDatabase db, int region, long time)
+    {
+        ContentValues values = new ContentValues(2);
+        values.put(COLUMN_REGION, region);
+        values.put(COLUMN_LAST_REFRESH, time);
+        db.insertWithOnConflict(REGION_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 }
