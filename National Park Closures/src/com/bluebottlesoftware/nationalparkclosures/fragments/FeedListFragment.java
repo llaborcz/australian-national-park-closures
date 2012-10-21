@@ -2,6 +2,7 @@ package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,19 +71,15 @@ public class FeedListFragment extends ListFragment
         
         // If this is the first time that we've been loaded and we've never refreshed we need to display an "Updating..." message
         long lastUpdate = FeedDatabase.getLastUpdateTimeForRegion(mDb, mRegion);
-        String emptyText;
         if(0 == lastUpdate)
         {
-            String loadingText = getResources().getString(R.string.loading);
-            emptyText = String.format(loadingText, getResources().getString(Region.getAsStringId(mRegion)));
             refreshFeed();
         }
         else
         {
-            emptyText = getResources().getString(R.string.noEventsFound);
+            setEmptyText(getResources().getString(R.string.noEventsFound));
         }
         
-        setEmptyText(emptyText);
         Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
         setListAdapter(new FeedDataAdapter(getActivity(), c, 0));   
     }
@@ -122,6 +119,7 @@ public class FeedListFragment extends ListFragment
     
     /**
      * Called to refresh the feed - will keep content intact and will callback to parent
+     * Changes the empty text to read Loading %s updates...
      */
     public void refreshFeed()
     {
@@ -129,6 +127,8 @@ public class FeedListFragment extends ListFragment
         {
             mRefreshFeedTask = new RefreshFeedAsyncTask();
             mRefreshFeedTask.execute();
+            String loadingText = getResources().getString(R.string.loading);
+            setEmptyText(String.format(loadingText, getResources().getString(Region.getAsStringId(mRegion))));
             if(mRefreshMenuItem != null)
             {
                 mRefreshMenuItem.setActionView(R.layout.refresh_menuitem_busy);
@@ -218,6 +218,7 @@ public class FeedListFragment extends ListFragment
             {
                 showRefreshError();
             }
+            setEmptyText(getResources().getString(R.string.noEventsFound));
         }
     }
 
