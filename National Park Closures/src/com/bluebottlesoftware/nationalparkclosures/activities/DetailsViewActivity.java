@@ -5,12 +5,14 @@ import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.fragments.WebViewFragment;
 import com.bluebottlesoftware.nswnpclosures.R;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 /**
  * Activity that shows the webview fragment by itself
@@ -24,8 +26,9 @@ public class DetailsViewActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         long dbRowId = getIntent().getLongExtra(WebViewFragment.KEY_DBROWID,0);
         if(0 != dbRowId)
         {
@@ -43,5 +46,20 @@ public class DetailsViewActivity extends Activity
             ft.add(R.id.webviewFragmentContent, mWebFragment);
             ft.commit();  
         }
+    }
+    
+    /**
+     * Handles the action bar home button
+     */
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+        boolean bResult = false;
+        if(item.getItemId() == android.R.id.home)
+        {
+            finish();
+            bResult = true;
+        }
+        return bResult;
     }
 }
