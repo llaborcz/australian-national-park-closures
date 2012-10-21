@@ -18,6 +18,7 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nswnpclosures.R;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -40,7 +41,18 @@ public class FeedListFragment extends ListFragment
     private RefreshFeedAsyncTask mRefreshFeedTask;
     private SQLiteDatabase       mDb;
     private int                  mRegion = Region.Nsw;
-    private MenuItem             mRefresh;
+    private MenuItem             mRefreshMenuItem;
+    
+    /**
+     * Creates an instance with the given region
+     * @param region
+     */
+    public static FeedListFragment createInstance(int region)
+    {
+        FeedListFragment listFragment = new  FeedListFragment();
+        listFragment.mRegion = region;
+        return listFragment;
+    }
     
     @Override
     public void onCreate (Bundle savedInstanceState)
@@ -85,11 +97,11 @@ public class FeedListFragment extends ListFragment
     public void onPrepareOptionsMenu(Menu menu)
     {
         super.onPrepareOptionsMenu(menu);
-        mRefresh = menu.findItem(R.id.menu_refresh);
+        mRefreshMenuItem = menu.findItem(R.id.menu_refresh);
         if(mRefreshFeedTask != null)
         {
             // We're refreshing so we want to display the busy wait progress
-            mRefresh.setActionView(R.layout.refresh_menuitem_busy);
+            mRefreshMenuItem.setActionView(R.layout.refresh_menuitem_busy);
         }
     }
     
@@ -102,9 +114,9 @@ public class FeedListFragment extends ListFragment
         {
             mRefreshFeedTask = new RefreshFeedAsyncTask();
             mRefreshFeedTask.execute();
-            if(mRefresh != null)
+            if(mRefreshMenuItem != null)
             {
-                mRefresh.setActionView(R.layout.refresh_menuitem_busy);
+                mRefreshMenuItem.setActionView(R.layout.refresh_menuitem_busy);
             }
         }
     }
@@ -112,6 +124,7 @@ public class FeedListFragment extends ListFragment
     /**
      * Sets the current region
      * @param region
+     * TODO This function needs to be eliminated and the parameter passed to the constructor
      */
     public void setRegion(int region)
     {
@@ -125,9 +138,24 @@ public class FeedListFragment extends ListFragment
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id)
     {
-        // TODO This is where we attach our selection listener
+        showDetails(position,id);
     }
     
+    /**
+     * Shows the details for the selected feed item. In the case where we've got a two pane layout
+     * this method will show the details in the webview fragment or start a new activity containing the webview fragment
+     * @param position
+     * @param id
+     */
+    private void showDetails(int position, long id)
+    {
+        // TODO Handle the case where we've got a two pane layout - this code assumes that we're dealing with a single pane layout
+        Intent intent = new Intent();
+        intent.setClass(getActivity(),com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity.class);
+        intent.putExtra(WebViewFragment.KEY_DBROWID, id);
+        startActivity(intent);
+    }
+
     public class RefreshFeedAsyncTask extends AsyncTask<Integer, Void,Boolean>
     {
         final String TAG = "RefreshFeedAsyncTask";
@@ -175,7 +203,7 @@ public class FeedListFragment extends ListFragment
             mRefreshFeedTask = null;
             Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
             setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
-            mRefresh.setActionView(null);
+            mRefreshMenuItem.setActionView(null);
             
             if(!result)
             {

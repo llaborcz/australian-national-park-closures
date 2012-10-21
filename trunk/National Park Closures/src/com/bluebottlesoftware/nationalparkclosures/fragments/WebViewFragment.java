@@ -18,7 +18,7 @@ import android.webkit.WebView;
  */
 public class WebViewFragment extends Fragment 
 {
-    private static final String KEY_DBROWID = "dbrowid";    /**<Key for the DB row ID that needs to be shown*/
+    public static final String KEY_DBROWID = "dbrowid";    /**<Key for the DB row ID that needs to be shown*/
     public static WebViewFragment newInstance(long dbRowId)
     {
         WebViewFragment fragment = new WebViewFragment();
