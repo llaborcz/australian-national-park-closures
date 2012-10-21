@@ -182,4 +182,22 @@ public class FeedDatabase
         }
         return items;
     }
+    
+    /**
+     * Returns the description for the given row id
+     * @param rowId
+     * @return
+     */
+    public static String getDescriptionForEntry(SQLiteDatabase db, long rowId)
+    {
+        String description = null;
+        StringBuilder sqlWhereStatement = new StringBuilder().append(COLUMN_ID).append('=').append(rowId);
+        Cursor c = db.query(FEED_TABLE, new String [] {COLUMN_DESCRIPTION}, sqlWhereStatement.toString(), null, null, null, null);
+        if(c.moveToFirst())
+        {
+            description = c.getString(c.getColumnIndex(COLUMN_DESCRIPTION));
+        }
+        c.close();
+        return description;
+    }
 }

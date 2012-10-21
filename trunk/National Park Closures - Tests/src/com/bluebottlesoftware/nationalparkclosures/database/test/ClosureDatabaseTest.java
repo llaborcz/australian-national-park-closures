@@ -130,5 +130,63 @@ public class ClosureDatabaseTest extends ActivityTestCase
         
     }
 
+    /**
+     * Tests the readback of a description from the database that was added in
+     * @throws XPathExpressionException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
+    public void testDescriptionReadPositive() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        SQLiteDatabase db = getEmptyDatabase(this);
+        
+        // First we write the single entry to the database
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
+        InputStream stream = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem);
+        List<FeedItem> items = consumer.getFeedItemsForFeed(stream);
+        assertEquals(1, items.size());
+        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
+        
+        // Now we need to read the single item back so that we can get its row id
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
+        assertEquals(1, c.getCount());
+        c.moveToFirst();
+        int rowId = c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_ID));
+        c.close();
+        
+        // Now read just the description and let's compare it to the entry that we read from the raw feed
+        String description = FeedDatabase.getDescriptionForEntry(db, rowId);
+        assertTrue(description.equals(items.get(0).getDescription()));
+    }
     
+    /**
+     * Validates that the description lookup returns null if the entry isn't found
+     * @throws ParserConfigurationException 
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws XPathExpressionException 
+     */
+    public void testDescriptionReadNegative() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        SQLiteDatabase db = getEmptyDatabase(this);
+        
+        // First we write the single entry to the database
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
+        InputStream stream = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem);
+        List<FeedItem> items = consumer.getFeedItemsForFeed(stream);
+        assertEquals(1, items.size());
+        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
+        
+        // Now we need to read the single item back so that we can get its row id
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
+        assertEquals(1, c.getCount());
+        c.moveToFirst();
+        int rowId = c.getInt(c.getColumnIndex(FeedDatabase.COLUMN_ID));
+        c.close();
+        
+        // Now read just the description and let's compare it to the entry that we read from the raw feed
+        String description = FeedDatabase.getDescriptionForEntry(db, rowId+234234);
+        assertEquals(null, description);
+    }
 }
