@@ -17,7 +17,7 @@ import android.widget.TextView;
  */
 public class FeedDataAdapter extends CursorAdapter
 {
-    public static final String DisplayDateFormat = "E, dd MMM yyyy";       /**<Date format as we display in list*/
+    public static final String DisplayDateFormat = "E, dd MMM yyyy" ;      /**<Date format as we display in list*/
     public static final String DisplayTimeFormat = "HH:mm";  /**<Format that we use for time*/
     
     private LayoutInflater mLayoutInflater; // inflates our views
@@ -25,12 +25,10 @@ public class FeedDataAdapter extends CursorAdapter
     private int mDateColumn;        // Column index of date
     private int mCategoryColumn;    // Column index of category
     private int mStateColumn;       // Column index of state
-    private Context mContext;       // our context
     
     public FeedDataAdapter(Context context, Cursor c, int flags)
     {
         super(context, c, flags);
-        mContext = context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mTitleColumn = c.getColumnIndex(FeedDatabase.COLUMN_TITLE);
         mDateColumn  = c.getColumnIndex(FeedDatabase.COLUMN_DATE);
