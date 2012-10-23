@@ -17,17 +17,20 @@ import android.widget.TextView;
  */
 public class FeedDataAdapter extends CursorAdapter
 {
-    public static final String FriendlyDateFormat = "E, dd MMM yyyy";       /**<Date format as we display in list*/
+    public static final String DisplayDateFormat = "E, dd MMM yyyy";       /**<Date format as we display in list*/
+    public static final String DisplayTimeFormat = "HH:mm";  /**<Format that we use for time*/
     
     private LayoutInflater mLayoutInflater; // inflates our views
     private int mTitleColumn;       // Column index of title
     private int mDateColumn;        // Column index of date
     private int mCategoryColumn;    // Column index of category
     private int mStateColumn;       // Column index of state
+    private Context mContext;       // our context
     
     public FeedDataAdapter(Context context, Cursor c, int flags)
     {
         super(context, c, flags);
+        mContext = context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mTitleColumn = c.getColumnIndex(FeedDatabase.COLUMN_TITLE);
         mDateColumn  = c.getColumnIndex(FeedDatabase.COLUMN_DATE);
@@ -46,13 +49,15 @@ public class FeedDataAdapter extends CursorAdapter
         String date  = cursor.getString(mDateColumn);
         String category = cursor.getString(mCategoryColumn);
         
-        TextView titleView = (TextView) view.findViewById(R.id.title);
-        TextView dateView  = (TextView) view.findViewById(R.id.date);
+        TextView titleView    = (TextView) view.findViewById(R.id.title);
+        TextView dateView     = (TextView) view.findViewById(R.id.date);
         TextView categoryView = (TextView) view.findViewById(R.id.category);
+        TextView timeView     = (TextView) view.findViewById(R.id.time);
         
-        String dateFormat = CalendarUtils.getDateFormatForState(cursor.getInt(mStateColumn));
         titleView.setText(title);
-        dateView.setText(CalendarUtils.convertDate(date,dateFormat,FriendlyDateFormat));
+        String dateFormat = CalendarUtils.getDateFormatForState(cursor.getInt(mStateColumn));
+        dateView.setText(CalendarUtils.convertDate(date,dateFormat,DisplayDateFormat));
+        timeView.setText(CalendarUtils.convertDate(date, dateFormat, DisplayTimeFormat));
         categoryView.setText(category);
     }
 

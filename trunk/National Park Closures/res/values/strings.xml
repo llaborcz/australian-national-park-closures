@@ -9,6 +9,7 @@
     <!-- Some strings that are usde for testing -->
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>
+    <string name="timeTest">13:00</string>
     <string name="categoryTest">Closed areas, backburning</string>
     <string name="noEventsFound">No events found</string>
     <string name="refresh">Refresh</string>
@@ -24,6 +25,8 @@
     <string name="vic">VIC</string>
     <string name="tas">TAS</string>
     
+    <!-- Timezone names -->
+    <string name="NswTimeZoneExtension">AEST</string>
     <!-- Arrray of all the regions that we know about -->
     <string-array name="regions">
         <item>@string/nsw</item>

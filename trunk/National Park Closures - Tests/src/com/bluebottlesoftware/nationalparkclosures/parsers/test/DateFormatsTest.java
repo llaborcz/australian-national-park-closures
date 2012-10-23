@@ -1,5 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.parsers.test;
 
+import android.os.Debug;
 import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
@@ -21,7 +22,7 @@ public class DateFormatsTest extends TestCase
         int i = 0;
         for(String input : inputDataSet)
         {
-            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, FeedDataAdapter.FriendlyDateFormat);
+            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, FeedDataAdapter.DisplayDateFormat);
             assertTrue(output.equals(outputDataSet[i]));
             i++;
         }
@@ -36,10 +37,24 @@ public class DateFormatsTest extends TestCase
         
         for(String input : inputDataSet)
         {
-            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, FeedDataAdapter.FriendlyDateFormat);
+            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, FeedDataAdapter.DisplayDateFormat);
             Log.d(input,output);
             assertTrue(output.equals(input));
         }
+    }
+    
+    public void testTimes()
+    {
+        String [] inputDataSet  = {"Mon, 10 Sep 2012 11:50:00","Wed, 12 Sep 2012 12:17:00","Mon, 24 Sep 2012 05:53:00"};
+        String [] outputDataSet = {"11:50","12:17","05:53"};
         
+        int i = 0;
+        for(String input : inputDataSet)
+        {
+            String output = CalendarUtils.convertDate(input, CalendarUtils.NswDateFormat, FeedDataAdapter.DisplayTimeFormat);
+            Log.d("output",output);
+            assertTrue(output.equals(outputDataSet[i]));
+            i++;
+        }
     }
 }

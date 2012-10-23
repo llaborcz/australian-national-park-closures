@@ -15,6 +15,13 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="ListViewTimeStyle" parent="@android:style/TextAppearance.Small">
+        <item name="android:singleLine">true</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+        
     <style name="ListViewCategoryListStyles" parent="@android:style/TextAppearance.Small">
         <item name="android:singleLine">true</item>
         <item name="android:typeface">serif</item>
