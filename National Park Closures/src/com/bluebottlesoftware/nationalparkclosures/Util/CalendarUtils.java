@@ -53,7 +53,7 @@ public class CalendarUtils
         }
         catch(ParseException e)
         {
-            Log.e("getDisplayFriendlyDateForRegion","Caught ParseException on date");
+            Log.e("convertDate","Caught ParseException on date "+e.getMessage());
         }
         return friendlyDate;
     }
