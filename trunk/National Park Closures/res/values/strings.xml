@@ -6,6 +6,7 @@
 
     <!-- menus -->
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_search">Search</string>
     <!-- Some strings that are usde for testing -->
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>
