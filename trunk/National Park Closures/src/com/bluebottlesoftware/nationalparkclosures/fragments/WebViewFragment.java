@@ -92,7 +92,7 @@ public class WebViewFragment extends Fragment
                 String title        = FeedDatabase.getTitleForEntry(db, dbRowId);
                 db.close();
                 Intent shareIntent = new Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"));
-                shareIntent.putExtra(Intent.EXTRA_TEXT,Html.fromHtml(description).toString());
+                shareIntent.putExtra(Intent.EXTRA_TEXT,Html.fromHtml(description));
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubjectPreamble)+title);
                 startActivity(shareIntent);
                 break;
