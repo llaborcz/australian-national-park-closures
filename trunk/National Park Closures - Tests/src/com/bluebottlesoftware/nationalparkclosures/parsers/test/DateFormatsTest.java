@@ -1,6 +1,5 @@
 package com.bluebottlesoftware.nationalparkclosures.parsers.test;
 
-import android.os.Debug;
 import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
