@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,9 @@ public class WebViewFragment extends Fragment
     public static final String KEY_DBROWID = "key_dbrowid"; /**<Key for the DB row ID that needs to be shown*/
     public static final String KEY_REGION  = "key_region";  /**<Region that content corresponds to*/  
 
+    private static final String MimeTypeHtml = "text/html";
+    private static final String Utf8Encoding = "utf-8";
+    
     public static WebViewFragment newInstance(long dbRowId)
     {
         WebViewFragment fragment = new WebViewFragment();
@@ -58,24 +62,40 @@ public class WebViewFragment extends Fragment
     public boolean onOptionsItemSelected (MenuItem item)
     {
         boolean bResult = false;
-        if(item.getItemId() == R.id.menu_viewInBrowser)
+        switch(item.getItemId())
         {
-            // Create an intent with the "link" of the selected item here
-            long dbRowId = getArguments().getLong(KEY_DBROWID);
-            if(dbRowId != 0)
+            case R.id.menu_viewInBrowser:
             {
-                DatabaseHelper helper = new DatabaseHelper(getActivity());
-                SQLiteDatabase db = helper.getReadableDatabase();
-                String link = FeedDatabase.getLinkForEntry(db,dbRowId);
-                if(link != null)
+                // Create an intent with the "link" of the selected item here
+                long dbRowId = getArguments().getLong(KEY_DBROWID);
+                if(dbRowId != 0)
                 {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(link));
-                    startActivity(intent);
+                    DatabaseHelper helper = new DatabaseHelper(getActivity());
+                    SQLiteDatabase db = helper.getReadableDatabase();
+                    String link = FeedDatabase.getLinkForEntry(db,dbRowId);
+                    if(link != null)
+                    {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(link));
+                        startActivity(intent);
+                    }
+                    db.close();
                 }
-                db.close();
             }
+            
+            case R.id.menu_shareArticle:
+                DatabaseHelper helper = new DatabaseHelper(getActivity());
+                long dbRowId = getArguments().getLong(KEY_DBROWID);
+                SQLiteDatabase db   = helper.getReadableDatabase();
+                String description  = FeedDatabase.getDescriptionForEntry(db, getArguments().getLong(KEY_DBROWID));
+                String title        = FeedDatabase.getTitleForEntry(db, dbRowId);
+                db.close();
+                Intent shareIntent = new Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"));
+                shareIntent.putExtra(Intent.EXTRA_TEXT,Html.fromHtml(description).toString());
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubjectPreamble)+title);
+                startActivity(shareIntent);
+                break;
         }
         return bResult;
     }
@@ -94,7 +114,7 @@ public class WebViewFragment extends Fragment
             SQLiteDatabase db   = helper.getReadableDatabase();
             String description  = FeedDatabase.getDescriptionForEntry(db, dbRowId);
             db.close();
-            webView.loadDataWithBaseURL(Region.getBaseUrlForRegion(region), description, "text/html", "utf-8", "");
+            webView.loadDataWithBaseURL(Region.getBaseUrlForRegion(region), description, MimeTypeHtml, Utf8Encoding, "");
         }
         return v;
     }
