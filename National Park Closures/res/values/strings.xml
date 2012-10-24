@@ -16,6 +16,7 @@
     <string name="loading">Loading %1$s events&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>
     <string name="viewInBrowser">View in browser</string>
+    <string name="lastUpdated">Last updated:&#160;</string>
     <!-- Region strings -->
     <string name="nsw">NSW</string>
     <string name="qld">QLD</string>

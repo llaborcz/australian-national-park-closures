@@ -19,7 +19,7 @@ public class FeedDataAdapter extends CursorAdapter
 {
     public static final String DisplayDateFormat = "E, dd MMM yyyy" ;      /**<Date format as we display in list*/
     public static final String DisplayTimeFormat = "HH:mm";  /**<Format that we use for time*/
-    
+    private final String mLastUpdatedString;
     private LayoutInflater mLayoutInflater; // inflates our views
     private int mTitleColumn;       // Column index of title
     private int mDateColumn;        // Column index of date
@@ -34,6 +34,7 @@ public class FeedDataAdapter extends CursorAdapter
         mDateColumn  = c.getColumnIndex(FeedDatabase.COLUMN_DATE);
         mCategoryColumn = c.getColumnIndex(FeedDatabase.COLUMN_CATEGORY);
         mStateColumn = c.getColumnIndex(FeedDatabase.COLUMN_REGION);
+        mLastUpdatedString = context.getString(R.string.lastUpdated);
     }
 
     /**
@@ -55,7 +56,7 @@ public class FeedDataAdapter extends CursorAdapter
         titleView.setText(title);
         String dateFormat = CalendarUtils.getDateFormatForState(cursor.getInt(mStateColumn));
         dateView.setText(CalendarUtils.convertDate(date,dateFormat,DisplayDateFormat));
-        timeView.setText(CalendarUtils.convertDate(date, dateFormat, DisplayTimeFormat));
+        timeView.setText(mLastUpdatedString + CalendarUtils.convertDate(date, dateFormat, DisplayTimeFormat));
         categoryView.setText(category);
     }
 
