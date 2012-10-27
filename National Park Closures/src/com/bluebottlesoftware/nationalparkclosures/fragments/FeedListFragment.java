@@ -64,7 +64,7 @@ public class FeedListFragment extends ListFragment
     {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mDb = new DatabaseHelper(getActivity()).getReadableDatabase();
+        mDb = new DatabaseHelper(getActivity()).getWritableDatabase();
         setHasOptionsMenu(true);
     }
     
