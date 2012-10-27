@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,6 +70,10 @@ public class FeedListFragment extends ListFragment
         @Override
         public boolean onQueryTextChange(String searchString)
         {
+            if(!TextUtils.isEmpty(searchString))
+            {
+                setEmptyText(getString(R.string.noEventsFound));    // Handles the case where refresh has the alternate empty text
+            }
             updateListViewForSearch(searchString);
             return true;
         }
@@ -92,7 +97,7 @@ public class FeedListFragment extends ListFragment
             return true;
         }
     };
-    
+
     /**
      * Creates an instance with the given region
      * @param region
@@ -323,7 +328,8 @@ public class FeedListFragment extends ListFragment
             mRefreshMenuItem.setActionView(null);
             if(result)
             {
-                // Need to udpate the database table with the last update time for this region
+                // Need to udpate the database table with the last update time for this region but only if the region is still the same
+                // as it was when we started the search
                 FeedDatabase.setLastUpdateTimeForRegion(mDb,mRegion,System.currentTimeMillis());
             }
             else

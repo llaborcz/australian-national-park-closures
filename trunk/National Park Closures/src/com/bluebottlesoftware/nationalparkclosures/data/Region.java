@@ -25,7 +25,7 @@ public class Region
 
     private static final String NswBaseUrl = "http://environment.nsw.gov.au";
     
-    public static String getFeedForStateOrRegion(int stateOrRegion) throws IllegalArgumentException
+    public static String getFeedForRegion(int stateOrRegion) throws IllegalArgumentException
     {
         String url;
         switch(stateOrRegion)

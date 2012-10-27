@@ -40,21 +40,22 @@ public class FeedReader
     
     /**
      * Returns a new instance of a FeedReader that is used to fetch a particular instance
-     * @param state
+     * @param region
      * @return
      * @throws MalformedURLException 
      */
-    public static FeedReader createInstance(int state) throws MalformedURLException, IllegalArgumentException
+    public static FeedReader createInstance(int region) throws MalformedURLException, IllegalArgumentException
     {
         FeedReader reader = null;
-        switch(state)
+        switch(region)
         {
         case Region.Nsw:
-            reader = new FeedReader(new URL(Region.getFeedForStateOrRegion(state)), DataConsumerFactory.createDataConsumer(state));
+        case Region.Qld:
+            reader = new FeedReader(new URL(Region.getFeedForRegion(region)), DataConsumerFactory.createDataConsumer(region));
             break;
             
         default:
-            throw new IllegalArgumentException("State " + state + " not supported");
+            throw new IllegalArgumentException("Region " + region + " not supported");
         }
         
         return reader;

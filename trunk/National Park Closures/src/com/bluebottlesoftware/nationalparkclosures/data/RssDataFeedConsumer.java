@@ -16,7 +16,7 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedParser;
 /**
  * Class that is responsible for updating the database with the information from the NSW national parks feed 
  */
-class NswDataConsumer implements DataConsumer
+class RssDataFeedConsumer implements DataConsumer
 {
     /**
      * Creates the feed items that represents the entries in the given NSW datafeed

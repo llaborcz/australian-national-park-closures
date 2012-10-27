@@ -36,7 +36,7 @@ public class FeedReaderTest extends ActivityTestCase
         FeedReader reader  = null;
         try
         {
-            reader = FeedReader.createInstance(Region.Qld);
+            reader = FeedReader.createInstance(Region.Sa);
         }
         catch(IllegalArgumentException e)
         {
@@ -52,9 +52,24 @@ public class FeedReaderTest extends ActivityTestCase
      */
     public void testNswReaderCreation() throws MalformedURLException
     {
+        innerTestReaderCreation(Region.Nsw);
+    }
+    
+    public void testQldReaderCreation() throws MalformedURLException, IllegalArgumentException
+    {
+        innerTestReaderCreation(Region.Qld);
+    }
+    
+    private void innerTestReaderCreation(int region) throws MalformedURLException, IllegalArgumentException
+    {
         FeedReader reader = null;
-        reader = FeedReader.createInstance(Region.Nsw);
+        reader = FeedReader.createInstance(region);
         assertFalse(reader == null);
+    }
+    
+    public void testQldReaderFetch() throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        innerTestRegionFetch(Region.Qld);
     }
     
     /**
@@ -66,7 +81,12 @@ public class FeedReaderTest extends ActivityTestCase
      */
     public void testNswReaderFetch() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
-        FeedReader reader = FeedReader.createInstance(Region.Nsw);
+        innerTestRegionFetch(Region.Nsw);
+    }
+    
+    private void innerTestRegionFetch(int region) throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        FeedReader reader = FeedReader.createInstance(region);
         List<FeedItem> items = reader.connectAndGetFeedItems();
         for(FeedItem item : items)
         {
@@ -81,14 +101,24 @@ public class FeedReaderTest extends ActivityTestCase
      * @throws SAXException 
      * @throws XPathExpressionException 
      */
-    public void testReadFromNetworkAndWriteToDatbase() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    public void testReadFromNetworkAndWriteToDatbaseNsw() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        innerTestReadFromNetworkAndWriteToDatabase(Region.Nsw);
+    }
+    
+    public void testReadFromNetworkAndWriteToDatbaseQld() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        innerTestReadFromNetworkAndWriteToDatabase(Region.Qld);
+    }
+    
+    private void innerTestReadFromNetworkAndWriteToDatabase(int region) throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = ClosureDatabaseTest.getEmptyDatabase(this); // We've got an empty database
-        FeedReader reader = FeedReader.createInstance(Region.Nsw);
+        FeedReader reader = FeedReader.createInstance(region);
         List<FeedItem> items = reader.connectAndGetFeedItems();
         
-        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
+        FeedDatabase.updateDatabaseWithTransaction(db, items, region);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, region);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);

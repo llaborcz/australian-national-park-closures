@@ -18,7 +18,7 @@ import com.bluebottlesoftware.nswnpclosures.test.R;
 
 import android.test.ActivityTestCase;
 
-public class NswDataConsumerTest extends ActivityTestCase
+public class RssDataFeedConsumerTest extends ActivityTestCase
 {
     /**
      * Tests that the consumer returns a list of items corresponding to the data set
@@ -91,5 +91,13 @@ public class NswDataConsumerTest extends ActivityTestCase
         assertEquals("", value);
         value = item.getCategory();
         assertNotSame("",value);
+    }
+    
+    public void testQldFeedCountCorrect() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.qldparkalerts);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Qld);
+        List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
+        assertEquals(TestConstants.NumQldValidEntries, items.size());
     }
 }

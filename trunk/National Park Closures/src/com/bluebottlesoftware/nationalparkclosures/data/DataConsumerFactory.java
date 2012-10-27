@@ -13,7 +13,8 @@ public class DataConsumerFactory
         switch(state)
         {
         case Region.Nsw:
-            consumer = new NswDataConsumer();
+        case Region.Qld:
+            consumer = new RssDataFeedConsumer();
             break;
             
         default:
