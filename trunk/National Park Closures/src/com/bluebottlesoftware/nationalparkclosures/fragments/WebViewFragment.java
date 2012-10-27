@@ -71,7 +71,7 @@ public class WebViewFragment extends Fragment
                 if(dbRowId != 0)
                 {
                     DatabaseHelper helper = new DatabaseHelper(getActivity());
-                    SQLiteDatabase db = helper.getReadableDatabase();
+                    SQLiteDatabase db = helper.getWritableDatabase();
                     String link = FeedDatabase.getLinkForEntry(db,dbRowId);
                     if(link != null)
                     {
@@ -87,7 +87,7 @@ public class WebViewFragment extends Fragment
             case R.id.menu_shareArticle:
                 DatabaseHelper helper = new DatabaseHelper(getActivity());
                 long dbRowId = getArguments().getLong(KEY_DBROWID);
-                SQLiteDatabase db   = helper.getReadableDatabase();
+                SQLiteDatabase db   = helper.getWritableDatabase();
                 String description  = FeedDatabase.getDescriptionForEntry(db, getArguments().getLong(KEY_DBROWID));
                 String title        = FeedDatabase.getTitleForEntry(db, dbRowId);
                 db.close();
@@ -111,7 +111,7 @@ public class WebViewFragment extends Fragment
             int region = getArguments().getInt(KEY_REGION);
             // We've been told to load a description from the database
             DatabaseHelper helper = new DatabaseHelper(getActivity());
-            SQLiteDatabase db   = helper.getReadableDatabase();
+            SQLiteDatabase db   = helper.getWritableDatabase();
             String description  = FeedDatabase.getDescriptionForEntry(db, dbRowId);
             db.close();
             webView.loadDataWithBaseURL(Region.getBaseUrlForRegion(region), description, MimeTypeHtml, Utf8Encoding, "");
