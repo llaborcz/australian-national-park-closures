@@ -73,15 +73,26 @@ public class ClosureDatabaseTest extends ActivityTestCase
      * @throws IOException
      * @throws ParserConfigurationException
      */
-    public void testInsertIntoDatabaseWithTransaction() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    public void testInsertIntoDatabaseWithTransactionNsw() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
+        innerTestInsertIntoDatabaseWithTransaction(stream,Region.Nsw, TestConstants.NumNswValidEntries);
+    }
+    
+    public void testInsertIntoDatabaseWithTransactionQld() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.qldparkalerts);
+        innerTestInsertIntoDatabaseWithTransaction(stream,Region.Qld, TestConstants.NumQldValidEntries);
+    }
+    
+    private void innerTestInsertIntoDatabaseWithTransaction(InputStream stream, int region,int size) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         SQLiteDatabase db = getEmptyDatabase(this);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
-        InputStream  stream   = getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(region);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
-        assertEquals(TestConstants.NumNswValidEntries,items.size());
-        FeedDatabase.updateDatabaseWithTransaction(db, items, Region.Nsw);
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, Region.Nsw);
+        assertEquals(size,items.size());
+        FeedDatabase.updateDatabaseWithTransaction(db, items, region);
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, region);
         
         // Now make sure that what we read out corresponds exactly to  the contents of the list
         TestUtils.matchDatasets(c,items);

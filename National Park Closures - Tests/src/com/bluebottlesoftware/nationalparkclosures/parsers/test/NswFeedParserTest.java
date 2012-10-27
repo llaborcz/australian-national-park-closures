@@ -39,9 +39,21 @@ public class NswFeedParserTest extends ActivityTestCase
      * @throws IOException
      * @throws ParserConfigurationException
      */
-    public void testBasicParse() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    public void testBasicParseNsw() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed);
+        innerTestBasicParse(stream,TestConstants.NumNswValidEntries);
+    }
+    
+    public void testBasicParseQld() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.qldparkalerts);
+        innerTestBasicParse(stream,TestConstants.NumQldValidEntries);
+    }
+    
+    private void innerTestBasicParse(InputStream stream,int itemCount) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        
         FeedParser parser = FeedParser.createFromStream(stream);
         List<FeedItem> items = parser.getFeedItems();
         for(FeedItem item : items)
@@ -66,7 +78,7 @@ public class NswFeedParserTest extends ActivityTestCase
             
             Log.d("item",item.toString());
         }
-        assertEquals(TestConstants.NumNswValidEntries,items.size());
+        assertEquals(itemCount,items.size());
     }
     
     public void testParseOfCorruptFile()
