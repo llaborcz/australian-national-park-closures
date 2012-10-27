@@ -9,6 +9,7 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 /**
  * Database that stores information from the various closure RSS feeds
@@ -74,7 +75,7 @@ public class FeedDatabase
         db.execSQL(DROP_REGION_TABLE);
     }
 
-    public Cursor getFeedItemsForState(SQLiteDatabase db,int state)
+    public static Cursor getFeedItemsForState(SQLiteDatabase db,int state)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
         Cursor c = db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null,null,null);
@@ -272,5 +273,28 @@ public class FeedDatabase
         values.put(COLUMN_REGION, region);
         values.put(COLUMN_LAST_REFRESH, time);
         db.insertWithOnConflict(REGION_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    /**
+     * Returns a cursor that corresponds to the search target for the given region
+     * @param mDb
+     * @param mRegion
+     * @param searchString
+     * @return
+     */
+    public static Cursor searchForMatches(SQLiteDatabase db, int region,String searchString)
+    {
+        Cursor cursor;
+        if(TextUtils.isEmpty(searchString))
+        {
+            cursor = getFeedItemsForState(db,region);
+        }
+        else
+        {
+            StringBuilder query = new StringBuilder(COLUMN_REGION).append(" = ? ").append(" and ").append(COLUMN_TITLE).append(" like '%").append(searchString).append("%'");
+            StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
+            cursor = db.query(FEED_TABLE, null, query.toString(), new String[]{Integer.toString(region)}, null, null,orderByClause.toString());
+        }
+        return cursor;
     }
 }

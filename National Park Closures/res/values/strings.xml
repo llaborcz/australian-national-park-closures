@@ -15,7 +15,7 @@
     <string name="dateTest">Wed, 12 Sep 2012</string>
     <string name="timeTest">13:00</string>
     <string name="categoryTest">Closed areas, backburning</string>
-    <string name="noEventsFound">No events found</string>
+    <string name="noEventsFound">No results found</string>
     <string name="refresh">Refresh</string>
     <string name="loading">Loading %1$s events&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>

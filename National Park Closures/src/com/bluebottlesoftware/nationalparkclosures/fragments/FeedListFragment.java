@@ -8,7 +8,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
-
 import com.bluebottlesoftware.nationalparkclosures.data.FeedDataAdapter;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
@@ -30,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 /**
@@ -47,7 +47,56 @@ public class FeedListFragment extends ListFragment
     private MenuItem             mRefreshMenuItem;
     private long                 mCurrentSelectedRowId = 0;
     private int                  mCurrentSelectedIndex = 0;
+    private String               mCurrentSearch;    // Our current search query
+    
+    /**
+     * This handles our search callbacks
+     */
+    private final SearchView.OnQueryTextListener mQueryListeneter= new SearchView.OnQueryTextListener()
+    {
+        /**
+         * Called when the search is submitted - does nothing since we just rely on the text change callback
+         */
+        @Override
+        public boolean onQueryTextSubmit(String query)
+        {
+            return false;
+        }
+        
+        /**
+         * Called when the search text changes - 
+         */
+        @Override
+        public boolean onQueryTextChange(String searchString)
+        {
+            mCurrentSearch = searchString;
+            Cursor cursor = FeedDatabase.searchForMatches(mDb,mRegion,mCurrentSearch);
+            setListAdapter(new FeedDataAdapter(getActivity(),cursor, 0));
+            return true;
+        }
+    };
 
+    /**
+     * This class is needed because on ICS the SearchView.onCloseListener is not invoked
+     */
+    private final MenuItem.OnActionExpandListener mSearchOpenCloseListener = new MenuItem.OnActionExpandListener()
+    {
+        @Override
+        public boolean onMenuItemActionExpand(MenuItem item)
+        {
+            return true;
+        }
+        
+        @Override
+        public boolean onMenuItemActionCollapse(MenuItem item)
+        {
+            Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
+            setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
+            mCurrentSearch = null;
+            return true;
+        }
+    };
+    
     /**
      * Creates an instance with the given region
      * @param region
@@ -92,9 +141,9 @@ public class FeedListFragment extends ListFragment
             setEmptyText(getResources().getString(R.string.noEventsFound));
         }
         
-        Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
-        setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
-
+        Cursor cursor = FeedDatabase.searchForMatches(mDb,mRegion,mCurrentSearch);
+        setListAdapter(new FeedDataAdapter(getActivity(),cursor, 0));
+        
         if(savedInstanceState != null)
         {
             mCurrentSelectedIndex = savedInstanceState.getInt(CURRENT_CHOICE_KEY);
@@ -127,11 +176,18 @@ public class FeedListFragment extends ListFragment
         return bDualPane;
     }
 
+    /**
+     * Registers the search callback to the searchview
+     */
     @Override
     public void onCreateOptionsMenu (Menu menu, MenuInflater inflater)
     {
         super.onCreateOptionsMenu(menu,inflater);
         inflater.inflate(R.menu.activity_main, menu);
+        MenuItem searchMenu = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView)searchMenu.getActionView();
+        searchView.setOnQueryTextListener(mQueryListeneter);
+        searchMenu.setOnActionExpandListener(mSearchOpenCloseListener);
     }
 
     @Override
