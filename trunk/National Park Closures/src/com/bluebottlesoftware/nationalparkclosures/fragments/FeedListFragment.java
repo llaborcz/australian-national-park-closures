@@ -69,9 +69,7 @@ public class FeedListFragment extends ListFragment
         @Override
         public boolean onQueryTextChange(String searchString)
         {
-            mCurrentSearch = searchString;
-            Cursor cursor = FeedDatabase.searchForMatches(mDb,mRegion,mCurrentSearch);
-            setListAdapter(new FeedDataAdapter(getActivity(),cursor, 0));
+            updateListViewForSearch(searchString);
             return true;
         }
     };
@@ -90,9 +88,7 @@ public class FeedListFragment extends ListFragment
         @Override
         public boolean onMenuItemActionCollapse(MenuItem item)
         {
-            Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
-            setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
-            mCurrentSearch = null;
+            updateListViewForSearch(null);
             return true;
         }
     };
@@ -141,8 +137,7 @@ public class FeedListFragment extends ListFragment
             setEmptyText(getResources().getString(R.string.noEventsFound));
         }
         
-        Cursor cursor = FeedDatabase.searchForMatches(mDb,mRegion,mCurrentSearch);
-        setListAdapter(new FeedDataAdapter(getActivity(),cursor, 0));
+        updateListViewForSearch(mCurrentSearch);
         
         if(savedInstanceState != null)
         {
@@ -344,7 +339,17 @@ public class FeedListFragment extends ListFragment
      */
     private void showRefreshError()
     {
-        Toast toast = Toast.makeText(getActivity(), R.string.refreshError, Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(getActivity(), R.string.refreshError, Toast.LENGTH_SHORT).show();
+    }
+    
+    /**
+     * Single point where the listview gets updated. If search != mCurrentSearch only then does the view get updated
+     * @param search
+     */
+    private void updateListViewForSearch(String search)
+    {
+        Cursor cursor = FeedDatabase.searchForMatches(mDb,mRegion,search);
+        setListAdapter(new FeedDataAdapter(getActivity(),cursor, 0));
+        mCurrentSearch = search;
     }
 }
