@@ -17,6 +17,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import android.util.Log;
+
 import com.bluebottlesoftware.nationalparkclosures.Util.XmlUtils;
 
 /**
@@ -31,6 +33,8 @@ public class FeedParser
     private static final String Guid  = "guid";
     private static final String Category = "category";
     private static final String Description = "description";
+    private static final String GeoLat  = "lat";
+    private static final String GeoLong = "long";
     
     private ArrayList<FeedItem> m_items = new ArrayList<FeedItem>();    // Stores our list of nodes
     
@@ -53,6 +57,7 @@ public class FeedParser
         FeedParser parser = new FeedParser();
         Document xmlDocument = XmlUtils.readXml(stream);
         XPath xpath = XPathFactory.newInstance().newXPath();
+        xpath.setNamespaceContext(new GeoNamespaceContext());
         parser.parse(xmlDocument,xpath);
         return parser;
     }
@@ -95,6 +100,8 @@ public class FeedParser
         String link  = (String) xpath.evaluate(Link, node,XPathConstants.STRING);
         String guid  = (String) xpath.evaluate(Guid, node,XPathConstants.STRING);
         String description = (String) xpath.evaluate(Description, node,XPathConstants.STRING);
+        String geoLat  = (String) xpath.evaluate(GeoLat, node,XPathConstants.STRING);
+        String geoLong = (String) xpath.evaluate(GeoLong, node,XPathConstants.STRING);
         NodeList categories = (NodeList) xpath.evaluate(Category, node,XPathConstants.NODESET);
         ArrayList<String> categoryArray = new ArrayList<String>();
         for(int i=0;i<categories.getLength();i++)
@@ -104,7 +111,8 @@ public class FeedParser
             categoryArray.add(cat);
         }
         
-        FeedItem item = new FeedItem(date,title,link,guid,description,categoryArray);
+        FeedItem item = new FeedItem(date,title,link,guid,description,categoryArray,geoLat,geoLong);
+        Log.d("item",item.toString());
         return item;
     }
 }

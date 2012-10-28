@@ -1,5 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.fragments.WebViewFragment;
@@ -38,7 +39,8 @@ public class DetailsViewActivity extends Activity
         WebViewFragment webViewFragment = (WebViewFragment) fm.findFragmentById(R.id.webviewFragmentContent);
         if(webViewFragment == null)
         {
-            webViewFragment = WebViewFragment.newInstance(dbRowId);
+            int region = getIntent().getIntExtra(WebViewFragment.KEY_REGION,Region.Nsw);
+            webViewFragment = WebViewFragment.newInstance(dbRowId,region);
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.webviewFragmentContent, webViewFragment);
             ft.commit();  

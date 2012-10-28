@@ -51,6 +51,7 @@ public class FeedReader
         {
         case Region.Nsw:
         case Region.Qld:
+        case Region.Wa:
             reader = new FeedReader(new URL(Region.getFeedForRegion(region)), DataConsumerFactory.createDataConsumer(region));
             break;
             

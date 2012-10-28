@@ -56,7 +56,7 @@ public class FeedListActivity extends Activity
             WebViewFragment webViewFragment = (WebViewFragment)fm.findFragmentById(R.id.webFragmentContent);
             if(webViewFragment == null)
             {
-                webViewFragment = WebViewFragment.newInstance(0);
+                webViewFragment = WebViewFragment.newInstance(0,0);
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.add(R.id.webFragmentContent, webViewFragment);
                 ft.commit();

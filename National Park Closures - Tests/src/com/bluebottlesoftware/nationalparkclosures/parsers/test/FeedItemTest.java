@@ -28,7 +28,7 @@ public class FeedItemTest extends TestCase
     {
         ArrayList<String> categories = new ArrayList<String>();
         categories.add(category);
-        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, description, categories);
+        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, description,categories,null,null );
         
         String readDate = item.getDate();
         assertTrue(nswTestDate1.equals(readDate));
@@ -58,7 +58,7 @@ public class FeedItemTest extends TestCase
      */
     public void testNullParameters() throws ParseException
     {
-        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null);
+        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null,null,null);
         
         String readDate = item.getDate();
         assertTrue(nswTestDate1.equals(readDate));
@@ -85,7 +85,7 @@ public class FeedItemTest extends TestCase
      */
     public void testNswDateParse() throws ParseException
     {
-        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null);
+        FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null,null,null);
         
         Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(Region.Nsw));
         int dayOfWeek  = cal.get(Calendar.DAY_OF_WEEK);
@@ -117,7 +117,7 @@ public class FeedItemTest extends TestCase
     {
         final String nswMalformedDate1 = "24 Sep 1908"; // Date that is not of the expected format
 
-        FeedItem item = new FeedItem(nswMalformedDate1,title, link, guid, null, null);
+        FeedItem item = new FeedItem(nswMalformedDate1,title, link, guid, null, null,"","");
         Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(Region.Nsw));
         assertNotNull(cal);
         

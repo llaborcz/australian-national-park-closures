@@ -19,7 +19,8 @@ import com.bluebottlesoftware.nationalparkclosures.data.Region;
 public class CalendarUtils
 {   
     public static final String NswDateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by NSW feed*/
-    public static final String QldDateFormat = "E, dd MMM yyyy HH:mm:ss";     /**<Date format used by QLD feed*/
+    public static final String QldDateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by QLD feed*/
+    public static final String WaDateFormat  = "E, dd MMM yyyy HH:mm:ss";     /**<Date format used by WA  feed*/
     
     public static String getDateFormatForState(int state)
     {
@@ -29,8 +30,13 @@ public class CalendarUtils
         case Region.Nsw:
             dateFormat = NswDateFormat;
             break;
+            
         case Region.Qld:
             dateFormat = QldDateFormat;
+            break;
+            
+        case Region.Wa:
+            dateFormat = WaDateFormat;
             break;
             
         default:

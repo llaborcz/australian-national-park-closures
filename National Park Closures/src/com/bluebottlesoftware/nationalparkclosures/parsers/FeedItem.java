@@ -19,14 +19,19 @@ public class FeedItem
     private String m_date;
     private String m_guid;
     private String m_category;
+    private String m_geoLat;
+    private String m_geoLong;
     
-    public FeedItem(String date, String title, String link, String guid,String description,List<String> categories)
+    public FeedItem(String date, String title, String link, String guid,String description,List<String> categories,String geoLat,String geoLong)
     {
         m_date  = date == null ? "" : date;
         m_title = title == null ? "": title;
         m_link  = link == null ? "" : link;
         m_guid  = guid == null ? "" : guid;
         m_description = description == null ? "" : description;
+        m_geoLat  = geoLat;
+        m_geoLong = geoLong;
+        
         if(categories == null || categories.size() == 0)
         {
             m_category = "";
@@ -75,9 +80,9 @@ public class FeedItem
      * @param rowId
      * @throws ParseException 
      */
-    public FeedItem(String date,String title, String link, String guid,String description,List<String> categories,long rowId)
+    public FeedItem(String date,String title, String link, String guid,String description,List<String> categories,String geoLat,String geoLong,long rowId)
     {
-        this(date,title,link,guid,description,categories);
+        this(date,title,link,guid,description,categories,geoLat,geoLong);
         m_rowId = rowId;
     }
     
@@ -141,6 +146,16 @@ public class FeedItem
         this.m_category = category;
     }
 
+    public String getLatitude()
+    {
+        return m_geoLat;
+    }
+    
+    public String getLongtitude()
+    {
+        return m_geoLong;
+    }
+    
     /**
      * Returns rowid in database or -1 if this wasn't read from the database
      * @return
@@ -153,8 +168,9 @@ public class FeedItem
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder(m_date.length() + m_guid.length() + m_category.length() + m_link.length() + 8);
-        sb.append(m_title).append(' ').append(m_date).append(' ').append(m_link).append(' ').append(m_guid).append(' ').append(m_category);
+        StringBuilder sb = new StringBuilder(m_title).
+                append(' ').append(m_date).append(' ').append(m_link).append(' ').append(m_guid).append(' ').append(m_category).
+                append(m_geoLat).append(' ').append(m_geoLong);
         return sb.toString();
     }
 
