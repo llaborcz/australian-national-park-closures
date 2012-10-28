@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,11 +32,17 @@ public class WebViewFragment extends Fragment
     private static final String MimeTypeHtml = "text/html";
     private static final String Utf8Encoding = "utf-8";
     
-    public static WebViewFragment newInstance(long dbRowId)
+    private long mDbRowId;  // row id of content being displayed
+    private int  mRegion;   // region
+    private String mLat;    // geo information
+    private String mLong;   // geo information
+    
+    public static WebViewFragment newInstance(long dbRowId,int region)
     {
         WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();
         args.putLong(KEY_DBROWID, dbRowId);
+        args.putInt(KEY_REGION, region);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,16 +52,27 @@ public class WebViewFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mDbRowId = getArguments().getLong(KEY_DBROWID);
+        mRegion  = getArguments().getInt(KEY_REGION);
     }
     
     @Override
     public void onCreateOptionsMenu (Menu menu, MenuInflater inflater)
     {
         super.onCreateOptionsMenu(menu,inflater);
-        // If we have active content we want to add in the "View in browser" menu item
-        if(getArguments().getLong(KEY_DBROWID) != 0)
+        if(mDbRowId != 0)
         {
             inflater.inflate(R.menu.webviewmenu, menu);
+            // If we've got no geo information for the currently viewed event we hide the map button
+            DatabaseHelper helper = new DatabaseHelper(getActivity());
+            SQLiteDatabase db = helper.getWritableDatabase();
+            mLat = FeedDatabase.getLatForEntry(db, mDbRowId);
+            mLong= FeedDatabase.getLongForEntry(db, mDbRowId);
+            if(TextUtils.isEmpty(mLat) || TextUtils.isEmpty(mLong))
+            {
+                menu.removeItem(R.id.menu_showOnMap);
+            }
+            db.close();
         }
     }
     
@@ -62,16 +80,17 @@ public class WebViewFragment extends Fragment
     public boolean onOptionsItemSelected (MenuItem item)
     {
         boolean bResult = false;
+        long dbRowId = getArguments().getLong(KEY_DBROWID);
+        DatabaseHelper helper = new DatabaseHelper(getActivity());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        
         switch(item.getItemId())
         {
             case R.id.menu_viewInBrowser:
             {
                 // Create an intent with the "link" of the selected item here
-                long dbRowId = getArguments().getLong(KEY_DBROWID);
                 if(dbRowId != 0)
                 {
-                    DatabaseHelper helper = new DatabaseHelper(getActivity());
-                    SQLiteDatabase db = helper.getWritableDatabase();
                     String link = FeedDatabase.getLinkForEntry(db,dbRowId);
                     if(link != null)
                     {
@@ -80,23 +99,20 @@ public class WebViewFragment extends Fragment
                         intent.setData(Uri.parse(link));
                         startActivity(intent);
                     }
-                    db.close();
                 }
             }
             
             case R.id.menu_shareArticle:
-                DatabaseHelper helper = new DatabaseHelper(getActivity());
-                long dbRowId = getArguments().getLong(KEY_DBROWID);
-                SQLiteDatabase db   = helper.getWritableDatabase();
                 String description  = FeedDatabase.getDescriptionForEntry(db, getArguments().getLong(KEY_DBROWID));
                 String title        = FeedDatabase.getTitleForEntry(db, dbRowId);
-                db.close();
                 Intent shareIntent = new Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"));
                 shareIntent.putExtra(Intent.EXTRA_TEXT,Html.fromHtml(description));
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubjectPreamble)+title);
                 startActivity(shareIntent);
                 break;
         }
+        
+        db.close();
         return bResult;
     }
     
@@ -105,16 +121,15 @@ public class WebViewFragment extends Fragment
     {
         View v = inflater.inflate(R.layout.webviewfragmentlayout, group, false);
         WebView webView  = (WebView) v.findViewById(R.id.webview);
-        long dbRowId = getArguments().getLong(KEY_DBROWID);
-        if(0 != dbRowId)
+        if(0 != mDbRowId)
         {
-            int region = getArguments().getInt(KEY_REGION);
             // We've been told to load a description from the database
             DatabaseHelper helper = new DatabaseHelper(getActivity());
             SQLiteDatabase db   = helper.getWritableDatabase();
-            String description  = FeedDatabase.getDescriptionForEntry(db, dbRowId);
+            String description  = FeedDatabase.getDescriptionForEntry(db, mDbRowId);
             db.close();
-            webView.loadDataWithBaseURL(Region.getBaseUrlForRegion(region), description, MimeTypeHtml, Utf8Encoding, "");
+            String baseUrl = Region.getBaseUrlForRegion(mRegion);
+            webView.loadDataWithBaseURL(baseUrl, description, MimeTypeHtml, Utf8Encoding, "");
         }
         return v;
     }

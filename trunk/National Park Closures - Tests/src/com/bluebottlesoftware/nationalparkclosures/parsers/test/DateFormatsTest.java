@@ -28,6 +28,13 @@ public class DateFormatsTest extends TestCase
         testValidDates(inputDataSet,outputDataSet,CalendarUtils.QldDateFormat,FeedDataAdapter.DisplayDateFormat);
     }
     
+    public void testWaDates()
+    {
+        String [] inputDataSet  = {"Sun, 28 Oct 2012 07:57:19 GMT","Sun, 28 Oct 2012 07:25:09 GMT","Sun, 28 Oct 2012 07:06:56 GMT"};
+        String [] outputDataSet = {"Sun, 28 Oct 2012","Sun, 28 Oct 2012","Sun, 28 Oct 2012"};
+        testValidDates(inputDataSet,outputDataSet,CalendarUtils.WaDateFormat,FeedDataAdapter.DisplayDateFormat);
+    }
+    
     private void testValidDates(String [] inputDataSet,String [] outputDataSet,String dateFormat,String displayDateFormat)
     {
         int i = 0;
@@ -66,6 +73,13 @@ public class DateFormatsTest extends TestCase
         String [] inputDataSet  = {"Fri, 26 Oct 2012 23:00:00 +1000","Thu, 25 Oct 2012 06:34:00 +1000","Thu, 25 Oct 2012 00:00:00 +1000"};
         String [] outputDataSet = {"23:00","06:34","00:00"};
         innerTestTimes(inputDataSet, outputDataSet, CalendarUtils.QldDateFormat, FeedDataAdapter.DisplayTimeFormat);
+    }
+    
+    public void testWaTimes()
+    {
+        String [] inputDataSet  = {"Sun, 28 Oct 2012 07:57:19 GMT","Sun, 28 Oct 2012 07:25:09 GMT","Sun, 28 Oct 2012 07:06:56 GMT"};
+        String [] outputDataSet = {"07:57","07:25","07:06"};
+        innerTestTimes(inputDataSet, outputDataSet, CalendarUtils.WaDateFormat, FeedDataAdapter.DisplayTimeFormat);
     }
     
     private void innerTestTimes(String [] inputDataSet, String [] outputDataSet,String intputDateFormat,String displayTimeFormat)

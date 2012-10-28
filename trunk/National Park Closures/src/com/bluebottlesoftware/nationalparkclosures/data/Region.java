@@ -22,8 +22,10 @@ public class Region
      */
     private static final String NswFeedAddress = "http://www.environment.nsw.gov.au/nationalparks/rss/fireclosure.aspx";
     private static final String QldFeedAddress = "http://www.nprsr.qld.gov.au/xml/rss/parkalerts.xml";
-
+    private static final String WaFeedAddress  = "http://www.fesa.wa.gov.au/alerts/_layouts/fesa.sps2010.internet/fesalistfeed.aspx?List=e2064c8d-e111-41e1-8925-d249098d1a5e&View=b26d1f1b-0afc-4a65-8592-1c31c3af1323";
+    
     private static final String NswBaseUrl = "http://environment.nsw.gov.au";
+    private static final String WaBaseUrl  = "http://www.fesa.wa.gov.au";
     
     public static String getFeedForRegion(int stateOrRegion) throws IllegalArgumentException
     {
@@ -36,6 +38,10 @@ public class Region
             
         case Qld:
             url = QldFeedAddress;
+            break;
+            
+        case Wa:
+            url = WaFeedAddress;
             break;
             
         default:
@@ -93,11 +99,16 @@ public class Region
      */
     public static String getBaseUrlForRegion(int region)
     {
-        String baseUrl = "fake://notneeded";
+        String baseUrl = null;
         switch(region)
         {
         case Nsw:
             baseUrl = NswBaseUrl;
+            break;
+            
+        case Wa:
+            baseUrl = WaBaseUrl;
+            break;
         }
         return baseUrl;
     }

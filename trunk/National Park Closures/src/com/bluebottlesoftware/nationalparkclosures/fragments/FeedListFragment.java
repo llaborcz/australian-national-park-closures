@@ -130,7 +130,6 @@ public class FeedListFragment extends ListFragment
     public void onActivityCreated(Bundle savedInstanceState) 
     {
         super.onActivityCreated(savedInstanceState);
-        
         // If this is the first time that we've been loaded and we've never refreshed we need to display an "Updating..." message
         long lastUpdate = FeedDatabase.getLastUpdateTimeForRegion(mDb, mRegion);
         if(0 == lastUpdate)
@@ -261,7 +260,7 @@ public class FeedListFragment extends ListFragment
             if(detailsFragment != null && detailsFragment.getShownId() != id)
             {
                 // Create a new details fragment
-                detailsFragment = WebViewFragment.newInstance(id);
+                detailsFragment = WebViewFragment.newInstance(id,mRegion);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.webFragmentContent, detailsFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

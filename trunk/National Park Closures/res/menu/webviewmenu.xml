@@ -9,8 +9,12 @@
      <item 
 	     android:id="@+id/menu_viewInBrowser"
 		 android:title="@string/menu_viewInBrowser"
-		 android:orderInCategory="100"
 		 android:showAsAction="never" />
  
+     <item
+         android:id="@+id/menu_showOnMap"
+         android:title="@string/menu_showOnMap"
+         android:icon="@drawable/ic_location_map"
+         android:showAsAction="ifRoom"/>
      
 </menu>

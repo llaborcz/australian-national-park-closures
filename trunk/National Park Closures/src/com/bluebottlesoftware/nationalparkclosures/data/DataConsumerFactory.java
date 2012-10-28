@@ -14,6 +14,7 @@ public class DataConsumerFactory
         {
         case Region.Nsw:
         case Region.Qld:
+        case Region.Wa:
             consumer = new RssDataFeedConsumer();
             break;
             

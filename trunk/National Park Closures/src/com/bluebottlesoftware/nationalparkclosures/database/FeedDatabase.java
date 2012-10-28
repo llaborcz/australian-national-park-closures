@@ -31,6 +31,8 @@ public class FeedDatabase
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_LAST_REFRESH = "lastrefresh";
+    public static final String COLUMN_LATITUDE   = "geoLat";
+    public static final String COLUMN_LONGTITUDE = "geoLong";
     
     // Raw SQL to create the database table
     private static final String CREATE_FEED_TABLE = 
@@ -43,8 +45,10 @@ public class FeedDatabase
         COLUMN_LINK  + " TEXT," +
         COLUMN_GUID  + " TEXT," +
         COLUMN_DESCRIPTION + " TEXT," +
-        COLUMN_CATEGORY + " TEXT);";
-        
+        COLUMN_CATEGORY + " TEXT," + 
+        COLUMN_LATITUDE + " TEXT," + 
+        COLUMN_LONGTITUDE + " TEXT);";
+    
     // Raw SQL to create the region information table
     private static final String CREATE_REGION_TABLE =
         "CREATE TABLE " + REGION_TABLE + "(" + 
@@ -147,6 +151,8 @@ public class FeedDatabase
         values.put(COLUMN_CATEGORY,item.getCategory());
         values.put(COLUMN_DATE_MS,CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(state)).getTimeInMillis());
         values.put(COLUMN_DESCRIPTION, item.getDescription());
+        values.put(COLUMN_LATITUDE, item.getLatitude());
+        values.put(COLUMN_LONGTITUDE, item.getLongtitude());
         db.insert(FEED_TABLE, null, values);
     }
     
@@ -179,7 +185,9 @@ public class FeedDatabase
             int categoryOffset = c.getColumnIndex(COLUMN_CATEGORY);
             int linkOffset = c.getColumnIndex(COLUMN_LINK);
             int descriptionOffset = c.getColumnIndex(COLUMN_DESCRIPTION);
-            int titleIndex  = c.getColumnIndex(COLUMN_TITLE);
+            int titleIndex = c.getColumnIndex(COLUMN_TITLE);
+            int latOffset  = c.getColumnIndex(COLUMN_LATITUDE);
+            int longOffset = c.getColumnIndex(COLUMN_LONGTITUDE);
             while(!c.isAfterLast())
             {
                 String date = c.getString(dateOffset);
@@ -187,9 +195,11 @@ public class FeedDatabase
                 String title = c.getString(titleIndex);
                 String category = c.getString(categoryOffset);
                 String link = c.getString(linkOffset);
+                String latitude   = c.getString(latOffset);
+                String longtitude = c.getString(longOffset);
                 String description = c.getString(descriptionOffset);
                 int rowId = c.getInt(rowIdOffset);
-                FeedItem item = new FeedItem(date, title, link, guid, description, FeedItem.getCategoriesFromString(category), rowId);
+                FeedItem item = new FeedItem(date, title, link, guid, description, FeedItem.getCategoriesFromString(category), latitude,longtitude,rowId);
                 items.add(item);
                 c.moveToNext();
             }
@@ -231,6 +241,16 @@ public class FeedDatabase
         return getStringEntry(db, rowId, COLUMN_TITLE);
     }
 
+    public static String getLatForEntry(SQLiteDatabase db,long rowId)
+    {
+        return getStringEntry(db, rowId, COLUMN_LATITUDE);
+    }
+    
+    public static String getLongForEntry(SQLiteDatabase db,long rowId)
+    {
+        return getStringEntry(db, rowId, COLUMN_LONGTITUDE);
+    }
+    
     /**
      * Returns the link for the given item
      * @param db

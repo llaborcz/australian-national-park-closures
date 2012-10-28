@@ -17,6 +17,7 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nswnpclosures.test.R;
 
 import android.test.ActivityTestCase;
+import android.text.TextUtils;
 
 public class RssDataFeedConsumerTest extends ActivityTestCase
 {
@@ -68,6 +69,19 @@ public class RssDataFeedConsumerTest extends ActivityTestCase
         assertTrue(TestConstants.SingleEntryCategory.equals(category));
     }
     
+    public void testNullLatLong() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.nswfeed_singleitem);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Nsw);
+        List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
+        assertEquals(1, items.size());    
+        FeedItem item = items.get(0);
+        String lat = item.getLatitude();
+        String longtitude = item.getLongtitude();
+        assertTrue(TextUtils.isEmpty(lat));
+        assertTrue(TextUtils.isEmpty(longtitude));
+    }
+    
     public void testTwoCategories() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.twocategories);
@@ -99,5 +113,18 @@ public class RssDataFeedConsumerTest extends ActivityTestCase
         DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Qld);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         assertEquals(TestConstants.NumQldValidEntries, items.size());
+    }
+    
+    public void testWaFeedWithGeoInformation() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    {
+        InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.wafirealerts);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Wa);
+        List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
+        FeedItem item = items.get(0);
+        String latitude   = item.getLatitude();
+        String longtitude = item.getLongtitude();
+        
+        assertTrue(!TextUtils.isEmpty(longtitude));
+        assertTrue(!TextUtils.isEmpty(latitude));
     }
 }
