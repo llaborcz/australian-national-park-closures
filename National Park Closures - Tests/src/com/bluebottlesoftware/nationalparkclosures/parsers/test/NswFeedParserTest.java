@@ -8,8 +8,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
-
-import android.renderscript.Program.TextureType;
 import android.test.ActivityTestCase;
 import android.text.TextUtils;
 import android.util.Log;
