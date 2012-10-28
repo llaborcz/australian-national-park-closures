@@ -9,7 +9,9 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import android.renderscript.Program.TextureType;
 import android.test.ActivityTestCase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
@@ -76,6 +78,11 @@ public class NswFeedParserTest extends ActivityTestCase
             String title = item.getTitle();
             assertNotNull(title);
             
+            String latitude = item.getLatitude();
+            assertTrue(TextUtils.isEmpty(latitude));
+            
+            String longtitude = item.getLongtitude();
+            assertTrue(TextUtils.isEmpty(longtitude));
             Log.d("item",item.toString());
         }
         assertEquals(itemCount,items.size());
