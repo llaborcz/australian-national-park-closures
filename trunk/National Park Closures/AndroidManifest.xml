@@ -13,6 +13,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <uses-library android:name="com.google.android.maps" />
+        
+        <!-- Activity that shows the data feed -->
         <activity
             android:name="com.bluebottlesoftware.nationalparkclosures.activities.FeedListActivity">
             <intent-filter>
@@ -21,9 +25,11 @@
             </intent-filter>
         </activity>
         
-        <activity
-            android:name="com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity" android:exported="false">
-        </activity>
+        <!-- Activity that shows the details view -->
+        <activity  android:name="com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity" android:exported="false"/>
+        
+        <!-- Activity that shows the map -->
+        <activity android:name="com.bluebottlesoftware.nationalparkclosures.activities.ShowMapActivity" android:exported="false"/>
     </application>
 
 </manifest>
