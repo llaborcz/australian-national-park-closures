@@ -317,4 +317,11 @@ public class FeedDatabase
         }
         return cursor;
     }
+    
+    public static Cursor getCursorForRowId(SQLiteDatabase db, long rowid)
+    {
+        StringBuilder query = new StringBuilder(COLUMN_ID).append(" = ?");
+        Cursor c = db.query(FEED_TABLE,null,query.toString(),new String[]{Long.toString(rowid)},null,null,null);
+        return c;
+    }
 }

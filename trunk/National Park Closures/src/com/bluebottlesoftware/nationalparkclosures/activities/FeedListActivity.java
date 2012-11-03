@@ -32,8 +32,8 @@ public class FeedListActivity extends Activity
         if(savedInstanceState == null)
         {
             // Set the region to the default region
-            mRegion = Region.Nsw;
-            setTitle(R.string.nsw);
+            mRegion = Region.Wa;
+            setTitle(R.string.wa);
         }
         else
         {

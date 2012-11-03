@@ -11,7 +11,11 @@
     <string name="menu_share">Share</string>
     <string name="menu_changeregion">Change region</string>
     <string name="menu_showOnMap">Show on map</string>
-    <!-- Some strings that are usde for testing -->
+    
+    <!-- Other strings -->
+    <string name="mapMarkerTitle">Event</string>
+        
+    <!-- Some strings that are used for testing -->
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>
     <string name="timeTest">13:00</string>
@@ -20,6 +24,7 @@
     <string name="refresh">Refresh</string>
     <string name="loading">Loading %1$s events&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>
+    <!-- End of testing strings -->
     
     <!-- Webview strings -->
     <string name="lastUpdated">Last updated:&#160;</string>
