@@ -94,6 +94,9 @@ public class FeedListFragment extends ListFragment
         public boolean onMenuItemActionCollapse(MenuItem item)
         {
             updateListViewForSearch(null);
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
             return true;
         }
     };
@@ -166,7 +169,10 @@ public class FeedListFragment extends ListFragment
         {
             mAdapter = new FeedDataAdapter(getActivity(), c, 0);
             setListAdapter(mAdapter);
-            setEmptyText(getResources().getString(R.string.noEventsFound));
+            if(mRefreshFeedTask!=null)
+            {
+                setEmptyText(getResources().getString(R.string.noEventsFound));
+            }
         }
     }
     
