@@ -29,9 +29,9 @@
     <string name="emailSubjectPreamble">Alerts for&#160;</string>
     
     <!-- Region strings -->
-    <string name="nsw">NSW</string>
-    <string name="qld">QLD</string>
-    <string name="wa">WA</string>
+    <string name="nsw">NSW National Parks</string>
+    <string name="qld">QLD National Parks</string>
+    <string name="wa">WA Fires</string>
     
     <!-- Arrray of all the regions that we know about -->
     <string-array name="regions">
