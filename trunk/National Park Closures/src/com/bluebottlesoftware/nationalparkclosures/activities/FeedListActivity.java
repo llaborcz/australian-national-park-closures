@@ -81,10 +81,10 @@ public class FeedListActivity extends Activity
         }
         mAdapter = ArrayAdapter.createFromResource(this, R.array.regions, android.R.layout.simple_spinner_dropdown_item);
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(mAdapter, mNavigationListener);
         actionBar.setTitle(null);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |ActionBar.DISPLAY_USE_LOGO);
         actionBar.setSelectedNavigationItem(mRegion);
         setContentView(R.layout.activity_main);
         FragmentManager fm = getFragmentManager();
