@@ -49,7 +49,6 @@ public class FeedListFragment extends ListFragment
     private MenuItem             mRefreshMenuItem;
     private long                 mCurrentSelectedRowId = 0;
     private int                  mCurrentSelectedIndex = 0;
-    private String               mCurrentSearch;    // Our current search query
     
     /**
      * This handles our search callbacks
@@ -98,6 +97,7 @@ public class FeedListFragment extends ListFragment
             return true;
         }
     };
+    private FeedDataAdapter mAdapter;
 
     /**
      * Creates an instance with the given region
@@ -141,9 +141,6 @@ public class FeedListFragment extends ListFragment
         {
             setEmptyText(getResources().getString(R.string.noEventsFound));
         }
-        
-        updateListViewForSearch(mCurrentSearch);
-        
         if(savedInstanceState != null)
         {
             mCurrentSelectedIndex = savedInstanceState.getInt(CURRENT_CHOICE_KEY);
@@ -160,6 +157,18 @@ public class FeedListFragment extends ListFragment
         }
     }
 
+    @Override
+    public void onViewCreated (View view, Bundle savedInstanceState)
+    {
+        Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
+        Activity activity = getActivity();
+        if(activity != null)
+        {
+            mAdapter = new FeedDataAdapter(getActivity(), c, 0);
+            setListAdapter(mAdapter);
+            setEmptyText(getResources().getString(R.string.noEventsFound));
+        }
+    }
     
     /**
      * Returns flag indicating if this is dual pane mode or single pane mode
@@ -323,16 +332,13 @@ public class FeedListFragment extends ListFragment
         protected void onPostExecute(Boolean result)
         {
             mRefreshFeedTask = null;
-            Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
-            Activity activity = getActivity();
-            if(activity != null)
-            {
-                setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
-                setEmptyText(getResources().getString(R.string.noEventsFound));
-            }
             mRefreshMenuItem.setActionView(null);
             if(result)
             {
+                if(mAdapter != null)
+                {
+                    mAdapter.notifyDataSetChanged();
+                }
                 // Need to udpate the database table with the last update time for this region but only if the region is still the same
                 // as it was when we started the search
                 FeedDatabase.setLastUpdateTimeForRegion(mDb,mRegion,System.currentTimeMillis());
@@ -360,6 +366,5 @@ public class FeedListFragment extends ListFragment
     {
         Cursor cursor = FeedDatabase.searchForMatches(mDb,mRegion,search);
         setListAdapter(new FeedDataAdapter(getActivity(),cursor, 0));
-        mCurrentSearch = search;
     }
 }

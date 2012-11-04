@@ -1,10 +1,12 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
+import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.fragments.FeedListFragment;
 import com.bluebottlesoftware.nationalparkclosures.fragments.WebViewFragment;
 import com.bluebottlesoftware.parkclosures.R;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.SpinnerAdapter;
@@ -20,7 +22,7 @@ import android.app.ActionBar.OnNavigationListener;
 public class FeedListActivity extends Activity
 {
     private static final String CURRENTREGIONKEY = "currentregion"; // Key for the current region being viewed
-    private int mRegion; // Region being viewed
+    private int mRegion = Region.Nsw; // Region being viewed
     private SpinnerAdapter mAdapter;
     
     /**
@@ -72,12 +74,18 @@ public class FeedListActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.d("onCreate","Entry");
+        if(savedInstanceState != null)
+        {
+            mRegion = savedInstanceState.getInt(CURRENTREGIONKEY);
+        }
         mAdapter = ArrayAdapter.createFromResource(this, R.array.regions, android.R.layout.simple_spinner_dropdown_item);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(mAdapter, mNavigationListener);
         actionBar.setTitle(null);
+        actionBar.setSelectedNavigationItem(mRegion);
         setContentView(R.layout.activity_main);
         FragmentManager fm = getFragmentManager();
         FrameLayout webViewFrame = (FrameLayout) findViewById(R.id.webFragmentContent);
