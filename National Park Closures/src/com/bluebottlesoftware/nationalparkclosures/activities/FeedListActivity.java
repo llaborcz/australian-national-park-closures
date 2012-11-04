@@ -31,10 +31,33 @@ public class FeedListActivity extends Activity
         @Override
         public boolean onNavigationItemSelected(int itemPosition, long itemId)
         {
-            // We need to map the supported region into a general region
-            FeedListFragment fragment       = FeedListFragment.createInstance(itemPosition);
+            boolean bNewFragment = false;   // Indicates if we're creating a new fragment or reusing an existing one
+            FeedListFragment currentFragment = null;
+            FeedListFragment fragment = (FeedListFragment) getFragmentManager().findFragmentByTag(Integer.toString(itemPosition));
+            if(null == fragment)
+            {
+                // We don't have this fragment yet
+                fragment = FeedListFragment.createInstance(itemPosition);
+                bNewFragment = true;
+            }
+            
+            currentFragment = (FeedListFragment) getFragmentManager().findFragmentById(R.id.listFragmentContent);
+            
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.listFragmentContent, fragment);
+            if(currentFragment != null)
+            {
+                transaction.detach(currentFragment);
+            }
+            
+            if(bNewFragment)
+            {
+                transaction.add(R.id.listFragmentContent, fragment,Integer.toString(itemPosition));
+            }
+            else
+            {
+                transaction.attach(fragment);
+            }
+            
             transaction.commit();
             mRegion = itemPosition;
             return true;

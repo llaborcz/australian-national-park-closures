@@ -162,11 +162,11 @@ public class FeedDatabase
      * @param state
      * @return
      */
-    public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,int state)
+    public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,int region)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
         StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
-        return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null, orderByClause.toString());
+        return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(region)}, null, null, orderByClause.toString());
     }
 
     /**
@@ -307,7 +307,7 @@ public class FeedDatabase
         Cursor cursor;
         if(TextUtils.isEmpty(searchString))
         {
-            cursor = getFeedItemsForState(db,region);
+            cursor = getItemsForStateSortedByDate(db,region);
         }
         else
         {
