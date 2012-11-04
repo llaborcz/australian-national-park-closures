@@ -31,6 +31,7 @@ public class ShowMapActivity extends MapActivity
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(R.string.mapActivityTitle);
         setContentView(R.layout.mapactivity);
         
         FragmentManager fm = getFragmentManager();
