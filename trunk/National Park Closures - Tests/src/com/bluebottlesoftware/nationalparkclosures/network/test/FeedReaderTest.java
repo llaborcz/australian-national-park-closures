@@ -36,7 +36,7 @@ public class FeedReaderTest extends ActivityTestCase
         FeedReader reader  = null;
         try
         {
-            reader = FeedReader.createInstance(Region.Sa);
+            reader = FeedReader.createInstance(Region.Nsw+200);
         }
         catch(IllegalArgumentException e)
         {

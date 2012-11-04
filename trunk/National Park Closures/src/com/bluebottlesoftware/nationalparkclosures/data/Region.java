@@ -1,6 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.data;
 
-import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.parkclosures.R;
 
 /**
  * Enumeration of states and regions that are enumeratable.
@@ -9,13 +9,10 @@ import com.bluebottlesoftware.nswnpclosures.R;
  */
 public class Region
 {
+    // Must line up with the regions in the region array
     public static final int Nsw = 0;
     public static final int Qld = 1;
-    public static final int Nt  = 3;
-    public static final int Wa  = 4;
-    public static final int Sa  = 5;
-    public static final int Vic = 6;
-    public static final int Tas = 7;
+    public static final int Wa  = 2;
 
     /**
      * Feed addresses for the various states and regions
@@ -69,24 +66,8 @@ public class Region
             id = R.string.qld;
             break;
             
-        case Nt:
-            id = R.string.nt;
-            break;
-            
         case Wa:
             id = R.string.wa;
-            break;
-            
-        case Sa:
-            id = R.string.sa;
-            break;
-            
-        case Vic:
-            id = R.string.vic;
-            break;
-            
-        case Tas:
-            id = R.string.tas;
             break;
         }
         return id;

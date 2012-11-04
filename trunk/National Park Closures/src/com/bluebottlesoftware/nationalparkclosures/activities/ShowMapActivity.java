@@ -1,7 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
 import com.bluebottlesoftware.nationalparkclosures.fragments.MapViewFragment;
-import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.parkclosures.R;
 import com.google.android.maps.MapActivity;
 
 import android.app.ActionBar;

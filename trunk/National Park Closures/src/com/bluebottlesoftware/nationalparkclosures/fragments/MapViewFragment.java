@@ -2,7 +2,7 @@ package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import java.util.ArrayList;
 
-import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.parkclosures.R;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapController;

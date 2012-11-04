@@ -2,7 +2,7 @@ package com.bluebottlesoftware.nationalparkclosures.data;
 
 import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
-import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.parkclosures.R;
 
 import android.content.Context;
 import android.database.Cursor;

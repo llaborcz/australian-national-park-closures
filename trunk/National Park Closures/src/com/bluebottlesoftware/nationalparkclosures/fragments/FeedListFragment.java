@@ -14,8 +14,9 @@ import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.network.FeedReader;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
-import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.parkclosures.R;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Intent;
@@ -323,7 +324,12 @@ public class FeedListFragment extends ListFragment
         {
             mRefreshFeedTask = null;
             Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
-            setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
+            Activity activity = getActivity();
+            if(activity != null)
+            {
+                setListAdapter(new FeedDataAdapter(getActivity(), c, 0));
+                setEmptyText(getResources().getString(R.string.noEventsFound));
+            }
             mRefreshMenuItem.setActionView(null);
             if(result)
             {
@@ -335,7 +341,6 @@ public class FeedListFragment extends ListFragment
             {
                 showRefreshError();
             }
-            setEmptyText(getResources().getString(R.string.noEventsFound));
         }
     }
 

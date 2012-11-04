@@ -7,7 +7,6 @@
     <string name="menu_search">Search</string>
     <string name="menu_viewInBrowser">View in browser</string>
     <string name="menu_share">Share</string>
-    <string name="menu_changeregion">Change region</string>
     <string name="menu_showOnMap">Show on map</string>
     
     <!-- map strings -->
@@ -28,24 +27,17 @@
     <!-- Webview strings -->
     <string name="lastUpdated">Last updated:&#160;</string>
     <string name="emailSubjectPreamble">Alerts for&#160;</string>
+    
     <!-- Region strings -->
     <string name="nsw">NSW</string>
     <string name="qld">QLD</string>
-    <string name="nt">NT</string>
     <string name="wa">WA</string>
-    <string name="sa">SA</string>
-    <string name="vic">VIC</string>
-    <string name="tas">TAS</string>
     
     <!-- Arrray of all the regions that we know about -->
     <string-array name="regions">
         <item>@string/nsw</item>
         <item>@string/qld</item>
-        <item>@string/nt</item>
         <item>@string/wa</item>
-        <item>@string/sa</item>
-        <item>@string/vic</item>
-        <item>@string/tas</item>
     </string-array>
     
 </resources>
