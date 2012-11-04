@@ -1,9 +1,7 @@
 <resources>
 
     <string name="app_name">National Park Updates</string>
-    <string name="nswClosures">NSW National Parks</string>
-    <string name="menu_settings">Settings</string>
-
+    
     <!-- menus -->
     <string name="menu_refresh">Refresh</string>
     <string name="menu_search">Search</string>
@@ -23,7 +21,6 @@
     <string name="timeTest">13:00</string>
     <string name="categoryTest">Closed areas, backburning</string>
     <string name="noEventsFound">No results found</string>
-    <string name="refresh">Refresh</string>
     <string name="loading">Loading %1$s events&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>
     <!-- End of testing strings -->
@@ -40,8 +37,6 @@
     <string name="vic">VIC</string>
     <string name="tas">TAS</string>
     
-    <!-- Timezone names -->
-    <string name="NswTimeZoneExtension">AEST</string>
     <!-- Arrray of all the regions that we know about -->
     <string-array name="regions">
         <item>@string/nsw</item>
