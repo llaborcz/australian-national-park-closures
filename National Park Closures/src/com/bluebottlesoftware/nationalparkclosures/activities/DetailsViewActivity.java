@@ -4,7 +4,7 @@ import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.fragments.WebViewFragment;
-import com.bluebottlesoftware.nswnpclosures.R;
+import com.bluebottlesoftware.parkclosures.R;
 
 import android.app.ActionBar;
 import android.app.Activity;

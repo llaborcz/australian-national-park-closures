@@ -27,14 +27,14 @@ import com.bluebottlesoftware.nationalparkclosures.Util.XmlUtils;
 public class FeedParser
 {
     private static final String ItemQuery = "/rss/channel/item";    // Returns back all of the items
-    private static final String Date  = "pubDate";
-    private static final String Title = "title";
-    private static final String Link  = "link";
-    private static final String Guid  = "guid";
-    private static final String Category = "category";
-    private static final String Description = "description";
-    private static final String GeoLat  = "lat";
-    private static final String GeoLong = "long";
+    private static final String DateQuery  = "pubDate";
+    private static final String TitleQuery = "title";
+    private static final String LinkQuery  = "link";
+    private static final String GuidQuery  = "guid";
+    private static final String CategoryQuery = "category";
+    private static final String DescriptionQuery = "description";
+    private static final String GeoLatQuery  = "lat";
+    private static final String GeoLongQuery = "long";
     
     private ArrayList<FeedItem> m_items = new ArrayList<FeedItem>();    // Stores our list of nodes
     
@@ -95,14 +95,14 @@ public class FeedParser
      */
     private FeedItem createItemFromXPath(Node node,XPath xpath) throws XPathExpressionException
     {
-        String date  = (String) xpath.evaluate(Date, node,XPathConstants.STRING);
-        String title = (String) xpath.evaluate(Title, node,XPathConstants.STRING);
-        String link  = (String) xpath.evaluate(Link, node,XPathConstants.STRING);
-        String guid  = (String) xpath.evaluate(Guid, node,XPathConstants.STRING);
-        String description = (String) xpath.evaluate(Description, node,XPathConstants.STRING);
-        String geoLat  = (String) xpath.evaluate(GeoLat, node,XPathConstants.STRING);
-        String geoLong = (String) xpath.evaluate(GeoLong, node,XPathConstants.STRING);
-        NodeList categories = (NodeList) xpath.evaluate(Category, node,XPathConstants.NODESET);
+        String date  = (String) xpath.evaluate(DateQuery, node,XPathConstants.STRING);
+        String title = (String) xpath.evaluate(TitleQuery, node,XPathConstants.STRING);
+        String link  = (String) xpath.evaluate(LinkQuery, node,XPathConstants.STRING);
+        String guid  = (String) xpath.evaluate(GuidQuery, node,XPathConstants.STRING);
+        String description = (String) xpath.evaluate(DescriptionQuery, node,XPathConstants.STRING);
+        String geoLat  = (String) xpath.evaluate(GeoLatQuery, node,XPathConstants.STRING);
+        String geoLong = (String) xpath.evaluate(GeoLongQuery, node,XPathConstants.STRING);
+        NodeList categories = (NodeList) xpath.evaluate(CategoryQuery, node,XPathConstants.NODESET);
         ArrayList<String> categoryArray = new ArrayList<String>();
         for(int i=0;i<categories.getLength();i++)
         {
@@ -111,7 +111,7 @@ public class FeedParser
             categoryArray.add(cat);
         }
         
-        FeedItem item = new FeedItem(date,title,link,guid,description,categoryArray,geoLat,geoLong);
+        FeedItem item = new FeedItem(date,title.trim(),link,guid,description,categoryArray,geoLat,geoLong);
         Log.d("item",item.toString());
         return item;
     }

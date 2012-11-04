@@ -11,8 +11,4 @@
         android:title="@string/menu_refresh"
         android:orderInCategory="100"
         android:showAsAction="always" />
-    
-    <item android:id="@+id/menu_changeregion"
-          android:title="@string/menu_changeregion"
-          android:showAsAction="never"/>
 </menu>
