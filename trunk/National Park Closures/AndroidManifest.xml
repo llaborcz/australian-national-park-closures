@@ -26,10 +26,10 @@
         </activity>
         
         <!-- Activity that shows the details view -->
-        <activity  android:name="com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity" android:exported="false"/>
+        <activity android:name="com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity" android:exported="false"/>
         
         <!-- Activity that shows the map -->
-        <activity android:name="com.bluebottlesoftware.nationalparkclosures.activities.ShowMapActivity" android:exported="false"/>
+        <activity android:theme="@style/MyActionBar" android:name="com.bluebottlesoftware.nationalparkclosures.activities.ShowMapActivity" android:exported="false"/>
     </application>
 
 </manifest>

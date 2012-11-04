@@ -12,9 +12,11 @@
     <string name="menu_changeregion">Change region</string>
     <string name="menu_showOnMap">Show on map</string>
     
-    <!-- Other strings -->
+    <!-- map strings -->
     <string name="mapMarkerTitle">Event</string>
-        
+    <string name="mapActivityTitle">National park event map</string>
+    <string name="satellite">Satellite</string>
+    
     <!-- Some strings that are used for testing -->
     <string name="titleTest">Morton national park</string>
     <string name="dateTest">Wed, 12 Sep 2012</string>

@@ -1,7 +1,17 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light" />
-
+    <style name="AppTheme" parent="android:Theme.Holo.Light" />
+    
+    <style name="TransparentActionBarStyle"  parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#50000000</item>
+    </style>
+    
+    <style name="MyActionBar" parent="android:Theme.Holo">
+        
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/TransparentActionBarStyle</item>
+    </style>
+    
     <style name="ListViewTitleStyle" parent="@android:style/TextAppearance.Large">
         <item name="android:singleLine">true</item>
         <item name="android:layout_width">match_parent</item>
