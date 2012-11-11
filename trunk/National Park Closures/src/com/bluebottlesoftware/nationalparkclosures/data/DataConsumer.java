@@ -9,6 +9,8 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 /**
@@ -30,4 +32,6 @@ public interface DataConsumer
     List<FeedItem> getFeedItemsForFeed(InputStream feed)
             throws XPathExpressionException, SAXException, IOException,
             ParserConfigurationException;
+
+    void writeFeedToDatabase(SQLiteDatabase db, InputStream feedStream,int region);
 }
