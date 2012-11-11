@@ -18,7 +18,7 @@ public class CalendarUtils
 {   
     public static final String DateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by NSW feed*/
     
-    public static String getDateFormatForState(int state)
+    public static String getDateFormatForRegion(int state)
     {
         return DateFormat;
     }

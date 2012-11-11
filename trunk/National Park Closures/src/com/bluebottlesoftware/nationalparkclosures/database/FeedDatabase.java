@@ -138,18 +138,18 @@ public class FeedDatabase
      * Writes a single feed item to the database
      * @param db
      * @param item
-     * @param state
+     * @param region
      */
-    private static void writeFeedItemToDatabase(SQLiteDatabase db,FeedItem item, int state)
+    public static void writeFeedItemToDatabase(SQLiteDatabase db,FeedItem item, int region)
     {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_REGION, state);
+        values.put(COLUMN_REGION, region);
         values.put(COLUMN_TITLE, item.getTitle());
         values.put(COLUMN_DATE, item.getDate());
         values.put(COLUMN_LINK,item.getLink());
         values.put(COLUMN_GUID, item.getGuid());
         values.put(COLUMN_CATEGORY,item.getCategory());
-        values.put(COLUMN_DATE_MS,CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(state)).getTimeInMillis());
+        values.put(COLUMN_DATE_MS,CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForRegion(region)).getTimeInMillis());
         values.put(COLUMN_DESCRIPTION, item.getDescription());
         values.put(COLUMN_LATITUDE, item.getLatitude());
         values.put(COLUMN_LONGTITUDE, item.getLongtitude());

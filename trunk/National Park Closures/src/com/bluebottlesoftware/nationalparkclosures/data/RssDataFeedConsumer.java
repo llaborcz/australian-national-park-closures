@@ -37,11 +37,15 @@ class RssDataFeedConsumer implements DataConsumer
     }
 
     /**
-     * This implementation makes use of a SAX parser as opposed to the DOM parser
+     * Doesn't store the items in memory - rather writes directly to database
+     * @throws ParserConfigurationException 
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws XPathExpressionException 
      */
     @Override
-    public void writeFeedToDatabase(SQLiteDatabase db, InputStream feedStream,int region)
+    public void writeFeedToDatabase(SQLiteDatabase db, InputStream feedStream,int region) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
-        // TODO Auto-generated method stub
+        FeedParser.writeToDatabase(feedStream, db, region);
     }
 }

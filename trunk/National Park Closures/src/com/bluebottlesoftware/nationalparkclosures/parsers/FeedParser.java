@@ -18,10 +18,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.Util.XmlUtils;
+import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 
 /**
  * XPath based parser for NSW national park feed
@@ -87,14 +89,23 @@ public class FeedParser
      */
     public static FeedParser createFromStream(InputStream stream) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException
     {
-        FeedParser parser = new FeedParser();
         Document xmlDocument = XmlUtils.readXml(stream);
         XPath xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(new GeoNamespaceContext());
+        FeedParser parser = new FeedParser();
         parser.parse(xmlDocument,xpath);
         return parser;
     }
-    
+
+    public static void writeToDatabase(InputStream stream, SQLiteDatabase db, int region) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException
+    {
+        Document xmlDocument = XmlUtils.readXml(stream);
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        xpath.setNamespaceContext(new GeoNamespaceContext());
+        FeedParser parser = new FeedParser();
+        parser.parseToDatabase(xmlDocument,xpath,db,region);
+    }
+
     /**
      * Returns all of the feed items that were returned in the stream
      * @return
@@ -102,6 +113,28 @@ public class FeedParser
     public List<FeedItem> getFeedItems()
     {
         return m_items;
+    }
+
+    private void parseToDatabase(Document xmlDocument, XPath xpath,SQLiteDatabase db, int region) throws XPathExpressionException
+    {
+        compileXpathExpressions(xpath);
+        NodeList items = (NodeList) mItemQuery.evaluate(xmlDocument,XPathConstants.NODESET);
+        try
+        {
+            db.beginTransaction();
+            for(int item = 0;item < items.getLength();item++)
+            {
+                Node node = items.item(item);
+                node.getParentNode().removeChild(node); // This reduces the size of the DOM which makes subsequent queries faster
+                FeedDatabase.writeFeedItemToDatabase(db, createItemFromXPath(node, xpath), region);
+            }
+            db.setTransactionSuccessful();
+        }
+        finally
+        {
+            db.endTransaction();
+        }
+
     }
 
     /**
