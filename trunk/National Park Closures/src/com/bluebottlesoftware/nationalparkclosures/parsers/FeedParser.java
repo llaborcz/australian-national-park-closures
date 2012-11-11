@@ -149,6 +149,8 @@ public class FeedParser
         NodeList items = (NodeList) mItemQuery.evaluate(xmlDocument,XPathConstants.NODESET);
         for(int item = 0;item < items.getLength();item++)
         {
+            Node node = items.item(item);
+            node.getParentNode().removeChild(node);
             m_items.add(createItemFromXPath(items.item(item),xpath));
         }
     }
