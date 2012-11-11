@@ -10,10 +10,10 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestUtils;
+import com.bluebottlesoftware.nationalparkclosures.data.FeedReader;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.database.test.ClosureDatabaseTest;
-import com.bluebottlesoftware.nationalparkclosures.network.FeedReader;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 import android.database.Cursor;
