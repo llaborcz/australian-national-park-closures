@@ -6,7 +6,6 @@ import com.bluebottlesoftware.nationalparkclosures.fragments.WebViewFragment;
 import com.bluebottlesoftware.parkclosures.R;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.SpinnerAdapter;
