@@ -31,13 +31,23 @@
     <!-- Region strings -->
     <string name="nsw">NSW National Parks</string>
     <string name="qld">QLD National Parks</string>
-    <string name="wa">WA Fires</string>
+    <string name="waStateFire">WA fire incidents</string>
+    <string name="tasStateFire">TAS fire incidents</string>
+    <string name="saStateFire">SA fire incidents</string>
+    <string name="nswStateFire">NSW fire incidents</string>
+    <string name="qldStateFire">QLD fire incidents</string>
+    <string name="vicStateFire">VIC fire incidents</string>
     
     <!-- Arrray of all the regions that we know about -->
     <string-array name="regions">
         <item>@string/nsw</item>
         <item>@string/qld</item>
-        <item>@string/wa</item>
+        <item>@string/nswStateFire</item>
+        <item>@string/vicStateFire</item>
+        <item>@string/qldStateFire</item>
+        <item>@string/tasStateFire</item>
+        <item>@string/saStateFire</item>
+        <item>@string/waStateFire</item>
     </string-array>
     
 </resources>

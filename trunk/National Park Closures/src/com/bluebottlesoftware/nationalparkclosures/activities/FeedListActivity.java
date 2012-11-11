@@ -74,7 +74,6 @@ public class FeedListActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Log.d("onCreate","Entry");
         if(savedInstanceState != null)
         {
             mRegion = savedInstanceState.getInt(CURRENTREGIONKEY);

@@ -9,8 +9,6 @@ import java.util.GregorianCalendar;
 
 import android.util.Log;
 
-import com.bluebottlesoftware.nationalparkclosures.data.Region;
-
 /**
  * Class that defines the various date formats that are used in the feeds for the individual states
  * @author lee
@@ -18,31 +16,11 @@ import com.bluebottlesoftware.nationalparkclosures.data.Region;
  */
 public class CalendarUtils
 {   
-    public static final String NswDateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by NSW feed*/
-    public static final String QldDateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by QLD feed*/
-    public static final String WaDateFormat  = "E, dd MMM yyyy HH:mm:ss";     /**<Date format used by WA  feed*/
+    public static final String DateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by NSW feed*/
     
     public static String getDateFormatForState(int state)
     {
-        String dateFormat;
-        switch(state)
-        {
-        case Region.Nsw:
-            dateFormat = NswDateFormat;
-            break;
-            
-        case Region.Qld:
-            dateFormat = QldDateFormat;
-            break;
-            
-        case Region.Wa:
-            dateFormat = WaDateFormat;
-            break;
-            
-        default:
-            throw new IllegalArgumentException("Invalid state " + state + " requested");
-        }
-        return dateFormat;
+        return DateFormat;
     }
     
     /**

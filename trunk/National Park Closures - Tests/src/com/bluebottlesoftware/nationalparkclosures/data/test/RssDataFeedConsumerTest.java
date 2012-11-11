@@ -14,7 +14,7 @@ import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
-import com.bluebottlesoftware.nswnpclosures.test.R;
+import com.bluebottlesoftware.parkclosures.test.R;
 
 import android.test.ActivityTestCase;
 import android.text.TextUtils;
@@ -118,7 +118,7 @@ public class RssDataFeedConsumerTest extends ActivityTestCase
     public void testWaFeedWithGeoInformation() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         InputStream stream = this.getInstrumentation().getContext().getResources().openRawResource(R.raw.wafirealerts);
-        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.Wa);
+        DataConsumer consumer = DataConsumerFactory.createDataConsumer(Region.WaFireIncidents);
         List<FeedItem> items  = consumer.getFeedItemsForFeed(stream);
         FeedItem item = items.get(0);
         String latitude   = item.getLatitude();

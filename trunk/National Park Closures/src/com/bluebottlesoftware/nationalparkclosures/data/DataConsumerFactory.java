@@ -9,19 +9,6 @@ public class DataConsumerFactory
      */
     public static DataConsumer createDataConsumer(int state)
     {
-        DataConsumer consumer;
-        switch(state)
-        {
-        case Region.Nsw:
-        case Region.Qld:
-        case Region.Wa:
-            consumer = new RssDataFeedConsumer();
-            break;
-            
-        default:
-            throw new IllegalArgumentException("invalid state requested");
-            
-        }
-        return consumer;
+        return new RssDataFeedConsumer();
     }
 }
