@@ -1,4 +1,4 @@
-package com.bluebottlesoftware.nationalparkclosures.network;
+package com.bluebottlesoftware.nationalparkclosures.data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,9 +15,6 @@ import org.xml.sax.SAXException;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
-import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
-import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
 /**
