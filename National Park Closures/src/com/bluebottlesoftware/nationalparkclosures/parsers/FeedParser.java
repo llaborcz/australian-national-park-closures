@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bluebottlesoftware.nationalparkclosures.Util.XmlUtils;
@@ -35,7 +36,8 @@ public class FeedParser
     private static final String DescriptionQuery = "description";
     private static final String GeoLatQuery  = "lat";
     private static final String GeoLongQuery = "long";
-    
+    private static final String GeoRssPointQuery = "point";
+    private static final String GeoRssCollectionPointQuery = "collection/point";
     private ArrayList<FeedItem> m_items = new ArrayList<FeedItem>();    // Stores our list of nodes
     
     /**
@@ -102,6 +104,23 @@ public class FeedParser
         String description = (String) xpath.evaluate(DescriptionQuery, node,XPathConstants.STRING);
         String geoLat  = (String) xpath.evaluate(GeoLatQuery, node,XPathConstants.STRING);
         String geoLong = (String) xpath.evaluate(GeoLongQuery, node,XPathConstants.STRING);
+        String point   = (String) xpath.evaluate(GeoRssPointQuery,node,XPathConstants.STRING);
+        if(TextUtils.isEmpty(point))
+        {
+            point = (String)xpath.evaluate(GeoRssCollectionPointQuery, node,XPathConstants.STRING);
+        }
+        
+        if(!TextUtils.isEmpty(point))
+        {
+            // We've got a geo rss point
+            String [] latlong = point.split(" ");
+            if(latlong.length == 2)
+            {
+                geoLat = latlong[0];
+                geoLong= latlong[1];
+            }
+        }
+        
         NodeList categories = (NodeList) xpath.evaluate(CategoryQuery, node,XPathConstants.NODESET);
         ArrayList<String> categoryArray = new ArrayList<String>();
         for(int i=0;i<categories.getLength();i++)

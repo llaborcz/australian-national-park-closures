@@ -9,8 +9,8 @@ public class RegionTest extends TestCase
 {
     public void testRegionAsId()
     {
-        int [] regions = new int [] {Region.Nsw,Region.Qld,Region.Wa};
-        int [] stringIds = new int [] {R.string.nsw,R.string.qld,R.string.wa};
+        int [] regions = new int [] {Region.Nsw,Region.Qld,Region.WaFireIncidents};
+        int [] stringIds = new int [] {R.string.nsw,R.string.qld,R.string.waStateFire};
         
         for(int i = 0;i<regions.length;i++)
         {

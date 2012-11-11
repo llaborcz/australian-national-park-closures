@@ -7,8 +7,10 @@ import javax.xml.namespace.NamespaceContext;
 
 public class GeoNamespaceContext implements NamespaceContext
 {
-    private static final String prefixGeo = "geo";
+    private static final String prefixGeo    = "geo";
     private static final String prefixGeoUri = "http://www.w3.org/2003/01/geo/wgs84_pos#";
+    private static final String prefixGeoRss = "georss";
+    private static final String prefixGeoRssUri = "http://www.georss.org/georss";
     
     @Override
     public String getNamespaceURI(String prefix)
@@ -22,6 +24,10 @@ public class GeoNamespaceContext implements NamespaceContext
         if(prefixGeo.equals(prefix))
         {
             uri = prefixGeoUri;
+        }
+        else if(prefixGeoRss.equals(prefix))
+        {
+            uri = prefixGeoRssUri;
         }
         else
         {

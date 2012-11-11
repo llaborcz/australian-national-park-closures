@@ -15,7 +15,7 @@ import android.util.Log;
 import com.bluebottlesoftware.nationalparkclosures.TestData.TestConstants;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedParser;
-import com.bluebottlesoftware.nswnpclosures.test.R;
+import com.bluebottlesoftware.parkclosures.test.R;
 
 /**
  * Contains various test cases for the NSW data feed parser

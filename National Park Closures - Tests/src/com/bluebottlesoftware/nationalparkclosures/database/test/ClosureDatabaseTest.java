@@ -17,7 +17,7 @@ import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
-import com.bluebottlesoftware.nswnpclosures.test.R;
+import com.bluebottlesoftware.parkclosures.test.R;
 
 import android.content.Context;
 import android.database.Cursor;

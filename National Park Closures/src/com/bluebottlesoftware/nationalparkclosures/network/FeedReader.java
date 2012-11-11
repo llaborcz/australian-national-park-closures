@@ -49,14 +49,9 @@ public class FeedReader
         FeedReader reader = null;
         switch(region)
         {
-        case Region.Nsw:
-        case Region.Qld:
-        case Region.Wa:
+        default:
             reader = new FeedReader(new URL(Region.getFeedForRegion(region)), DataConsumerFactory.createDataConsumer(region));
             break;
-            
-        default:
-            throw new IllegalArgumentException("Region " + region + " not supported");
         }
         
         return reader;

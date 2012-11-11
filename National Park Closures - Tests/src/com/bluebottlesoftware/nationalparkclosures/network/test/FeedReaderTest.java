@@ -62,7 +62,7 @@ public class FeedReaderTest extends ActivityTestCase
     
     public void testWaReaderCreation() throws MalformedURLException, IllegalArgumentException
     {
-        innerTestReaderCreation(Region.Wa);
+        innerTestReaderCreation(Region.WaFireIncidents);
     }
     
     private void innerTestReaderCreation(int region) throws MalformedURLException, IllegalArgumentException
@@ -91,7 +91,7 @@ public class FeedReaderTest extends ActivityTestCase
     
     public void testWaReaderFetch() throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
-        innerTestRegionFetch(Region.Wa);
+        innerTestRegionFetch(Region.WaFireIncidents);
     }
     
     private void innerTestRegionFetch(int region) throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException
@@ -123,7 +123,7 @@ public class FeedReaderTest extends ActivityTestCase
     
     public void testReadFromNetworkAndWriteToDatbaseWa() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
-        innerTestReadFromNetworkAndWriteToDatabase(Region.Wa);
+        innerTestReadFromNetworkAndWriteToDatabase(Region.WaFireIncidents);
     }
     
     private void innerTestReadFromNetworkAndWriteToDatabase(int region) throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException

@@ -163,6 +163,8 @@ public class FeedListFragment extends ListFragment
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("onViewCreated","Entry");
         Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
         Activity activity = getActivity();
         if(activity != null)
@@ -337,13 +339,20 @@ public class FeedListFragment extends ListFragment
         @Override
         protected void onPostExecute(Boolean result)
         {
+            Log.d("onPostExecute","Entry");
             mRefreshFeedTask = null;
             mRefreshMenuItem.setActionView(null);
             if(result)
             {
                 if(mAdapter != null)
                 {
-                    mAdapter.notifyDataSetChanged();
+                    Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
+                    Activity activity = getActivity();
+                    if(activity != null)
+                    {
+                        mAdapter = new FeedDataAdapter(getActivity(), c, 0);
+                        setListAdapter(mAdapter);
+                    }                    
                 }
                 // Need to udpate the database table with the last update time for this region but only if the region is still the same
                 // as it was when we started the search
