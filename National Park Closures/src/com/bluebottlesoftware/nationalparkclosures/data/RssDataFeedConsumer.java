@@ -9,6 +9,8 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedParser;
 
@@ -32,5 +34,14 @@ class RssDataFeedConsumer implements DataConsumer
     {
         FeedParser parser = FeedParser.createFromStream(feed);
         return parser.getFeedItems();
+    }
+
+    /**
+     * This implementation makes use of a SAX parser as opposed to the DOM parser
+     */
+    @Override
+    public void writeFeedToDatabase(SQLiteDatabase db, InputStream feedStream,int region)
+    {
+        // TODO Auto-generated method stub
     }
 }

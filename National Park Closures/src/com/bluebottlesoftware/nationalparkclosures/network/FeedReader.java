@@ -13,6 +13,8 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumer;
 import com.bluebottlesoftware.nationalparkclosures.data.DataConsumerFactory;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
@@ -86,6 +88,22 @@ public class FeedReader
         return items;
     }
 
+    public void connectAndWriteFeedItemsToDatabase(SQLiteDatabase db,int region) throws IOException
+    {
+        if(null == mUrl)
+        {
+            throw new IllegalStateException("mUrl is null");
+        }
+        
+        if(null == mDataConsumer)
+        {
+            throw new IllegalStateException("mDataConsumer is null");
+        }
+        
+        InputStream feedStream = getFeedStream(mUrl);
+        mDataConsumer.writeFeedToDatabase(db,feedStream,region);
+    }
+    
     /**
      * Gets an input stream for the given URL
      * @return
