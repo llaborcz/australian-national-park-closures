@@ -170,7 +170,7 @@ public class FeedItem
     {
         StringBuilder sb = new StringBuilder(m_title).
                 append(' ').append(m_date).append(' ').append(m_link).append(' ').append(m_guid).append(' ').append(m_category).
-                append(m_geoLat).append(' ').append(m_geoLong);
+                append(' ').append(m_geoLat).append(' ').append(m_geoLong);
         return sb.toString();
     }
 

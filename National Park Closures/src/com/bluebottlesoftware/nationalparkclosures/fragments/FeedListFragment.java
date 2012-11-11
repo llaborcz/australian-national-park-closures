@@ -162,7 +162,6 @@ public class FeedListFragment extends ListFragment
     public void onViewCreated (View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("onViewCreated","Entry");
         Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);
         Activity activity = getActivity();
         if(activity != null)
