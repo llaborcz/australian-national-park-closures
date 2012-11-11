@@ -11,7 +11,7 @@
     
     <!-- map strings -->
     <string name="mapMarkerTitle">Event</string>
-    <string name="mapActivityTitle">National park event map</string>
+    <string name="mapActivityTitle">Incident map</string>
     <string name="satellite">Satellite</string>
     
     <!-- Some strings that are used for testing -->
@@ -20,7 +20,7 @@
     <string name="timeTest">13:00</string>
     <string name="categoryTest">Closed areas, backburning</string>
     <string name="noEventsFound">No results found</string>
-    <string name="loading">Loading %1$s events&#8230;</string>
+    <string name="loading">Loading&#8230;</string>
     <string name="refreshError">Error refreshing feed</string>
     <!-- End of testing strings -->
     
