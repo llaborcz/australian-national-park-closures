@@ -243,8 +243,7 @@ public class FeedListFragment extends ListFragment
         {
             mRefreshFeedTask = new RefreshFeedAsyncTask();
             mRefreshFeedTask.execute();
-            String loadingText = getResources().getString(R.string.loading);
-            setEmptyText(String.format(loadingText, getResources().getString(Region.getAsStringId(mRegion))));
+            setEmptyText(getResources().getString(R.string.loading));
             if(mRefreshMenuItem != null)
             {
                 mRefreshMenuItem.setActionView(R.layout.refresh_menuitem_busy);

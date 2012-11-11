@@ -97,13 +97,13 @@ public class FeedParser
      */
     private FeedItem createItemFromXPath(Node node,XPath xpath) throws XPathExpressionException
     {
+        String geoLat = null;
+        String geoLong= null;
         String date  = (String) xpath.evaluate(DateQuery, node,XPathConstants.STRING);
         String title = (String) xpath.evaluate(TitleQuery, node,XPathConstants.STRING);
         String link  = (String) xpath.evaluate(LinkQuery, node,XPathConstants.STRING);
         String guid  = (String) xpath.evaluate(GuidQuery, node,XPathConstants.STRING);
         String description = (String) xpath.evaluate(DescriptionQuery, node,XPathConstants.STRING);
-        String geoLat  = (String) xpath.evaluate(GeoLatQuery, node,XPathConstants.STRING);
-        String geoLong = (String) xpath.evaluate(GeoLongQuery, node,XPathConstants.STRING);
         String point   = (String) xpath.evaluate(GeoRssPointQuery,node,XPathConstants.STRING);
         if(TextUtils.isEmpty(point))
         {
@@ -120,7 +120,11 @@ public class FeedParser
                 geoLong= latlong[1];
             }
         }
-        
+        else        
+        {
+            geoLat  = (String) xpath.evaluate(GeoLatQuery, node,XPathConstants.STRING);
+            geoLong = (String) xpath.evaluate(GeoLongQuery, node,XPathConstants.STRING);
+        }
         NodeList categories = (NodeList) xpath.evaluate(CategoryQuery, node,XPathConstants.NODESET);
         ArrayList<String> categoryArray = new ArrayList<String>();
         for(int i=0;i<categories.getLength();i++)
