@@ -89,21 +89,32 @@ public class FeedParser
      */
     public static FeedParser createFromStream(InputStream stream) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException
     {
+        long start = System.currentTimeMillis();
+        final String tag = "createFromStream";
+        Log.d(tag,"Entry");
         Document xmlDocument = XmlUtils.readXml(stream);
+        Log.d(tag,"Built DOM - time = " + (System.currentTimeMillis()-start));
         XPath xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(new GeoNamespaceContext());
         FeedParser parser = new FeedParser();
         parser.parse(xmlDocument,xpath);
+        Log.d(tag,"Parsed document - time = " + (System.currentTimeMillis()-start));
         return parser;
     }
 
     public static void writeToDatabase(InputStream stream, SQLiteDatabase db, int region) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException
     {
+        long start = System.currentTimeMillis();
+        final String tag = "writeToDatabase";
+        Log.d(tag,"Entry");
         Document xmlDocument = XmlUtils.readXml(stream);
+        Log.d(tag,"Built DOM - time = " + (System.currentTimeMillis()-start));
+
         XPath xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(new GeoNamespaceContext());
         FeedParser parser = new FeedParser();
         parser.parseToDatabase(xmlDocument,xpath,db,region);
+        Log.d(tag,"Parsed document and wrote to database - time = " + (System.currentTimeMillis()-start));
     }
 
     /**
