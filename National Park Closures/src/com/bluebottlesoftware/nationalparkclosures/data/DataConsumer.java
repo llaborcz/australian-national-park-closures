@@ -13,10 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 
-/**
- * interface that is responsible for consuming the contents of a data feed and writing it to the database 
- *
- */
 public interface DataConsumer
 {
 
@@ -33,5 +29,5 @@ public interface DataConsumer
             throws XPathExpressionException, SAXException, IOException,
             ParserConfigurationException;
 
-    void writeFeedToDatabase(SQLiteDatabase db, InputStream feedStream,int region);
+    void writeFeedToDatabase(SQLiteDatabase db, InputStream feedStream,int region) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException;
 }

@@ -54,7 +54,7 @@ public class FeedDataAdapter extends CursorAdapter
         TextView timeView     = (TextView) view.findViewById(R.id.time);
         
         titleView.setText(title);
-        String dateFormat = CalendarUtils.getDateFormatForState(cursor.getInt(mStateColumn));
+        String dateFormat = CalendarUtils.getDateFormatForRegion(cursor.getInt(mStateColumn));
         dateView.setText(CalendarUtils.convertDate(date,dateFormat,DisplayDateFormat));
         timeView.setText(mLastUpdatedString + CalendarUtils.convertDate(date, dateFormat, DisplayTimeFormat));
         categoryView.setText(category);

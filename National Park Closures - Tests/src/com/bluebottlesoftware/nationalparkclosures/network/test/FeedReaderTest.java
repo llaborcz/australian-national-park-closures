@@ -97,7 +97,7 @@ public class FeedReaderTest extends ActivityTestCase
     private void innerTestRegionFetch(int region) throws IllegalArgumentException, XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         FeedReader reader = FeedReader.createInstance(region);
-        List<FeedItem> items = reader.connectAndGetFeedItems();
+        List<FeedItem> items = reader.getFeedItems();
         for(FeedItem item : items)
         {
             Log.d("Fetch from network",item.toString());
@@ -130,7 +130,7 @@ public class FeedReaderTest extends ActivityTestCase
     {
         SQLiteDatabase db = ClosureDatabaseTest.getEmptyDatabase(this); // We've got an empty database
         FeedReader reader = FeedReader.createInstance(region);
-        List<FeedItem> items = reader.connectAndGetFeedItems();
+        List<FeedItem> items = reader.getFeedItems();
         
         FeedDatabase.updateDatabaseWithTransaction(db, items, region);
         Cursor c = FeedDatabase.getItemsForStateSortedByDate(db, region);

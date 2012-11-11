@@ -2,7 +2,6 @@ package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -13,7 +12,6 @@ import com.bluebottlesoftware.nationalparkclosures.data.FeedReader;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
-import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import com.bluebottlesoftware.parkclosures.R;
 
 import android.app.Activity;
@@ -302,10 +300,9 @@ public class FeedListFragment extends ListFragment
         {
             boolean bResult = false;
             try
-            {
+            {                
                 FeedReader reader     = FeedReader.createInstance(mRegion);
-                List <FeedItem> items = reader.connectAndGetFeedItems();
-                FeedDatabase.updateDatabaseWithTransaction(mDb, items, mRegion);
+                reader.writeFeedItemsToDatabase(mDb, mRegion);
                 bResult = true;
             } 
             catch (MalformedURLException e)

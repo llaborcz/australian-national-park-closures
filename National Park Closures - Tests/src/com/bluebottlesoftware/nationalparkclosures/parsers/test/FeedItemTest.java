@@ -87,7 +87,7 @@ public class FeedItemTest extends TestCase
     {
         FeedItem item = new FeedItem(nswTestDate1,title, link, guid, null, null,null,null);
         
-        Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(Region.Nsw));
+        Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForRegion(Region.Nsw));
         int dayOfWeek  = cal.get(Calendar.DAY_OF_WEEK);
         assertEquals(Calendar.MONDAY, dayOfWeek);
         
@@ -118,7 +118,7 @@ public class FeedItemTest extends TestCase
         final String nswMalformedDate1 = "24 Sep 1908"; // Date that is not of the expected format
 
         FeedItem item = new FeedItem(nswMalformedDate1,title, link, guid, null, null,"","");
-        Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForState(Region.Nsw));
+        Calendar cal  = CalendarUtils.createCalendarFromDateAndFormat(item.getDate(), CalendarUtils.getDateFormatForRegion(Region.Nsw));
         assertNotNull(cal);
         
         int year = cal.get(Calendar.YEAR);

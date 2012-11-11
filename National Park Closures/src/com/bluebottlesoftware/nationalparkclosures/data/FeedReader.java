@@ -45,15 +45,7 @@ public class FeedReader
      */
     public static FeedReader createInstance(int region) throws MalformedURLException, IllegalArgumentException
     {
-        FeedReader reader = null;
-        switch(region)
-        {
-        default:
-            reader = new FeedReader(new URL(Region.getFeedForRegion(region)), DataConsumerFactory.createDataConsumer(region));
-            break;
-        }
-        
-        return reader;
+        return new FeedReader(new URL(Region.getFeedForRegion(region)), DataConsumerFactory.createDataConsumer(region));
     }
     
     /**
@@ -65,7 +57,7 @@ public class FeedReader
      * @throws SAXException 
      * @throws XPathExpressionException 
      */
-    public List<FeedItem> connectAndGetFeedItems() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
+    public List<FeedItem> getFeedItems() throws XPathExpressionException, SAXException, IOException, ParserConfigurationException
     {
         List<FeedItem> items = null;
         
@@ -85,7 +77,16 @@ public class FeedReader
         return items;
     }
 
-    public void connectAndWriteFeedItemsToDatabase(SQLiteDatabase db,int region) throws IOException
+    /**
+     * Uses less memory since items are not stored in memory
+     * @param db
+     * @param region
+     * @throws IOException
+     * @throws ParserConfigurationException 
+     * @throws SAXException 
+     * @throws XPathExpressionException 
+     */
+    public void writeFeedItemsToDatabase(SQLiteDatabase db,int region) throws IOException, XPathExpressionException, SAXException, ParserConfigurationException
     {
         if(null == mUrl)
         {
