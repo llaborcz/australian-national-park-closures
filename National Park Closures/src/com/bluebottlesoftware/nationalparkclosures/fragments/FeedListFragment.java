@@ -7,6 +7,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
+
+import com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity;
+import com.bluebottlesoftware.nationalparkclosures.activities.ShowMapActivity;
 import com.bluebottlesoftware.nationalparkclosures.data.FeedDataAdapter;
 import com.bluebottlesoftware.nationalparkclosures.data.FeedReader;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
@@ -220,6 +223,16 @@ public class FeedListFragment extends ListFragment
             refreshFeed();
             bResult = true;
             break;
+            
+        case R.id.menu_mapregion:
+            long [] dbRowIds = FeedDatabase.getRowIdsForGeoEventsInRegions(mDb,new int [] {mRegion});
+            Intent mapIntent = new Intent();
+            mapIntent.setClass(getActivity(), ShowMapActivity.class);
+            mapIntent.putExtra(ShowMapActivity.EXTRA_IDS, dbRowIds);
+            mapIntent.putExtra(ShowMapActivity.EXTRA_TITLE, getString(Region.getAsStringId(mRegion)));
+            startActivity(mapIntent);
+            bResult = true;
+            break;
         }
         return bResult;
     }
@@ -290,7 +303,7 @@ public class FeedListFragment extends ListFragment
         else
         {
             Intent intent = new Intent();
-            intent.setClass(getActivity(),com.bluebottlesoftware.nationalparkclosures.activities.DetailsViewActivity.class);
+            intent.setClass(getActivity(),DetailsViewActivity.class);
             intent.putExtra(WebViewFragment.KEY_DBROWID, id);
             intent.putExtra(WebViewFragment.KEY_REGION, mRegion);
             startActivity(intent);
