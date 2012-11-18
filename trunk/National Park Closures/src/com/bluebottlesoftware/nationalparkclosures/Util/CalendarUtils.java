@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import android.util.Log;
 
@@ -30,13 +31,13 @@ public class CalendarUtils
      */
     public static String convertDate(String srcDate,String srcDateFormat,String destDateFormat)
     {
-        DateFormat srcFormat = new SimpleDateFormat(srcDateFormat);
+        DateFormat srcFormat = new SimpleDateFormat(destDateFormat,Locale.US);
 
         String friendlyDate = srcDate;
         try
         {
             Date src = srcFormat.parse(srcDate);
-            DateFormat dstFormat = new SimpleDateFormat(destDateFormat);
+            DateFormat dstFormat = new SimpleDateFormat(destDateFormat,Locale.US);
             friendlyDate = dstFormat.format(src); 
         }
         catch(ParseException e)
@@ -59,7 +60,7 @@ public class CalendarUtils
         Calendar cal  = new GregorianCalendar();
         try
         {
-            DateFormat dateFormat = new SimpleDateFormat(itemDateFormat);
+            DateFormat dateFormat = new SimpleDateFormat(itemDateFormat,Locale.US);
             Date date = dateFormat.parse(itemDate);
             cal.setTime(date);
         }   

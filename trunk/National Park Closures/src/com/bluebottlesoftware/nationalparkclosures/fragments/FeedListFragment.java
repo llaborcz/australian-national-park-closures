@@ -116,7 +116,7 @@ public class FeedListFragment extends ListFragment
     {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mDb = new DatabaseHelper(getActivity()).getWritableDatabase();
+        mDb = DatabaseHelper.getDatabaseInstance(getActivity());
         setHasOptionsMenu(true);
     }
     
@@ -203,13 +203,11 @@ public class FeedListFragment extends ListFragment
         searchView.setOnQueryTextListener(mQueryListeneter);
         searchMenu.setOnActionExpandListener(mSearchOpenCloseListener);
         
-        DatabaseHelper helper = new DatabaseHelper(getActivity());
-        SQLiteDatabase db = helper.getReadableDatabase();
+        SQLiteDatabase db = DatabaseHelper.getDatabaseInstance(getActivity());
         if(!FeedDatabase.hasRegionAnyGeoEvents(db,mRegion))
         {
             menu.removeItem(R.id.menu_mapregion);
         }
-        db.close();
     }
 
     @Override

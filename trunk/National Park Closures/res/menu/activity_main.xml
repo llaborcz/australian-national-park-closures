@@ -6,6 +6,11 @@
           android:showAsAction="ifRoom|collapseActionView"
           android:actionViewClass="android.widget.SearchView" />
      
+    <item android:id="@+id/menu_mapregion"
+        android:title="@string/menu_mapregion"
+        android:icon="@drawable/ic_location_map"
+        android:showAsAction="ifRoom"/>
+        
     <item android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/menu_refresh"

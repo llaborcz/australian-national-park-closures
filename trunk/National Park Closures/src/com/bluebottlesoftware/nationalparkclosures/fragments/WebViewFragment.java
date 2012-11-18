@@ -76,15 +76,13 @@ public class WebViewFragment extends Fragment
             inflater.inflate(R.menu.webviewmenu, menu);
             // If we've got no geo information for the currently viewed event we
             // hide the map button
-            DatabaseHelper helper = new DatabaseHelper(getActivity());
-            SQLiteDatabase db = helper.getWritableDatabase();
+            SQLiteDatabase db = DatabaseHelper.getDatabaseInstance(getActivity());
             mLat = FeedDatabase.getLatForEntry(db, mDbRowId);
             mLong = FeedDatabase.getLongForEntry(db, mDbRowId);
             if (TextUtils.isEmpty(mLat) || TextUtils.isEmpty(mLong))
             {
                 menu.removeItem(R.id.menu_showOnMap);
             }
-            db.close();
         }
     }
 
@@ -92,14 +90,11 @@ public class WebViewFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        
-        DatabaseHelper helper = new DatabaseHelper(getActivity());
-        SQLiteDatabase db = helper.getWritableDatabase();
+        SQLiteDatabase db = DatabaseHelper.getDatabaseInstance(getActivity());
         Cursor c = FeedDatabase.getCursorForRowId(db, mDbRowId);
         List<FeedItem> item = FeedDatabase.getItemsForCursor(c);
         mItem = item.get(0);
         c.close();
-        db.close();
     }
     
     @Override
@@ -150,14 +145,10 @@ public class WebViewFragment extends Fragment
         if (0 != mDbRowId)
         {
             // We've been told to load a description from the database
-            DatabaseHelper helper = new DatabaseHelper(getActivity());
-            SQLiteDatabase db = helper.getWritableDatabase();
-            String description = FeedDatabase.getDescriptionForEntry(db,
-                    mDbRowId);
-            db.close();
+            SQLiteDatabase db = DatabaseHelper.getDatabaseInstance(getActivity());
+            String description = FeedDatabase.getDescriptionForEntry(db,mDbRowId);
             String baseUrl = Region.getBaseUrlForRegion(mRegion);
-            webView.loadDataWithBaseURL(baseUrl, description, MimeTypeHtml,
-                    Utf8Encoding, "");
+            webView.loadDataWithBaseURL(baseUrl, description, MimeTypeHtml,Utf8Encoding, "");
         }
         return v;
     }

@@ -10,7 +10,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * Database that stores information from the various closure RSS feeds
