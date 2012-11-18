@@ -30,8 +30,7 @@ public class DetailsViewActivity extends Activity
         long dbRowId = getIntent().getLongExtra(WebViewFragment.KEY_DBROWID,0);
         if(0 != dbRowId)
         {
-            DatabaseHelper dbHelper = new DatabaseHelper(this);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            SQLiteDatabase db = DatabaseHelper.getDatabaseInstance(this);
             setTitle(FeedDatabase.getTitleForEntry(db,dbRowId));
         }
         setContentView(R.layout.webviewactivitylayout);

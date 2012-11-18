@@ -8,6 +8,7 @@
     <string name="menu_viewInBrowser">View in browser</string>
     <string name="menu_share">Share</string>
     <string name="menu_showOnMap">Show on map</string>
+    <string name="menu_mapregion">Show events on map</string>
     
     <!-- map strings -->
     <string name="mapMarkerTitle">Event</string>

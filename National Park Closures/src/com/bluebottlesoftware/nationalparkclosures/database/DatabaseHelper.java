@@ -8,7 +8,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 {
     private static final int DatabaseVersion = 1;
     private static final String DatabaseName = "closuredb.sqlite";
-    
+    private static SQLiteDatabase mInstance;
     
     /**
      * Sets up the database backing file with this
@@ -41,5 +41,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
     public void dropAllTables(SQLiteDatabase db)
     {
         FeedDatabase.dropTables(db);
+    }
+    
+    public static synchronized SQLiteDatabase getDatabaseInstance(Context context)
+    {
+        if(mInstance == null)
+        {
+            mInstance = new DatabaseHelper(context).getWritableDatabase();
+        }
+        return mInstance;
     }
 }
