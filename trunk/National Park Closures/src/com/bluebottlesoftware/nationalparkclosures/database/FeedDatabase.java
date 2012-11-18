@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Database that stores information from the various closure RSS feeds
@@ -323,5 +324,23 @@ public class FeedDatabase
         StringBuilder query = new StringBuilder(COLUMN_ID).append(" = ?");
         Cursor c = db.query(FEED_TABLE,null,query.toString(),new String[]{Long.toString(rowid)},null,null,null);
         return c;
+    }
+
+    /**
+     * Returns flag indicating whether there are any feed items with GEO information for the given region
+     * @param mRegion   
+     * @return
+     */
+    public static boolean hasRegionAnyGeoEvents(SQLiteDatabase db, int mRegion)
+    {
+        boolean bGeoPresent = false;
+        StringBuilder query = new StringBuilder(COLUMN_REGION).append(" = ? and ").append(COLUMN_LATITUDE).append(" != ? and ").append(COLUMN_LATITUDE).append(" not null and ").append(COLUMN_LONGTITUDE).append(" != ? and ").append(COLUMN_LONGTITUDE).append(" not null");
+        Cursor c = db.query(FEED_TABLE, new String[]{COLUMN_ID}, query.toString(), new String[]{Integer.toString(mRegion),"",""}, null, null, null);
+        if(c.moveToFirst())
+        {
+            bGeoPresent = true;
+        }
+        c.close();
+        return bGeoPresent;
     }
 }
