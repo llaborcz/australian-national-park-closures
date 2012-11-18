@@ -28,8 +28,11 @@ import android.widget.FrameLayout;
 public class MapViewFragment extends Fragment
 {
     private static final String MapViewDebugApiKey = "0TiX-2-6j0HyUn03vC91X89qny0PykFadoZIL0Q";
+    private static final String SatelliteKey  = "satellitekey";
+    
     private long [] mDbRowIds;
-    private MapView     mMapView;
+    private MapView mMapView;
+    private boolean mSatellite;
     
     public class MapOverlay extends ItemizedOverlay<OverlayItem>
     {
@@ -69,6 +72,14 @@ public class MapViewFragment extends Fragment
         setRetainInstance(true);
         setHasOptionsMenu(true);
     }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SatelliteKey, mSatellite);
+    }
+    
     /**
      * Creates an instance of this fragment with the appropriate center point
      * @return
@@ -90,9 +101,13 @@ public class MapViewFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) 
     {
       super.onActivityCreated(savedInstanceState);
+      if(savedInstanceState != null)
+      {
+          mSatellite = savedInstanceState.getBoolean(SatelliteKey);
+      }
       mMapView = new MapView(getActivity(),MapViewDebugApiKey);
       mMapView.setClickable(true);
-      mMapView.setSatellite(false);
+      mMapView.setSatellite(mSatellite);
       MapController mapController = mMapView.getController();
       mapController.setZoom(8);
       mMapView.setBuiltInZoomControls(false);
@@ -129,6 +144,13 @@ public class MapViewFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.mapviewmenu,menu);
     }
+
+    @Override 
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem sat = menu.findItem(R.id.menu_toggleSatellite);
+        sat.setChecked(mSatellite);
+    }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -138,6 +160,7 @@ public class MapViewFragment extends Fragment
         {
         case R.id.menu_toggleSatellite:
             bResult = true;
+            mSatellite = !mSatellite;
             mMapView.setSatellite(!item.isChecked());
             item.setChecked(!item.isChecked());
             break;
