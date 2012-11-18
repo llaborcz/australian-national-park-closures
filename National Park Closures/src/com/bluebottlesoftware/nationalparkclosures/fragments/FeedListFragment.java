@@ -202,6 +202,14 @@ public class FeedListFragment extends ListFragment
         SearchView searchView = (SearchView)searchMenu.getActionView();
         searchView.setOnQueryTextListener(mQueryListeneter);
         searchMenu.setOnActionExpandListener(mSearchOpenCloseListener);
+        
+        DatabaseHelper helper = new DatabaseHelper(getActivity());
+        SQLiteDatabase db = helper.getReadableDatabase();
+        if(!FeedDatabase.hasRegionAnyGeoEvents(db,mRegion))
+        {
+            menu.removeItem(R.id.menu_mapregion);
+        }
+        db.close();
     }
 
     @Override
@@ -334,11 +342,11 @@ public class FeedListFragment extends ListFragment
         @Override
         protected void onPostExecute(Boolean result)
         {
-            Log.d("onPostExecute","Entry");
             mRefreshFeedTask = null;
             mRefreshMenuItem.setActionView(null);
             if(result)
             {
+                getActivity().invalidateOptionsMenu();
                 if(mAdapter != null)
                 {
                     Cursor c = FeedDatabase.getItemsForStateSortedByDate(mDb, mRegion);

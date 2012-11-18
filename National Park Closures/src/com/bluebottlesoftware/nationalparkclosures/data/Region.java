@@ -10,7 +10,7 @@ import com.bluebottlesoftware.parkclosures.R;
  */
 public class Region
 {
-    // Must line up with the regions in the region array
+    // These are the IDs that are stored in the profile database
     public static final int Nsw = 0;
     public static final int Qld = 1;
     public static final int NswFireIncidents = 2;
@@ -148,5 +148,42 @@ public class Region
             break;
         }
         return baseUrl;
+    }
+
+    // Returns the region corresponding to the region array string
+    public static int itemPositionToRegion(int itemPosition)
+    {
+        int region = Nsw;
+        switch(itemPosition)
+        {
+        case 1:
+            region = Qld;
+            break;
+            
+        case 2:
+            region = NswFireIncidents;
+            break;
+            
+        case 3:
+            region = VicFireIncidents;
+            break;
+            
+        case 4:
+            region = QldFireIncidents;
+            break;
+            
+        case 5:
+            region = TasFireEntireState;
+            break;
+            
+        case 6:
+            region = SaFireEntireState;
+            break;
+            
+        case 7:
+            region = WaFireIncidents;
+            break;
+        }
+        return region;
     }
 }

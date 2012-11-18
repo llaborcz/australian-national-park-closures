@@ -32,13 +32,14 @@ public class FeedListActivity extends Activity
         @Override
         public boolean onNavigationItemSelected(int itemPosition, long itemId)
         {
+            int region = Region.itemPositionToRegion(itemPosition);
             boolean bNewFragment = false;   // Indicates if we're creating a new fragment or reusing an existing one
             FeedListFragment currentFragment = null;
-            FeedListFragment fragment = (FeedListFragment) getFragmentManager().findFragmentByTag(Integer.toString(itemPosition));
+            FeedListFragment fragment = (FeedListFragment) getFragmentManager().findFragmentByTag(Integer.toString(region));
             if(null == fragment)
             {
                 // We don't have this fragment yet
-                fragment = FeedListFragment.createInstance(itemPosition);
+                fragment = FeedListFragment.createInstance(region);
                 bNewFragment = true;
             }
             
