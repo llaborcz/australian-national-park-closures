@@ -17,7 +17,7 @@ import android.util.Log;
  */
 public class CalendarUtils
 {   
-    public static final String DateFormat = "E, dd MMM yyyy HH:mm:ss";       /**<Date format used by NSW feed*/
+    public static final String DateFormat = "EEE, d MMM yyyy HH:mm:ss";       /**<Date format used by NSW feed*/
     
     public static String getDateFormatForRegion(int state)
     {
@@ -31,7 +31,7 @@ public class CalendarUtils
      */
     public static String convertDate(String srcDate,String srcDateFormat,String destDateFormat)
     {
-        DateFormat srcFormat = new SimpleDateFormat(destDateFormat,Locale.US);
+        DateFormat srcFormat = new SimpleDateFormat(srcDateFormat,Locale.US);
 
         String friendlyDate = srcDate;
         try

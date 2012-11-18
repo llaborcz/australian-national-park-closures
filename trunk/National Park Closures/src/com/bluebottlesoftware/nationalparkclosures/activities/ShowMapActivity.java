@@ -13,32 +13,27 @@ import android.view.MenuItem;
 
 public class ShowMapActivity extends MapActivity
 {
-    public static final String EXTRA_LNG = "longkey";
-    public static final String EXTRA_LAT = "latkey";
-    public static final String EXTRA_TITLE      = "titlekey";
-    public static final String EXTRA_SNIPPET    = "snippetkey";
+    public static final String EXTRA_IDS = "ids";       // array of row ids that we need to display
+    public static final String EXTRA_TITLE = "title";   // String to use as title
     
     @Override 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String latitude   = intent.getStringExtra(EXTRA_LAT);
-        String longtitude = intent.getStringExtra(EXTRA_LNG);
-        String title      = intent.getStringExtra(EXTRA_TITLE);
-        String snippet    = intent.getStringExtra(EXTRA_SNIPPET);
-        
+        String title  = intent.getStringExtra(EXTRA_TITLE);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.mapActivityTitle);
+        title = (title == null) ? getString(R.string.mapActivityTitle) : title;
+        actionBar.setTitle(title);
         setContentView(R.layout.mapactivity);
         
         FragmentManager fm = getFragmentManager();
         MapViewFragment mapFragment = (MapViewFragment) fm.findFragmentById(R.id.mapFragmentContent);  
         if (mapFragment == null) 
         {
-            mapFragment = MapViewFragment.createInstance(Float.parseFloat(longtitude),Float.parseFloat(latitude),title,snippet);
+            mapFragment = MapViewFragment.createInstance(intent.getLongArrayExtra(EXTRA_IDS));
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.mapFragmentContent, mapFragment);
             ft.commit();  

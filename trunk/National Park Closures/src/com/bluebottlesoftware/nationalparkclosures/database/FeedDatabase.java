@@ -9,6 +9,7 @@ import com.bluebottlesoftware.nationalparkclosures.parsers.FeedItem;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Debug;
 import android.text.TextUtils;
 
 /**
@@ -341,5 +342,61 @@ public class FeedDatabase
         }
         c.close();
         return bGeoPresent;
+    }
+
+    /**
+     * Returns cursor containing set of rows with the given row ids
+     * @param db
+     * @param mDbRowIds
+     * @return
+     */
+    public static Cursor getCursorForRowIds(SQLiteDatabase db,long[] dbRowIds)
+    {
+        StringBuilder query = new StringBuilder(COLUMN_ID).append(" in ( ");
+        for(int i = 0;i<dbRowIds.length;i++)
+        {
+            if(i>0)
+            {
+                query.append(" , ");
+            }
+            query.append("'").append(dbRowIds[i]).append("'");
+        }
+        query.append(')');
+        return db.query(FEED_TABLE, null, query.toString(), null, null, null, null);
+    }
+
+    /**
+     * Returns array of row ids from the given set of regions that have geo information associated with them
+     * @param regions
+     * @return
+     */
+    public static long[] getRowIdsForGeoEventsInRegions(SQLiteDatabase db, int[] regions)
+    {
+        long [] rowIds = null;
+        StringBuilder query = new StringBuilder(COLUMN_REGION).append(" in ( ");
+        for(int i = 0;i<regions.length;i++)
+        {
+            if(i>0)
+            {
+                query.append(" , ");
+            }
+            query.append("'").append(regions[i]).append("'");
+        }
+        query.append(')');
+        query.append(" and ").append(COLUMN_LATITUDE).append(" != ? and ").append(COLUMN_LATITUDE).append(" not null");
+        query.append(" and ").append(COLUMN_LONGTITUDE).append(" != ? and ").append(COLUMN_LONGTITUDE).append(" not null");
+        Cursor c = db.query(FEED_TABLE, new String [] {COLUMN_ID}, query.toString(), new String [] {"", ""}, null, null,null);
+        if(c.moveToFirst())
+        {
+            int rowIdColumnIndex = c.getColumnIndex(COLUMN_ID);
+            rowIds = new long[c.getCount()];
+            for(int i=0;i<rowIds.length;i++)
+            {
+                rowIds[i] = c.getLong(rowIdColumnIndex);
+                c.moveToNext();
+            }
+        }
+        c.close();
+        return rowIds;
     }
 }

@@ -125,10 +125,8 @@ public class WebViewFragment extends Fragment
                 
             case R.id.menu_showOnMap:
                 Intent mapIntent = new Intent();
-                mapIntent.putExtra(ShowMapActivity.EXTRA_LAT,mItem.getLatitude());
-                mapIntent.putExtra(ShowMapActivity.EXTRA_LNG, mItem.getLongtitude());
-                mapIntent.putExtra(ShowMapActivity.EXTRA_TITLE, getActivity().getString(R.string.mapMarkerTitle));
-                mapIntent.putExtra(ShowMapActivity.EXTRA_SNIPPET, mItem.getTitle());
+                mapIntent.putExtra(ShowMapActivity.EXTRA_IDS, new long [] {mDbRowId});
+                mapIntent.putExtra(ShowMapActivity.EXTRA_TITLE,mItem.getTitle());
                 mapIntent.setClass(getActivity(), com.bluebottlesoftware.nationalparkclosures.activities.ShowMapActivity.class);
                 startActivity(mapIntent);
                 break;

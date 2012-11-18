@@ -2,6 +2,8 @@ package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import java.util.ArrayList;
 
+import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
+import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.parkclosures.R;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
@@ -9,6 +11,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,9 +28,7 @@ import android.widget.FrameLayout;
 public class MapViewFragment extends Fragment
 {
     private static final String MapViewDebugApiKey = "0TiX-2-6j0HyUn03vC91X89qny0PykFadoZIL0Q";
-    private GeoPoint    mGeoPoint;
-    private String      mTitle;
-    private String      mSnippet;
+    private long [] mDbRowIds;
     private MapView     mMapView;
     
     public class MapOverlay extends ItemizedOverlay<OverlayItem>
@@ -72,12 +73,10 @@ public class MapViewFragment extends Fragment
      * Creates an instance of this fragment with the appropriate center point
      * @return
      */
-    public static MapViewFragment createInstance(float longtitude,float latitude,String title,String snippet)
+    public static MapViewFragment createInstance(long [] rowIds)
     {   
         MapViewFragment fragment = new MapViewFragment();
-        fragment.mGeoPoint = new GeoPoint((int)(latitude * 1E6), (int)(longtitude * 1E6));
-        fragment.mSnippet  = snippet;
-        fragment.mTitle    = title;
+        fragment.mDbRowIds = rowIds;
         return fragment;
     }
         
@@ -95,13 +94,31 @@ public class MapViewFragment extends Fragment
       mMapView.setClickable(true);
       mMapView.setSatellite(false);
       MapController mapController = mMapView.getController();
-      mapController.setCenter(mGeoPoint);
       mapController.setZoom(8);
       mMapView.setBuiltInZoomControls(false);
-      
-      MapOverlay overlay = new MapOverlay(getResources().getDrawable(R.drawable.map_overlay));
-      overlay.addItem(mGeoPoint, mTitle, mSnippet);
-      mMapView.getOverlays().add(overlay);
+
+      Cursor c = FeedDatabase.getCursorForRowIds(DatabaseHelper.getDatabaseInstance(getActivity()), mDbRowIds);
+      if(c.moveToFirst())
+      {
+          GeoPoint geoPoint = null;
+          String title = getActivity().getString(R.string.mapMarkerTitle);
+          int titleColumnIndex = c.getColumnIndex(FeedDatabase.COLUMN_TITLE);
+          int latColumnIndex   = c.getColumnIndex(FeedDatabase.COLUMN_LATITUDE);
+          int longColumnIndex  = c.getColumnIndex(FeedDatabase.COLUMN_LONGTITUDE);
+          while(!c.isAfterLast())
+          {
+              String snippet = c.getString(titleColumnIndex);
+              String lat   = c.getString(latColumnIndex);
+              String lng   = c.getString(longColumnIndex);
+              geoPoint = new GeoPoint((int) (Float.valueOf(lat)*1E6),(int) (Float.valueOf(lng)*1E6));
+              MapOverlay overlay = new MapOverlay(getResources().getDrawable(R.drawable.map_overlay));
+              overlay.addItem(geoPoint, title, snippet);
+              mMapView.getOverlays().add(overlay);
+              c.moveToNext();
+          }
+          mapController.setCenter(geoPoint);
+      }
+      c.close();
       ((ViewGroup)getView()).addView(mMapView);
       mMapView.invalidate();
     }
