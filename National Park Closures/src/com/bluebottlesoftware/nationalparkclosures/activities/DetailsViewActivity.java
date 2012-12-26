@@ -1,5 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
+import android.os.Debug;
+import android.view.View;
 import android.widget.TextView;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
@@ -37,12 +39,7 @@ public class DetailsViewActivity extends Activity
             setTitle(title);
         }
         setContentView(R.layout.webviewactivitylayout);
-        if(title != null)
-        {
-            TextView titleView = (TextView)findViewById(R.id.title);
-            titleView.setText(title);
-        }
-        FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getFragmentManager();
         WebViewFragment webViewFragment = (WebViewFragment) fm.findFragmentById(R.id.webviewFragmentContent);
         if(webViewFragment == null)
         {
@@ -51,6 +48,20 @@ public class DetailsViewActivity extends Activity
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.webviewFragmentContent, webViewFragment);
             ft.commit();  
+        }
+        if(title != null)
+        {
+            TextView titleView = (TextView)findViewById(R.id.title);
+            titleView.setText(title);
+            titleView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    WebViewFragment webViewFragment = (WebViewFragment) fm.findFragmentById(R.id.webviewFragmentContent);
+                    webViewFragment.showArticleInBrowser();
+                }
+            });
         }
     }
     

@@ -3,6 +3,7 @@ package com.bluebottlesoftware.nationalparkclosures.fragments;
 
 import java.util.List;
 
+import android.widget.Toast;
 import com.bluebottlesoftware.nationalparkclosures.activities.ShowMapActivity;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
@@ -105,15 +106,7 @@ public class WebViewFragment extends Fragment
         {
             case R.id.menu_viewInBrowser:
             {
-                // Create an intent with the "link" of the selected item here
-                String link = mItem.getLink();
-                if(!TextUtils.isEmpty(link))
-                {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(link));
-                    startActivity(intent);
-                }
+                showArticleInBrowser();
                 break;
             }
             
@@ -155,5 +148,24 @@ public class WebViewFragment extends Fragment
     public long getShownId()
     {
         return getArguments().getLong(KEY_DBROWID);
+    }
+
+    public void showArticleInBrowser()
+    {
+        // Create an intent with the "link" of the selected item here
+        String link = mItem.getLink();
+        if(!TextUtils.isEmpty(link))
+        {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(link));
+            startActivity(intent);
+        }
+        else
+        {
+            // There's no link to display - just display a toast message
+            Toast t = Toast.makeText(getActivity(),getString(R.string.noLink),Toast.LENGTH_SHORT);
+            t.show();
+        }
     }
 }
