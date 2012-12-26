@@ -11,7 +11,14 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/TransparentActionBarStyle</item>
     </style>
-    
+
+    <style name="DetailViewTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:singleLine">false</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="ListViewTitleStyle" parent="@android:style/TextAppearance.Large">
         <item name="android:singleLine">true</item>
         <item name="android:layout_width">match_parent</item>

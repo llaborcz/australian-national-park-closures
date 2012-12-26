@@ -3,7 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <!-- This contains the title of the article that is being displayed -->
+    <TextView
+        android:id="@+id/title"
+        android:background="@android:color/white"
+        android:padding="10dp"
+        style="@style/DetailViewTitle"/>
+
     <!-- This frame layout contains the webview fragment -->
     <FrameLayout
         android:id="@+id/webviewFragmentContent"

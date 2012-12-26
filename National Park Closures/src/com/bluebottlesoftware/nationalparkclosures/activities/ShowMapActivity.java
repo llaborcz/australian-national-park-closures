@@ -31,7 +31,7 @@ public class ShowMapActivity extends Activity
     public static final String EXTRA_IDS = "ids";       // array of row ids that we need to display
     public static final String EXTRA_TITLE = "title";   // String to use as title
     private MapFragment mMapFragment;
-    private long [] mRowIds;
+    private long [] mRowIds;    // The row ids that we're displaying on the map
     private HashMap<String,Long> mMarkerMap;    // Map of marker ids to database row ids
 
     @Override 
@@ -65,8 +65,9 @@ public class ShowMapActivity extends Activity
     public void onResume()
     {
         super.onResume();
+        // This needs to be called from onResume rather than onCreate since the layout won't be ready yet and so getMap returns null
         mMarkerMap = new HashMap<String, Long>();
-        setupMap(mMapFragment,mRowIds);        
+        setupMap(mMapFragment,mRowIds);
     }
     
     /**
@@ -123,7 +124,6 @@ public class ShowMapActivity extends Activity
                     @Override
                     public void onInfoWindowClick(Marker marker)
                     {
-                        Debug.waitForDebugger();
                         String id = marker.getId();
                         Long dbRowId = mMarkerMap.get(id);
                         if(null != dbRowId)

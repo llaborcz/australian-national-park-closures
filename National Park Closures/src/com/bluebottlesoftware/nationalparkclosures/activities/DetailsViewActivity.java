@@ -1,5 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.activities;
 
+import android.widget.TextView;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.DatabaseHelper;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
@@ -28,12 +29,19 @@ public class DetailsViewActivity extends Activity
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         long dbRowId = getIntent().getLongExtra(WebViewFragment.KEY_DBROWID,0);
+        String title = null;
         if(0 != dbRowId)
         {
             SQLiteDatabase db = DatabaseHelper.getDatabaseInstance(this);
-            setTitle(FeedDatabase.getTitleForEntry(db,dbRowId));
+            title = FeedDatabase.getTitleForEntry(db,dbRowId);
+            setTitle(title);
         }
         setContentView(R.layout.webviewactivitylayout);
+        if(title != null)
+        {
+            TextView titleView = (TextView)findViewById(R.id.title);
+            titleView.setText(title);
+        }
         FragmentManager fm = getFragmentManager();
         WebViewFragment webViewFragment = (WebViewFragment) fm.findFragmentById(R.id.webviewFragmentContent);
         if(webViewFragment == null)
