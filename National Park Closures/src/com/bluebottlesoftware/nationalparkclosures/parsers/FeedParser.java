@@ -133,6 +133,7 @@ public class FeedParser
         try
         {
             db.beginTransaction();
+            FeedDatabase.eraseAllEntriesForRegion(db, region);
             for(int item = 0;item < items.getLength();item++)
             {
                 Node node = items.item(item);
