@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -46,7 +47,8 @@ public class FeedParser
     private static final String GeoRssCollectionPointQuery = "collection/point";
     
     private static final String LeadingSlash = "/";
-    
+    private static final Pattern GeoSplitPattern = Pattern.compile(" ");
+
     private ArrayList<FeedItem> m_items = new ArrayList<FeedItem>(INITIAL_FEEDLIST_ALLOCATION_SIZE);    // Stores our list of nodes
     
     private XPathExpression mItemQuery;
@@ -200,7 +202,7 @@ public class FeedParser
         else
         {
             // We've got a geo rss point
-            String [] latlong = point.split(" ");
+            String [] latlong = GeoSplitPattern.split(point);
             if(latlong.length == 2)
             {
                 geoLat = latlong[0];
