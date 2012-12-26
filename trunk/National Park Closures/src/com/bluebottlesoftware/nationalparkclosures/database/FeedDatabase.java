@@ -87,15 +87,15 @@ public class FeedDatabase
     }
     
     /**
-     * Deletes all of the rows from the database that match the given state
+     * Deletes all of the rows from the database that match the given region
      * @param db
-     * @param state
+     * @param region
      * @return
      */
-    public static int eraseAllEntriesForState(SQLiteDatabase db, int state)
+    public static int eraseAllEntriesForRegion(SQLiteDatabase db, int region)
     {
         StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
-        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause.toString(), new String[]{Integer.toString(state)});
+        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause.toString(), new String[]{Integer.toString(region)});
         return rowsDeleted;
     }
 
@@ -124,7 +124,7 @@ public class FeedDatabase
         try
         {
             db.beginTransaction();
-            eraseAllEntriesForState(db,state);
+            eraseAllEntriesForRegion(db, state);
             writeFeedItemsToDatabase(db, feedItems, state);
             db.setTransactionSuccessful();
         }
