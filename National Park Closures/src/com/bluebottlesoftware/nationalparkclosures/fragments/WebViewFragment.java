@@ -114,6 +114,7 @@ public class WebViewFragment extends Fragment
                     intent.setData(Uri.parse(link));
                     startActivity(intent);
                 }
+                break;
             }
             
             case R.id.menu_shareArticle:
