@@ -14,6 +14,9 @@
     
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <permission
+            android:name="com.bluebottlesoftware.parkclosures.permission.MAPS_RECEIVE"
+            android:protectionLevel="signature"/>
 
 
     <!-- Used by maps API -->
@@ -21,18 +24,15 @@
     
     <!-- Used by maps API -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
+    <uses-permission android:name="com.bluebottlesoftware.parkclosures.permission.MAPS_RECEIVE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <permission
-                android:name="com.bluebottlesoftware.parkclosures.permission.MAPS_RECEIVE"
-                android:protectionLevel="signature"/>
 
-        <uses-permission android:name="com.bluebottlesoftware.parkclosures.permission.MAPS_RECEIVE"/>
         <uses-library android:name="com.google.android.maps" />
         
         <!-- Activity that shows the data feed -->

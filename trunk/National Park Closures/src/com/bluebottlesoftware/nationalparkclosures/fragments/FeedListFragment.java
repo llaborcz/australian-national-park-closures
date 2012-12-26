@@ -312,7 +312,7 @@ public class FeedListFragment extends ListFragment
 
     public class RefreshFeedAsyncTask extends AsyncTask<Integer, Void,Boolean>
     {
-        final String TAG = "RefreshFeedAsyncTask";
+        final static String TAG = "RefreshFeedAsyncTask";
         @Override
         protected Boolean doInBackground(Integer... params)
         {

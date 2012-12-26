@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         onCreate(db);
     }
     
-    public void dropAllTables(SQLiteDatabase db)
+    public static void dropAllTables(SQLiteDatabase db)
     {
         FeedDatabase.dropTables(db);
     }
