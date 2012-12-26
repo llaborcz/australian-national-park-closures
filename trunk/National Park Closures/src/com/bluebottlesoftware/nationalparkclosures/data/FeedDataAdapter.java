@@ -1,5 +1,6 @@
 package com.bluebottlesoftware.nationalparkclosures.data;
 
+import android.text.TextUtils;
 import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 import com.bluebottlesoftware.parkclosures.R;
@@ -57,7 +58,16 @@ public class FeedDataAdapter extends CursorAdapter
         String dateFormat = CalendarUtils.getDateFormatForRegion(cursor.getInt(mStateColumn));
         dateView.setText(CalendarUtils.convertDate(date,dateFormat,DisplayDateFormat));
         timeView.setText(mLastUpdatedString + CalendarUtils.convertDate(date, dateFormat, DisplayTimeFormat));
-        categoryView.setText(category);
+        if(TextUtils.isEmpty(category))
+        {
+            categoryView.setVisibility(View.GONE);
+        }
+        else
+        {
+            categoryView.setVisibility(View.VISIBLE);
+            categoryView.setText(category);
+        }
+
     }
 
     @Override
