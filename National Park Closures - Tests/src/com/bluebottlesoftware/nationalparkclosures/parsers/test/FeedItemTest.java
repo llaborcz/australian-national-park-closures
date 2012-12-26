@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.text.TextUtils;
 import com.bluebottlesoftware.nationalparkclosures.Util.CalendarUtils;
 import com.bluebottlesoftware.nationalparkclosures.data.Region;
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
@@ -26,7 +27,7 @@ public class FeedItemTest extends TestCase
      */
     public void testSimpleCreateAndReadback() throws ParseException
     {
-        ArrayList<String> categories = new ArrayList<String>();
+        ArrayList<String> categories = new ArrayList<String>(128);
         categories.add(category);
         FeedItem item = new FeedItem(nswTestDate1,title, link, guid, description,categories,null,null );
         
@@ -73,10 +74,10 @@ public class FeedItemTest extends TestCase
         assertTrue(readGuid.equals(guid));
         
         String readDescription = item.getDescription();
-        assertTrue("".equals(readDescription));
+        assertTrue(TextUtils.isEmpty(readDescription));
         
         String readCategory = item.getCategory();
-        assertTrue("".equals(readCategory));
+        assertTrue(TextUtils.isEmpty(readCategory));
     }
 
     /**

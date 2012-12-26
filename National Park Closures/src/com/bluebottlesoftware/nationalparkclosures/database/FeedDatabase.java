@@ -36,7 +36,7 @@ public class FeedDatabase
     
     // Raw SQL to create the database table
     private static final String CREATE_FEED_TABLE = 
-        "CREATE TABLE "  + FEED_TABLE + "(" + 
+        "CREATE TABLE "  + FEED_TABLE + '(' +
         COLUMN_ID    + " INTEGER PRIMARY KEY AUTOINCREMENT," +
         COLUMN_REGION + " INTEGER," +
         COLUMN_TITLE + " TEXT," + 
@@ -51,7 +51,7 @@ public class FeedDatabase
     
     // Raw SQL to create the region information table
     private static final String CREATE_REGION_TABLE =
-        "CREATE TABLE " + REGION_TABLE + "(" + 
+        "CREATE TABLE " + REGION_TABLE + '(' +
         COLUMN_ID     + " INTEGER PRIMARY KEY AUTOINCREMENT," +
         COLUMN_REGION + " INTEGER UNIQUE," +    // Corresponds to the region code in the feed table
         COLUMN_LAST_REFRESH + " INTEGER);";     // last time that the feed for this region was updated
@@ -81,8 +81,8 @@ public class FeedDatabase
 
     public static Cursor getFeedItemsForState(SQLiteDatabase db,int state)
     {
-        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
-        Cursor c = db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(state)}, null, null,null,null);
+        String sqlWhereClause = COLUMN_REGION + " = ?";
+        Cursor c = db.query(FEED_TABLE, null, sqlWhereClause, new String[]{Integer.toString(state)}, null, null,null,null);
         return c;
     }
     
@@ -94,8 +94,8 @@ public class FeedDatabase
      */
     public static int eraseAllEntriesForRegion(SQLiteDatabase db, int region)
     {
-        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
-        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause.toString(), new String[]{Integer.toString(region)});
+        String sqlWhereClause = COLUMN_REGION + " = ?";
+        int rowsDeleted = db.delete(FEED_TABLE, sqlWhereClause, new String[]{Integer.toString(region)});
         return rowsDeleted;
     }
 
@@ -164,9 +164,9 @@ public class FeedDatabase
      */
     public static Cursor getItemsForStateSortedByDate(SQLiteDatabase db,int region)
     {
-        StringBuilder sqlWhereClause = new StringBuilder(COLUMN_REGION).append(" = ?");
-        StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
-        return db.query(FEED_TABLE, null, sqlWhereClause.toString(), new String[]{Integer.toString(region)}, null, null, orderByClause.toString());
+        String sqlWhereClause = COLUMN_REGION + " = ?";
+        String orderByClause  = COLUMN_DATE_MS + " DESC ";
+        return db.query(FEED_TABLE, null, sqlWhereClause, new String[]{Integer.toString(region)}, null, null, orderByClause);
     }
 
     /**
@@ -210,8 +210,8 @@ public class FeedDatabase
     private static String getStringEntry(SQLiteDatabase db,long rowId,String column)
     {
         String data = null;
-        StringBuilder sqlWhereStatement = new StringBuilder(COLUMN_ID).append(" = ?");
-        Cursor c = db.query(FEED_TABLE, new String [] {column}, sqlWhereStatement.toString(), new String [] {Long.toString(rowId)}, null, null, null);
+        String sqlWhereStatement = COLUMN_ID + " = ?";
+        Cursor c = db.query(FEED_TABLE, new String [] {column}, sqlWhereStatement, new String [] {Long.toString(rowId)}, null, null, null);
         if(c.moveToFirst())
         {
             data = c.getString(c.getColumnIndex(column));
@@ -271,8 +271,8 @@ public class FeedDatabase
     public static long getLastUpdateTimeForRegion(SQLiteDatabase db, int region)
     {
         long lastUpdateTime = 0;
-        StringBuilder query = new StringBuilder(COLUMN_REGION).append(" = ?");
-        Cursor c = db.query(REGION_TABLE, new String [] {COLUMN_LAST_REFRESH}, query.toString(), new String [] {Integer.toString(region)}, null, null, null);
+        String query = COLUMN_REGION + " = ?";
+        Cursor c = db.query(REGION_TABLE, new String [] {COLUMN_LAST_REFRESH}, query, new String [] {Integer.toString(region)}, null, null, null);
         if(c.moveToFirst())
         {
             lastUpdateTime = c.getLong(c.getColumnIndex(COLUMN_LAST_REFRESH));
@@ -311,17 +311,17 @@ public class FeedDatabase
         }
         else
         {
-            StringBuilder query = new StringBuilder(COLUMN_REGION).append(" = ? ").append(" and ").append(COLUMN_TITLE).append(" like '%").append(searchString).append("%'");
-            StringBuilder orderByClause  = new StringBuilder(COLUMN_DATE_MS).append(" DESC ");
-            cursor = db.query(FEED_TABLE, null, query.toString(), new String[]{Integer.toString(region)}, null, null,orderByClause.toString());
+            String query = COLUMN_REGION + " = ? " + " and " + COLUMN_TITLE + " like '%" + searchString + "%'";
+            String orderByClause  = COLUMN_DATE_MS + " DESC ";
+            cursor = db.query(FEED_TABLE, null, query, new String[]{Integer.toString(region)}, null, null,orderByClause);
         }
         return cursor;
     }
     
     public static Cursor getCursorForRowId(SQLiteDatabase db, long rowid)
     {
-        StringBuilder query = new StringBuilder(COLUMN_ID).append(" = ?");
-        Cursor c = db.query(FEED_TABLE,null,query.toString(),new String[]{Long.toString(rowid)},null,null,null);
+        String query = COLUMN_ID + " = ?";
+        Cursor c = db.query(FEED_TABLE,null,query,new String[]{Long.toString(rowid)},null,null,null);
         return c;
     }
 
@@ -333,8 +333,8 @@ public class FeedDatabase
     public static boolean hasRegionAnyGeoEvents(SQLiteDatabase db, int mRegion)
     {
         boolean bGeoPresent = false;
-        StringBuilder query = new StringBuilder(COLUMN_REGION).append(" = ? and ").append(COLUMN_LATITUDE).append(" != ? and ").append(COLUMN_LATITUDE).append(" not null and ").append(COLUMN_LONGTITUDE).append(" != ? and ").append(COLUMN_LONGTITUDE).append(" not null");
-        Cursor c = db.query(FEED_TABLE, new String[]{COLUMN_ID}, query.toString(), new String[]{Integer.toString(mRegion),"",""}, null, null, null);
+        String query = COLUMN_REGION + " = ? and " + COLUMN_LATITUDE + " != ? and " + COLUMN_LATITUDE + " not null and " + COLUMN_LONGTITUDE + " != ? and " + COLUMN_LONGTITUDE + " not null";
+        Cursor c = db.query(FEED_TABLE, new String[]{COLUMN_ID}, query, new String[]{Integer.toString(mRegion),"",""}, null, null, null);
         if(c.moveToFirst())
         {
             bGeoPresent = true;
@@ -358,7 +358,7 @@ public class FeedDatabase
             {
                 query.append(" , ");
             }
-            query.append("'").append(dbRowIds[i]).append("'");
+            query.append('\'').append(dbRowIds[i]).append('\'');
         }
         query.append(')');
         return db.query(FEED_TABLE, null, query.toString(), null, null, null, null);
@@ -379,7 +379,7 @@ public class FeedDatabase
             {
                 query.append(" , ");
             }
-            query.append("'").append(regions[i]).append("'");
+            query.append('\'').append(regions[i]).append('\'');
         }
         query.append(')');
         query.append(" and ").append(COLUMN_LATITUDE).append(" != ? and ").append(COLUMN_LATITUDE).append(" not null");

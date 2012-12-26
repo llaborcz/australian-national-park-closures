@@ -30,6 +30,9 @@ import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
  */
 public class FeedParser
 {
+    private static final int INITIAL_FEEDLIST_ALLOCATION_SIZE = 64;
+    private static final int INITIAL_CATEGORY_ALLOCATION_SIZE = 4;
+
     private static final String ItemQuery = "/rss/channel/item";    // Returns back all of the items
     private static final String DateQuery  = "pubDate";
     private static final String TitleQuery = "title";
@@ -44,7 +47,7 @@ public class FeedParser
     
     private static final String LeadingSlash = "/";
     
-    private ArrayList<FeedItem> m_items = new ArrayList<FeedItem>();    // Stores our list of nodes
+    private ArrayList<FeedItem> m_items = new ArrayList<FeedItem>(INITIAL_FEEDLIST_ALLOCATION_SIZE);    // Stores our list of nodes
     
     private XPathExpression mItemQuery;
     private XPathExpression mDateQuery;
@@ -206,7 +209,7 @@ public class FeedParser
         }
         
         NodeList categories = (NodeList) mCategoryQuery.evaluate(node,XPathConstants.NODESET);
-        ArrayList<String> categoryArray = new ArrayList<String>();
+        ArrayList<String> categoryArray = new ArrayList<String>(INITIAL_CATEGORY_ALLOCATION_SIZE);
         for(int i=0;i<categories.getLength();i++)
         {
             Node catNode = categories.item(i);

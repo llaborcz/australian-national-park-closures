@@ -1,6 +1,7 @@
 package com.bluebottlesoftware.nationalparkclosures.parsers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
@@ -12,6 +13,8 @@ import com.bluebottlesoftware.nationalparkclosures.database.FeedDatabase;
 public class FeedItem
 {
     public static final char CategorySeparatorChar = ',';
+    private static final int ARRAY_LIST_INITIAL_SIZE = 128;
+
     private long   m_rowId = FeedDatabase.INVALIDROWID;
     private String m_title;
     private String m_description;
@@ -49,7 +52,7 @@ public class FeedItem
      */
     private static String getCategoryString(List<String> categories)
     {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(64);
         for(String category : categories)
         {
             builder.append(category);
@@ -60,12 +63,9 @@ public class FeedItem
 
     public static List<String> getCategoriesFromString(String categoriesString)
     {
-        ArrayList<String> categoryArray = new ArrayList<String>();
+        ArrayList<String> categoryArray = new ArrayList<String>(ARRAY_LIST_INITIAL_SIZE);
         String [] categories = categoriesString.split(new String(new char[]{CategorySeparatorChar}));
-        for(String category : categories)
-        {
-            categoryArray.add(category);
-        }
+        Collections.addAll(categoryArray, categories);
         return categoryArray;
     }
     
@@ -168,10 +168,7 @@ public class FeedItem
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder(m_title).
-                append(' ').append(m_date).append(' ').append(m_link).append(' ').append(m_guid).append(' ').append(m_category).
-                append(' ').append(m_geoLat).append(' ').append(m_geoLong);
-        return sb.toString();
+        return m_title + ' ' + m_date + ' ' + m_link + ' ' + m_guid + ' ' + m_category + ' ' + m_geoLat + ' ' + m_geoLong;
     }
 
     /**
@@ -181,12 +178,12 @@ public class FeedItem
      */
     public boolean sameAs(FeedItem other)
     {
-        boolean bSame = m_title.equals(other.getTitle()) &&
-                        m_link.equals(other.getLink()) &&
-                        m_date.equals(other.getDate()) && 
-                        m_category.equals(other.getCategory()) &&
-                        m_description.equals(other.getDescription()) && 
-                        m_guid.equals(other.getGuid());
+        boolean bSame = m_title.equals(other.m_title) &&
+                        m_link.equals(other.m_link) &&
+                        m_date.equals(other.m_date) &&
+                        m_category.equals(other.m_category) &&
+                        m_description.equals(other.m_description) &&
+                        m_guid.equals(other.m_guid);
         return bSame;
     }
 }
